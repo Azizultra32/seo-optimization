@@ -24,7 +24,7 @@ jobs:
 
       - name: Write Search Console key
         run: |
-          echo "${{ secrets.SEARCH_CONSOLE_CREDENTIALS_JSON }}" > /tmp/seo-optimizer.json
+          printf '%s' "${{ secrets.SEARCH_CONSOLE_CREDENTIALS_JSON }}" > /tmp/seo-optimizer.json
           echo "SEARCH_CONSOLE_CREDENTIALS=/tmp/seo-optimizer.json" >> $GITHUB_ENV
 
       - name: Export env
