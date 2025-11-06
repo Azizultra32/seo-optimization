@@ -1,0 +1,48 @@
+name: Weekly SEO Optimization
+
+on:
+  schedule:
+    - cron: "0 14 * * 1"   # 06:00 PT Mondays
+  workflow_dispatch:
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-api-python-client google-auth requests openai supabase
+
+      - name: Write Search Console key
+        run: |
+          echo "${{ secrets.SEARCH_CONSOLE_CREDENTIALS_JSON }}" > /tmp/seo-optimizer.json
+          echo "SEARCH_CONSOLE_CREDENTIALS=/tmp/seo-optimizer.json" >> $GITHUB_ENV
+
+      - name: Export env
+        run: |
+          {
+            echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}";
+            echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}";
+            echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}";
+            echo "GMAIL_USER=${{ secrets.GMAIL_USER }}";
+            echo "GMAIL_PASS=${{ secrets.GMAIL_PASS }}";
+          } >> $GITHUB_ENV
+
+      - name: Run pipeline
+        run: |
+          python functions/fetch_search_console.py
+          python functions/optimize_meta.py
+          # For medical pages, Google's Indexing API is not officially supported.
+          # Prefer sitemap pings to encourage re-crawl:
+          curl -s "https://www.google.com/ping?sitemap=https://alighahary.com/sitemap.xml" || true
+          curl -s "https://www.bing.com/ping?sitemap=https://alighahary.com/sitemap.xml" || true
+          python functions/email_reporter.py
