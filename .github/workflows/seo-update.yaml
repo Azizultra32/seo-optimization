@@ -24,11 +24,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install google-api-python-client google-auth requests openai supabase
 
-      - name: Validate Search Console credentials
+      - name: Write credentials
         run: |
-          echo "$GOOGLE_CREDENTIALS" > /tmp/seo-optimizer.json
-          python -m json.tool /tmp/seo-optimizer.json
-          echo "SEARCH_CONSOLE_CREDENTIALS=/tmp/seo-optimizer.json" >> $GITHUB_ENV
+          echo "$GOOGLE_CREDENTIALS" > gcp-key.json
+          python -m json.tool gcp-key.json
+          echo "SEARCH_CONSOLE_CREDENTIALS=$(pwd)/gcp-key.json" >> $GITHUB_ENV
 
       - name: Export env
         run: |
