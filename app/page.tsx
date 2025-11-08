@@ -8,6 +8,9 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import { useInView } from "@/hooks/use-in-view"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-demo-dialog"
+// import { PersonalizedBanner } from "@/components/personalized-banner"
+// import { PersonalizedCTA } from "@/components/personalized-cta"
+// import { usePersonalization, getPersonalizedContent } from "@/lib/personalization"
 
 export default function DrGhaharyPage() {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -21,6 +24,9 @@ export default function DrGhaharyPage() {
   const trustRef = useInView({ threshold: 0.2 })
   const ethicalRef = useInView({ threshold: 0.3 })
   const contactRef = useInView({ threshold: 0.3 })
+
+  // const { profile } = usePersonalization()
+  // const personalizedContent = getPersonalizedContent(profile.type)
 
   const handleVideoLoad = () => {
     if (videoRef.current) {
@@ -73,6 +79,8 @@ export default function DrGhaharyPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* <PersonalizedBanner /> */}
+
       {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
@@ -752,6 +760,29 @@ export default function DrGhaharyPage() {
                   partnerships@armadamd.com
                 </a>
               </motion.div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
+            >
+              <motion.a
+                href="mailto:demo@armadamd.com?subject=Demo Request"
+                className="inline-flex items-center gap-2 font-alfabet font-normal text-xs md:text-sm px-6 py-3 rounded-full bg-black text-white hover:bg-black/80 transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleCTAClick("email_demo")}
+              >
+                Request Demo
+              </motion.a>
+              <motion.a
+                href="#projects"
+                className="inline-flex items-center gap-2 font-alfabet font-normal text-xs md:text-sm px-6 py-3 rounded-full border border-black text-black hover:bg-black hover:text-white transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Learn More
+              </motion.a>
             </motion.div>
 
             {/* LinkedIn CTA */}

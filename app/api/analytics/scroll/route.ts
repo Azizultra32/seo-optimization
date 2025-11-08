@@ -1,38 +1,33 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
-import { getSupabaseUrl } from "@/lib/supabase/config"
+import { getServerClient } from "@/lib/supabase/api-client"
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { pageUrl, maxScrollPercentage, timeOnPage, sessionId } = body
 
-    const supabaseUrl = getSupabaseUrl()
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    const supabase = getServerClient()
 
-    if (!supabaseKey) {
-      return NextResponse.json({ success: true, skipped: true }, { status: 200 })
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseKey)
-
-    const { error } = await supabase.from("scroll_tracking").insert({
+    const { error } = await supabase.from("events").insert({
+      event_type: "scroll",
+      event_name: "scroll_depth",
       page_url: pageUrl,
-      max_scroll_percentage: maxScrollPercentage,
-      time_on_page: timeOnPage,
       session_id: sessionId,
+      tenant: "harvest-studio",
+      metadata: {
+        max_scroll_percentage: maxScrollPercentage,
+        time_on_page: timeOnPage,
+      },
     })
 
     if (error) {
-      if (error.code === "PGRST205" || error.message?.includes("Could not find")) {
-        return NextResponse.json({ success: true, skipped: true }, { status: 200 })
-      }
-      throw error
+      console.error("[v0] Scroll tracking error:", error.message)
+      return NextResponse.json({ success: true }, { status: 200 })
     }
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("[v0] Scroll tracking error:", error)
-    return NextResponse.json({ success: true, skipped: true }, { status: 200 })
+    return NextResponse.json({ success: true }, { status: 200 })
   }
 }

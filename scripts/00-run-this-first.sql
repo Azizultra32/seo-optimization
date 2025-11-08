@@ -40,8 +40,9 @@ CREATE TABLE IF NOT EXISTS public.analytics_sessions (
 
 CREATE INDEX IF NOT EXISTS idx_sessions_created_at ON public.analytics_sessions (created_at DESC);
 
+-- Renamed from page_performance to performance_metrics for consistency
 -- Page performance metrics
-CREATE TABLE IF NOT EXISTS public.page_performance (
+CREATE TABLE IF NOT EXISTS public.performance_metrics (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   page_url TEXT NOT NULL,
@@ -50,12 +51,13 @@ CREATE TABLE IF NOT EXISTS public.page_performance (
   user_agent TEXT
 );
 
-CREATE INDEX IF NOT EXISTS idx_page_performance_url ON public.page_performance(page_url);
-CREATE INDEX IF NOT EXISTS idx_page_performance_metric ON public.page_performance(metric_name);
-CREATE INDEX IF NOT EXISTS idx_page_performance_created ON public.page_performance(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_performance_metrics_url ON public.performance_metrics(page_url);
+CREATE INDEX IF NOT EXISTS idx_performance_metrics_metric ON public.performance_metrics(metric_name);
+CREATE INDEX IF NOT EXISTS idx_performance_metrics_created ON public.performance_metrics(created_at DESC);
 
+-- Renamed from scroll_tracking to scroll_metrics for consistency
 -- Scroll depth tracking
-CREATE TABLE IF NOT EXISTS public.scroll_tracking (
+CREATE TABLE IF NOT EXISTS public.scroll_metrics (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   page_url TEXT NOT NULL,
@@ -64,8 +66,8 @@ CREATE TABLE IF NOT EXISTS public.scroll_tracking (
   session_id UUID
 );
 
-CREATE INDEX IF NOT EXISTS idx_scroll_tracking_url ON public.scroll_tracking(page_url);
-CREATE INDEX IF NOT EXISTS idx_scroll_tracking_created ON public.scroll_tracking(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_scroll_metrics_url ON public.scroll_metrics(page_url);
+CREATE INDEX IF NOT EXISTS idx_scroll_metrics_created ON public.scroll_metrics(created_at DESC);
 
 -- ============================================
 -- CONTENT GENERATION TABLES (Step 2)
@@ -125,8 +127,8 @@ END $$;
 -- Enable RLS on analytics tables with anon insert-only policy
 ALTER TABLE public.analytics_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.analytics_sessions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.page_performance ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.scroll_tracking ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.performance_metrics ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.scroll_metrics ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.generated_content ENABLE ROW LEVEL SECURITY;
 
 -- Allow anonymous users to INSERT analytics data only (no read/update/delete)
@@ -144,16 +146,16 @@ CREATE POLICY "anon can insert sessions"
   TO anon
   WITH CHECK (true);
 
-DROP POLICY IF EXISTS "anon can insert performance" ON public.page_performance;
+DROP POLICY IF EXISTS "anon can insert performance" ON public.performance_metrics;
 CREATE POLICY "anon can insert performance"
-  ON public.page_performance
+  ON public.performance_metrics
   FOR INSERT
   TO anon
   WITH CHECK (true);
 
-DROP POLICY IF EXISTS "anon can insert scroll" ON public.scroll_tracking;
+DROP POLICY IF EXISTS "anon can insert scroll" ON public.scroll_metrics;
 CREATE POLICY "anon can insert scroll"
-  ON public.scroll_tracking
+  ON public.scroll_metrics
   FOR INSERT
   TO anon
   WITH CHECK (true);
@@ -175,17 +177,17 @@ CREATE POLICY "service role full access sessions"
   USING (true)
   WITH CHECK (true);
 
-DROP POLICY IF EXISTS "service role full access performance" ON public.page_performance;
+DROP POLICY IF EXISTS "service role full access performance" ON public.performance_metrics;
 CREATE POLICY "service role full access performance"
-  ON public.page_performance
+  ON public.performance_metrics
   FOR ALL
   TO service_role
   USING (true)
   WITH CHECK (true);
 
-DROP POLICY IF EXISTS "service role full access scroll" ON public.scroll_tracking;
+DROP POLICY IF EXISTS "service role full access scroll" ON public.scroll_metrics;
 CREATE POLICY "service role full access scroll"
-  ON public.scroll_tracking
+  ON public.scroll_metrics
   FOR ALL
   TO service_role
   USING (true)
@@ -241,7 +243,7 @@ SELECT pg_notify('pgrst', 'reload schema');
 DO $$ 
 BEGIN
   RAISE NOTICE '✅ Database setup complete! All tables created successfully.';
-  RAISE NOTICE '📊 Analytics tables: analytics_events, analytics_sessions, page_performance, scroll_tracking';
+  RAISE NOTICE '📊 Analytics tables: analytics_events, analytics_sessions, performance_metrics, scroll_metrics';
   RAISE NOTICE '📝 Content tables: generated_content';
   RAISE NOTICE '🔒 RLS policies: Anonymous users can insert analytics, service role has full access';
 END $$;

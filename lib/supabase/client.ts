@@ -1,6 +1,5 @@
 import { createBrowserClient } from "@supabase/ssr"
 import { getSupabaseUrl, getSupabaseAnonKey } from "./config"
 
-export function createClient() {
-  return createBrowserClient(getSupabaseUrl(), getSupabaseAnonKey())
-}
+// Single shared browser client instance
+export const supabase = createBrowserClient(getSupabaseUrl(), getSupabaseAnonKey())

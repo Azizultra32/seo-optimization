@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
+import { getServerClient } from "@/lib/supabase/api-client"
 
 export async function GET() {
   try {
-    const supabase = createClient(
-      process.env.SUPABASE_POSTGRES_URL || process.env.SUPABASE_URL || "",
-      process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-    )
+    const supabase = getServerClient()
 
     // Get date range for last 30 days
     const thirtyDaysAgo = new Date()
@@ -14,13 +11,13 @@ export async function GET() {
 
     // Total events
     const { count: totalEvents } = await supabase
-      .from("analytics_events")
+      .from("events")
       .select("*", { count: "exact", head: true })
       .gte("created_at", thirtyDaysAgo.toISOString())
 
     // Events by type
     const { data: eventsByType } = await supabase
-      .from("analytics_events")
+      .from("events")
       .select("event_type, event_name")
       .gte("created_at", thirtyDaysAgo.toISOString())
 
@@ -32,27 +29,32 @@ export async function GET() {
 
     // Average scroll depth
     const { data: scrollData } = await supabase
-      .from("scroll_tracking")
-      .select("max_scroll_percentage, time_on_page")
+      .from("events")
+      .select("metadata")
+      .eq("event_type", "scroll")
       .gte("created_at", thirtyDaysAgo.toISOString())
 
     const avgScrollDepth =
-      scrollData?.reduce((sum, item) => sum + item.max_scroll_percentage, 0) / (scrollData?.length || 1) || 0
+      scrollData?.reduce((sum, item) => sum + (item.metadata?.max_scroll_percentage || 0), 0) /
+        (scrollData?.length || 1) || 0
 
-    const avgTimeOnPage = scrollData?.reduce((sum, item) => sum + item.time_on_page, 0) / (scrollData?.length || 1) || 0
+    const avgTimeOnPage =
+      scrollData?.reduce((sum, item) => sum + (item.metadata?.time_on_page || 0), 0) / (scrollData?.length || 1) || 0
 
     // Performance metrics averages
     const { data: performanceData } = await supabase
-      .from("page_performance")
-      .select("metric_name, metric_value")
+      .from("events")
+      .select("event_name, metadata")
+      .eq("event_type", "performance")
       .gte("created_at", thirtyDaysAgo.toISOString())
 
     const performanceAverages: Record<string, number> = {}
     const performanceCounts: Record<string, number> = {}
 
     performanceData?.forEach((item) => {
-      performanceAverages[item.metric_name] = (performanceAverages[item.metric_name] || 0) + item.metric_value
-      performanceCounts[item.metric_name] = (performanceCounts[item.metric_name] || 0) + 1
+      const value = item.metadata?.value || 0
+      performanceAverages[item.event_name] = (performanceAverages[item.event_name] || 0) + value
+      performanceCounts[item.event_name] = (performanceCounts[item.event_name] || 0) + 1
     })
 
     Object.keys(performanceAverages).forEach((key) => {
@@ -61,7 +63,7 @@ export async function GET() {
 
     // Top pages by events
     const { data: topPages } = await supabase
-      .from("analytics_events")
+      .from("events")
       .select("page_url")
       .gte("created_at", thirtyDaysAgo.toISOString())
 
