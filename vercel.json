@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/seo/audit",
+      "schedule": "0 0 * * 0"
+    },
+    {
+      "path": "/api/content/auto-generate",
+      "schedule": "0 10 * * 1"
+    }
+  ]
+}
