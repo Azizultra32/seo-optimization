@@ -8,9 +8,6 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import { useInView } from "@/hooks/use-in-view"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-demo-dialog"
-import { PersonalizedBanner } from "@/components/personalized-banner"
-import { PersonalizedCTA } from "@/components/personalized-cta"
-import { usePersonalization, getPersonalizedContent } from "@/lib/personalization"
 
 export default function DrGhaharyPage() {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -24,9 +21,6 @@ export default function DrGhaharyPage() {
   const trustRef = useInView({ threshold: 0.2 })
   const ethicalRef = useInView({ threshold: 0.3 })
   const contactRef = useInView({ threshold: 0.3 })
-
-  const { profile } = usePersonalization()
-  const personalizedContent = getPersonalizedContent(profile.type)
 
   const handleVideoLoad = () => {
     if (videoRef.current) {
@@ -79,8 +73,6 @@ export default function DrGhaharyPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <PersonalizedBanner />
-
       {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
@@ -269,19 +261,11 @@ export default function DrGhaharyPage() {
                 variants={fadeInUp}
                 className="font-ivyjournal text-black text-4xl max-w-[740px] leading-tight mb-4 tracking-wide md:text-6xl font-thin"
               >
-                {profile.type !== "unknown" ? (
-                  <>
-                    <span className="font-normal">{personalizedContent.heroTitle}</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="font-normal">Dr. Ali Ghahary</span> <span className="font-thin">MD, CCFP</span>
-                  </>
-                )}
+                <span className="font-normal">Dr. Ali Ghahary</span> <span className="font-thin">MD, CCFP</span>
               </motion.h1>
 
               <motion.p variants={fadeInUp} className="font-alfabet text-black text-base md:text-lg mb-10 font-normal">
-                {profile.type !== "unknown" ? personalizedContent.heroSubtitle : "Physician · Entrepreneur · Founder"}
+                Physician · Entrepreneur · Founder
               </motion.p>
 
               <motion.div variants={fadeInUp} className="text-black text-base font-light mb-3">
@@ -768,14 +752,6 @@ export default function DrGhaharyPage() {
                   partnerships@armadamd.com
                 </a>
               </motion.div>
-            </motion.div>
-
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
-            >
-              <PersonalizedCTA variant="primary" />
-              <PersonalizedCTA variant="secondary" />
             </motion.div>
 
             {/* LinkedIn CTA */}
