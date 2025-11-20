@@ -15,8 +15,6 @@ export function getSessionId(): string {
 
 // Track custom event
 export async function trackEvent(eventType: string, eventName: string, metadata: Record<string, any> = {}) {
-  if (typeof window === "undefined") return
-
   try {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 5000)
@@ -36,68 +34,18 @@ export async function trackEvent(eventType: string, eventName: string, metadata:
 
     clearTimeout(timeoutId)
   } catch (error) {
-    // Silently fail
+    // Only log in development
+    if (process.env.NODE_ENV === "development") {
+      console.log("[v0] Analytics tracking skipped:", error)
+    }
   }
 }
 
 // Track scroll depth
 export function trackScrollDepth() {
-  if (typeof window === "undefined") return
-
-  let maxScroll = 0
-  const startTime = Date.now()
-  let tracked = false
-
-  const handleScroll = () => {
-    const windowHeight = window.innerHeight
-    const documentHeight = document.documentElement.scrollHeight
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-
-    const scrollPercentage = Math.round(((scrollTop + windowHeight) / documentHeight) * 100)
-
-    maxScroll = Math.max(maxScroll, scrollPercentage)
-  }
-
-  const trackOnExit = async () => {
-    if (tracked) return
-    tracked = true
-
-    const timeOnPage = Math.round((Date.now() - startTime) / 1000)
-
-    try {
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 5000)
-
-      await fetch("/api/analytics/scroll", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          pageUrl: window.location.pathname,
-          maxScrollPercentage: maxScroll,
-          timeOnPage,
-          sessionId: getSessionId(),
-        }),
-        signal: controller.signal,
-      })
-
-      clearTimeout(timeoutId)
-    } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.log("[v0] Scroll tracking skipped:", error)
-      }
-    }
-  }
-
-  window.addEventListener("scroll", handleScroll, { passive: true })
-  window.addEventListener("beforeunload", trackOnExit)
-
-  // Track after 30 seconds as well
-  setTimeout(trackOnExit, 30000)
-
-  return () => {
-    window.removeEventListener("scroll", handleScroll)
-    window.removeEventListener("beforeunload", trackOnExit)
-  }
+  // Scroll tracking requires the scroll_tracking table to be created in Supabase
+  // To re-enable, run the SQL script: scripts/00-run-this-first.sql
+  return () => {} // Return empty cleanup function
 }
 
 // Track performance metrics
@@ -137,7 +85,9 @@ export function trackPerformance() {
 
         clearTimeout(timeoutId)
       } catch (error) {
-        // Silently fail
+        if (process.env.NODE_ENV === "development") {
+          console.log("[v0] Performance tracking skipped:", error)
+        }
       }
     }, 0)
   })

@@ -14,8 +14,6 @@ export function useInView(options: UseInViewOptions = {}) {
   const [isInView, setIsInView] = useState(false)
 
   useEffect(() => {
-    if (typeof window === "undefined") return
-
     const element = ref.current
     if (!element) return
 
