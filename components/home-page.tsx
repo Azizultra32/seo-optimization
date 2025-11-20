@@ -13,9 +13,7 @@ export function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const { scrollYProgress } = useScroll()
 
-  const heroY = useTransform(scrollYProgress, [0, 0.3], [0, 100])
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
-  const textParallax = useTransform(scrollYProgress, [0, 0.5], [0, -50])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.8])
 
   const aboutRef = useInView({ threshold: 0.2 })
   const projectsRef = useInView({ threshold: 0.1 })
@@ -38,12 +36,7 @@ export function HomePage() {
     }
 
     trackPerformance()
-    // Track page view
     trackEvent("page_view", "homepage")
-
-    return () => {
-      // No cleanup needed since tracking is disabled
-    }
   }, [])
 
   const handleCTAClick = (ctaName: string) => {
@@ -71,11 +64,6 @@ export function HomePage() {
         delayChildren: 2.5,
       },
     },
-  }
-
-  const scaleIn = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
   }
 
   const textReveal = {
@@ -249,10 +237,7 @@ export function HomePage() {
           </motion.header>
 
           {/* Hero Content */}
-          <motion.div
-            className="flex min-h-[80vh] items-center justify-center px-6"
-            style={{ y: heroY, opacity: heroOpacity }}
-          >
+          <motion.div className="flex min-h-[80vh] items-center justify-center px-6" style={{ opacity: heroOpacity }}>
             <motion.div
               className="text-center flex flex-col items-center max-w-6xl mx-auto"
               variants={staggerContainer}
@@ -267,19 +252,22 @@ export function HomePage() {
 
               <motion.h1
                 variants={textReveal}
-                className="font-ivyjournal text-black text-6xl md:text-8xl lg:text-[10rem] leading-[0.85] tracking-tight mb-10 font-normal mix-blend-multiply"
+                className="font-ivyjournal text-black text-5xl md:text-7xl lg:text-8xl leading-[0.85] tracking-tight mb-10 font-normal"
               >
                 Dr. Ali Ghahary
-                <span className="block text-2xl md:text-3xl lg:text-4xl font-light mt-6 font-alfabet tracking-normal text-slate-500/80">
+                <span className="block text-xl md:text-2xl lg:text-3xl font-light mt-6 font-alfabet tracking-normal text-slate-500/80">
                   MD, CCFP
                 </span>
               </motion.h1>
 
               <motion.p
                 variants={fadeInUp}
-                className="font-alfabet text-black/80 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light tracking-wide"
+                className="font-alfabet text-black/80 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light tracking-wide"
               >
-                Reimagining the future of healthcare through ethical AI, interoperability, and patient empowerment.
+                <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent">
+                  Reimagining
+                </span>{" "}
+                the future of healthcare through ethical AI, interoperability, and patient empowerment.
               </motion.p>
 
               <motion.div variants={fadeInUp} className="mt-24 flex flex-col items-center gap-4 opacity-40">
