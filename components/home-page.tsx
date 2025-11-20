@@ -2,18 +2,16 @@
 
 import Image from "next/image"
 import { ExternalLink, Shield, Lock, CheckCircle, Award, ArrowRight } from "lucide-react"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { trackEvent, trackPerformance } from "@/lib/analytics"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion } from "framer-motion"
 import { useInView } from "@/hooks/use-in-view"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-demo-dialog"
 
 export function HomePage() {
+  const [mounted, setMounted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const { scrollYProgress } = useScroll()
-
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.8])
 
   const aboutRef = useInView({ threshold: 0.2 })
   const projectsRef = useInView({ threshold: 0.1 })
@@ -21,16 +19,8 @@ export function HomePage() {
   const ethicalRef = useInView({ threshold: 0.3 })
   const contactRef = useInView({ threshold: 0.3 })
 
-  const handleVideoLoad = () => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.8
-      videoRef.current.play().catch((error) => {
-        console.log("[v0] Video autoplay prevented:", error)
-      })
-    }
-  }
-
   useEffect(() => {
+    setMounted(true)
     if (videoRef.current) {
       videoRef.current.load()
     }
@@ -76,6 +66,19 @@ export function HomePage() {
         ease: [0.1, 1, 0.2, 1],
       },
     },
+  }
+
+  const handleVideoLoad = () => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.8
+      videoRef.current.play().catch((error) => {
+        console.log("[v0] Video autoplay prevented:", error)
+      })
+    }
+  }
+
+  if (!mounted) {
+    return null
   }
 
   return (
@@ -237,7 +240,7 @@ export function HomePage() {
           </motion.header>
 
           {/* Hero Content */}
-          <motion.div className="flex min-h-[80vh] items-center justify-center px-6" style={{ opacity: heroOpacity }}>
+          <motion.div className="flex min-h-[80vh] items-center justify-center px-6">
             <motion.div
               className="text-center flex flex-col items-center max-w-6xl mx-auto"
               variants={staggerContainer}
