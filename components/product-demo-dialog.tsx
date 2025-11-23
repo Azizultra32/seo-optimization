@@ -6,8 +6,8 @@ import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
-import { Play, CheckCircle, Shield, Zap, Users, Clock, FileText, Video } from "lucide-react"
-import { motion } from "framer-motion"
+import { Play, CheckCircle, Shield, Zap, Users, Clock, FileText, Video, Lock } from "@/components/icons"
+import { motion } from "@/components/ui/motion"
 import { trackEvent } from "@/lib/analytics"
 
 interface ProductDemoProps {
@@ -142,7 +142,7 @@ export function HousecallDemo() {
                   className="p-4 border border-black/10 rounded-lg hover:shadow-md transition-shadow"
                   whileHover={{ y: -3 }}
                 >
-                  <feature.icon className="w-8 h-8 text-[#3a3632] mb-3" />
+                  {feature.icon && <feature.icon className="w-8 h-8 text-[#3a3632] mb-3" />}
                   <h4 className="font-alfabet font-semibold text-black mb-2">{feature.title}</h4>
                   <p className="font-alfabet text-sm text-black/60">{feature.description}</p>
                 </motion.div>
@@ -293,7 +293,7 @@ export function AssistMDDemo() {
                   className="p-4 border border-black/10 rounded-lg hover:shadow-md transition-shadow"
                   whileHover={{ y: -3 }}
                 >
-                  <capability.icon className="w-8 h-8 text-blue-600 mb-3" />
+                  {capability.icon && <capability.icon className="w-8 h-8 text-blue-600 mb-3" />}
                   <h4 className="font-alfabet font-semibold text-black mb-2">{capability.title}</h4>
                   <p className="font-alfabet text-sm text-black/60">{capability.description}</p>
                 </motion.div>
@@ -425,56 +425,30 @@ export function ArkPassDemo() {
                   className="p-4 border border-black/10 rounded-lg hover:shadow-md transition-shadow"
                   whileHover={{ y: -3 }}
                 >
-                  <feature.icon className="w-8 h-8 text-green-600 mb-3" />
+                  {feature.icon && <feature.icon className="w-8 h-8 text-green-600 mb-3" />}
                   <h4 className="font-alfabet font-semibold text-black mb-2">{feature.title}</h4>
                   <p className="font-alfabet text-sm text-black/60">{feature.description}</p>
                 </motion.div>
               ))}
-            </div>
-            <div className="mt-6 space-y-3">
-              <h4 className="font-alfabet font-semibold text-black">Seamless Integration</h4>
-              <p className="font-alfabet text-sm text-black/70">
-                ArkPass integrates with your existing EHR system through secure APIs. No workflow disruption, just
-                instant access to patient records when you need them.
-              </p>
             </div>
           </motion.div>
         </TabsContent>
 
         <TabsContent value="security" className="space-y-6 mt-6">
           <motion.div variants={fadeIn} initial="hidden" animate="visible">
-            <h3 className="font-alfabet font-semibold text-lg text-black mb-4">Security & Compliance</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div className="space-y-2">
-                <Shield className="w-10 h-10 text-green-600 mb-3" />
-                <h4 className="font-alfabet font-semibold text-black">HIPAA Compliant</h4>
-                <p className="font-alfabet text-sm text-black/60">
-                  Full compliance with HIPAA Privacy and Security Rules
-                </p>
-              </div>
-              <div className="space-y-2">
-                <Lock className="w-10 h-10 text-green-600 mb-3" />
-                <h4 className="font-alfabet font-semibold text-black">End-to-End Encryption</h4>
-                <p className="font-alfabet text-sm text-black/60">
-                  AES-256 encryption for all data at rest and in transit
-                </p>
-              </div>
-              <div className="space-y-2">
-                <CheckCircle className="w-10 h-10 text-green-600 mb-3" />
-                <h4 className="font-alfabet font-semibold text-black">Audit Trails</h4>
-                <p className="font-alfabet text-sm text-black/60">Complete logging of all access and modifications</p>
-              </div>
-              <div className="space-y-2">
-                <Zap className="w-10 h-10 text-green-600 mb-3" />
-                <h4 className="font-alfabet font-semibold text-black">Zero-Knowledge Architecture</h4>
-                <p className="font-alfabet text-sm text-black/60">We can't access your data even if we wanted to</p>
-              </div>
-            </div>
-            <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-              <p className="font-alfabet text-sm text-black/70">
-                <strong className="text-black">Security First:</strong> ArkPass undergoes regular third-party security
-                audits and penetration testing to ensure your data stays protected.
-              </p>
+            <h3 className="font-alfabet font-semibold text-lg text-black mb-4">Security Features</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  className="p-4 border border-black/10 rounded-lg hover:shadow-md transition-shadow"
+                  whileHover={{ y: -3 }}
+                >
+                  {feature.icon && <feature.icon className="w-8 h-8 text-green-600 mb-3" />}
+                  <h4 className="font-alfabet font-semibold text-black mb-2">{feature.title}</h4>
+                  <p className="font-alfabet text-sm text-black/60">{feature.description}</p>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </TabsContent>

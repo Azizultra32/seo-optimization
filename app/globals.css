@@ -54,6 +54,22 @@
   --transition-smooth: var(--dur-lg) var(--ease-fluid);
 }
 
+/* Add V0-specific overlay fix */
+.v0-fix-overlay {
+  background-color: rgba(0, 0, 0, 0.55) !important;
+}
+
+/* V0-specific section darkening for proper contrast */
+.v0-section-darken {
+  background-color: rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: brightness(70%) !important;
+}
+
+/* V0-specific footer visibility fix */
+.v0-footer-fix {
+  color: rgba(0, 0, 0, 0.85) !important;
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -100,6 +116,110 @@
 
 .animate-bounce {
   transition: all var(--dur-md) var(--ease-bounce);
+}
+
+/* Custom scrollbar styling for cinematic dark sections */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Adding cinematic trailer-style scroll animations */
+
+/* Trailer-style fade-up animation with blur effect */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Sequential hero title animations */
+@keyframes titleFade {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+/* Animation utility classes */
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 1s ease-out forwards;
+}
+
+.fade-delay-1 {
+  animation-delay: 0.3s;
+}
+
+.fade-delay-2 {
+  animation-delay: 0.6s;
+}
+
+.fade-delay-3 {
+  animation-delay: 0.9s;
+}
+
+.fade-delay-4 {
+  animation-delay: 1.2s;
+}
+
+/* Hero title sequential animations */
+.trailer-title-1 {
+  opacity: 0;
+  animation: titleFade 0.9s ease-out forwards;
+  animation-delay: 0.1s;
+}
+
+.trailer-title-2 {
+  opacity: 0;
+  animation: titleFade 0.9s ease-out forwards;
+  animation-delay: 0.9s;
+}
+
+.trailer-title-3 {
+  opacity: 0;
+  animation: titleFade 0.9s ease-out forwards;
+  animation-delay: 1.7s;
+}
+
+.trailer-subtitle {
+  opacity: 0;
+  animation: titleFade 1s ease-out forwards;
+  animation-delay: 2.4s;
 }
 
 @theme inline {

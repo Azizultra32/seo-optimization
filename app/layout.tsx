@@ -1,8 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import { CommandBar } from "@/components/command-bar"
-import { ThemeProvider } from "next-themes"
+import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata: Metadata = {
   title: "Dr. Ali Ghahary MD, CCFP | Physician, Entrepreneur, Founder | Armada MD",
@@ -195,7 +194,6 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           {children}
-          <CommandBar />
         </ThemeProvider>
       </body>
     </html>

@@ -1,23 +1,42 @@
 "use client"
 
+import React from "react"
+
+import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
-import { ExternalLink, Shield, Lock, CheckCircle, Award, ArrowRight } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
-import { trackEvent, trackPerformance } from "@/lib/analytics"
-import { motion } from "framer-motion"
-import { useInView } from "@/hooks/use-in-view"
-import { AnimatedCounter } from "@/components/animated-counter"
+import Link from "next/link"
+import { Lock, Shield, CheckCircle, Award, ExternalLink } from "@/components/icons"
+// import { CommandBar } from "@/components/command-bar"; // Temporarily disabled
 import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-demo-dialog"
+import { trackPageView } from "@/lib/analytics"
+import { motion } from "@/components/ui/motion"
+import { useInView } from "@/hooks/use-in-view"
+import { trackPerformance } from "@/lib/performance"
+
+const FadeIn = ({
+  children,
+  delay = 0,
+  className = "",
+}: { children: React.ReactNode; delay?: number; className?: string }) => {
+  return <div className={`opacity-100 ${className}`}>{children}</div>
+}
+
+const useSafeInView = (options: any) => {
+  const inView = useInView(options)
+  return { ref: inView.ref, isInView: true }
+}
 
 export function HomePage() {
   const [mounted, setMounted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [selectedDemo, setSelectedDemo] = useState<string | null>(null)
 
-  const aboutRef = useInView({ threshold: 0.2 })
-  const projectsRef = useInView({ threshold: 0.1 })
-  const trustRef = useInView({ threshold: 0.2 })
-  const ethicalRef = useInView({ threshold: 0.3 })
-  const contactRef = useInView({ threshold: 0.3 })
+  const visionRef = useSafeInView({ threshold: 0.2 })
+  const aboutRef = useSafeInView({ threshold: 0.2 })
+  const projectsRef = useSafeInView({ threshold: 0.1 })
+  const trustRef = useSafeInView({ threshold: 0.2 })
+  const ethicalRef = useSafeInView({ threshold: 0.3 })
+  const contactRef = useSafeInView({ threshold: 0.3 })
 
   useEffect(() => {
     setMounted(true)
@@ -25,60 +44,53 @@ export function HomePage() {
       videoRef.current.load()
     }
 
-    trackPerformance()
-    trackEvent("page_view", "homepage")
+    // Track page view
+    trackPageView(window.location.pathname)
+
+    // Track Core Web Vitals
+    if (typeof window !== "undefined" && "PerformanceObserver" in window) {
+      try {
+        const observer = new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            if (entry.entryType === "largest-contentful-paint") {
+              trackPerformance("LCP", entry.startTime)
+            }
+          }
+        })
+        observer.observe({ entryTypes: ["largest-contentful-paint"] })
+
+        return () => observer.disconnect()
+      } catch (e) {
+        console.error("Performance tracking error:", e)
+      }
+    }
   }, [])
 
-  const handleCTAClick = (ctaName: string) => {
-    trackEvent("cta_click", ctaName)
-  }
-
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 15 },
-    visible: {
+  // Animation variants - unused with mock but kept for structure
+  const heroStagger = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i = 0) => ({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 2.5,
-        ease: [0.2, 1, 0.4, 1],
+        delay: 2.5 + i * 0.3,
+        duration: 1.1,
+        ease: [0.16, 1, 0.3, 1],
       },
-    },
+    }),
   }
 
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.6,
-        delayChildren: 2.5,
-      },
-    },
-  }
-
-  const textReveal = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
+  const scrollStagger = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i = 0) => ({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 3.5,
-        ease: [0.1, 1, 0.2, 1],
+        delay: 0.1 + i * 0.15,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
       },
-    },
-  }
-
-  const handleVideoLoad = () => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.8
-      videoRef.current.play().catch((error) => {
-        console.log("[v0] Video autoplay prevented:", error)
-      })
-    }
-  }
-
-  if (!mounted) {
-    return null
+    }),
   }
 
   return (
@@ -193,7 +205,7 @@ export function HomePage() {
         <div className="fixed top-0 left-0 w-full h-screen z-0">
           <motion.video
             ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale brightness-110"
+            className="absolute inset-0 w-full h-full object-cover brightness-110"
             style={{ objectPosition: "center center" }}
             autoPlay
             muted
@@ -204,26 +216,21 @@ export function HomePage() {
             poster="/images/dna-helix-background.jpeg"
             disablePictureInPicture
             disableRemotePlayback
-            onLoadedData={handleVideoLoad}
-            onCanPlay={handleVideoLoad}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.8 }}
+            animate={{ opacity: 0.25 }}
             transition={{ duration: 3.5, ease: "easeInOut" }}
           >
             <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3watermarked_preview-Bk5N138nsMFSjnIXU2MYPxuk7C2dB7.mp4" type="video/mp4" />
           </motion.video>
+
+          <div className="absolute inset-0 bg-zinc-50/49 pointer-events-none" />
         </div>
 
         <div className="relative z-10">
           {/* Header */}
-          <motion.header
-            className="px-6 py-8 md:px-12 md:py-10 flex justify-between items-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 2.0, delay: 3.0, ease: "easeOut" }}
-          >
+          <FadeIn className="px-6 py-8 md:px-12 md:py-10 flex justify-between items-center" delay={2.2}>
             <div className="hidden md:block">
-              <span className="font-alfabet text-[10px] tracking-widest uppercase text-black/60">Est. 2004</span>
+              <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Est. 2004</span>
             </div>
 
             <motion.button
@@ -235,120 +242,153 @@ export function HomePage() {
             </motion.button>
 
             <div className="hidden md:block">
-              <span className="font-alfabet text-[10px] tracking-widest uppercase text-black/60">Vancouver, BC</span>
+              <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Vancouver, BC</span>
             </div>
-          </motion.header>
+          </FadeIn>
 
           {/* Hero Content */}
-          <motion.div className="flex min-h-[80vh] items-center justify-center px-6">
-            <motion.div
-              className="text-center flex flex-col items-center max-w-6xl mx-auto"
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-            >
-              <motion.div variants={fadeInUp} className="mb-12 relative">
-                <span className="font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase border-b border-black/10 pb-2 bg-gradient-to-r from-[#8B4513] via-[#333333] to-black bg-clip-text text-transparent relative z-10">
-                  Physician · Entrepreneur · Founder
+          <FadeIn className="flex min-h-[80vh] items-center justify-center px-6">
+            <FadeIn className="text-center flex flex-col items-center max-w-6xl mx-auto" delay={2.5}>
+              <div className="mb-10 relative flex justify-center gap-3">
+                <span className="trailer-title-1 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
+                  Physician
                 </span>
-              </motion.div>
+                <span className="trailer-title-2 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
+                  Entrepreneur
+                </span>
+                <span className="trailer-title-3 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
+                  Founder
+                </span>
+              </div>
 
-              <motion.h1
-                variants={textReveal}
-                className="font-ivyjournal text-black text-5xl md:text-7xl lg:text-8xl leading-[0.85] tracking-tight mb-10 font-normal"
-              >
+              <motion.h1 className="trailer-subtitle font-ivyjournal text-black/95 text-4xl md:text-5xl lg:text-6xl leading-[0.9] tracking-tight mb-6 font-normal">
                 Dr. Ali Ghahary
-                <span className="block text-xl md:text-2xl lg:text-3xl font-light mt-6 font-alfabet tracking-normal text-slate-500/80">
+                <span className="block text-lg md:text-xl lg:text-2xl font-light mt-3 font-alfabet tracking-normal text-slate-600">
                   MD, CCFP
                 </span>
               </motion.h1>
 
               <motion.p
-                variants={fadeInUp}
-                className="font-alfabet text-black/80 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light tracking-wide"
+                className="trailer-subtitle text-lg md:text-2xl font-alfabet font-normal text-black leading-relaxed max-w-4xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
               >
-                <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#CD853F] via-[#8B7355] to-[#2C1810] bg-clip-text text-transparent font-normal text-lg tracking-[0.025em]">
                   Reimagining
                 </span>{" "}
                 the future of healthcare through ethical AI, interoperability, and patient empowerment.
               </motion.p>
 
-              <motion.div variants={fadeInUp} className="mt-24 flex flex-col items-center gap-4 opacity-40">
+              <motion.div className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40">
                 <span className="font-alfabet text-[9px] tracking-[0.2em] uppercase">Scroll to Explore</span>
                 <div className="h-12 w-[1px] bg-gradient-to-b from-black to-transparent"></div>
               </motion.div>
-            </motion.div>
-          </motion.div>
+            </FadeIn>
+          </FadeIn>
         </div>
       </section>
 
-      {/* About Section - Refined Grid Layout */}
-      <section className="relative z-20 bg-white py-32 md:py-48" ref={aboutRef.ref}>
+      {/* Vision & Biography Section - Editorial Layout */}
+      <section
+        id="vision"
+        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-white py-32 md:py-48"
+        ref={visionRef.ref}
+      >
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24"
-            variants={staggerContainer}
-            initial="hidden"
-            animate={aboutRef.isInView ? "visible" : "hidden"}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3 relative">
-              <motion.div variants={fadeInUp} className="sticky top-32 border-t border-black/10 pt-6">
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${visionRef.isInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
-                  01 / Biography
+                  01 / Vision
                 </span>
                 <h2 className="font-ivyjournal text-4xl md:text-5xl text-black leading-[0.9]">
                   The
                   <br />
                   Vision
                 </h2>
-              </motion.div>
+              </div>
             </div>
 
             <div className="md:col-span-8 md:col-start-5">
-              <motion.div variants={fadeInUp} className="mb-24">
-                <h3 className="font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-16 text-black font-light -ml-1 md:-ml-2">
+              <div className="mb-24">
+                <h3
+                  className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-16 text-black font-light -ml-1 md:-ml-2 ${visionRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                >
                   <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
                     Reimagining
                   </span>
                   healthcare requires more than just technology—it demands a fundamental shift in how we view the
                   patient-provider relationship.
                 </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
-                  <div className="space-y-8">
-                    <p className="font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8]">
-                      Dr. Ali Ghahary is a physician, entrepreneur, and thought leader reimagining healthcare on a
-                      global scale. As a board-certified general practitioner (CCFP) with over 20 years of front-line
-                      clinical experience, he combines deep medical expertise with a passion for innovation.
+      {/* About Section - Refined Grid Layout */}
+      <section
+        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-zinc-50 py-32 md:py-48"
+        ref={aboutRef.ref}
+      >
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
+            <div className="md:col-span-3 relative">
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${aboutRef.isInView ? "fade-up" : ""}`}>
+                <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
+                  02 / Biography
+                </span>
+                <h2 className="font-ivyjournal text-4xl md:text-5xl text-black leading-[0.9]">
+                  The
+                  <br />
+                  Founder
+                </h2>
+              </div>
+            </div>
+
+            <div className="md:col-span-8 md:col-start-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+                <div className="space-y-8">
+                  <p
+                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                  >
+                    Dr. Ali Ghahary is a physician, entrepreneur, and thought leader reimagining healthcare on a global
+                    scale. As a board-certified general practitioner (CCFP) with over 20 years of front-line clinical
+                    experience, he combines deep medical expertise with a passion for innovation.
+                  </p>
+                  <p
+                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-3" : ""}`}
+                  >
+                    He earned his Doctor of Medicine (MD) with honors from the University of Alberta and completed his
+                    Certification in the College of Family Physicians (CCFP) at McGill University.
+                  </p>
+                </div>
+                <div className="space-y-8 pt-0 md:pt-12">
+                  <p
+                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
+                  >
+                    Dr. Ghahary is also an actor, filmmaker, and executive producer. He is currently the founder and CEO
+                    of Damavand Pictures, where he explores the intersection of storytelling and healthcare innovation.
+                  </p>
+                  <p
+                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
+                  >
+                    His work focuses on bridging the gap between traditional medical practice and cutting-edge
+                    technology, advocating for systems that empower both patients and providers.
+                  </p>
+                  <div className={`pt-8 border-t border-black/5 ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}>
+                    <p className="font-alfabet font-light text-[10px] tracking-widest uppercase text-slate-400">
+                      Last updated: January 2025
                     </p>
-                    <p className="font-alfabet font-light text-black/80 text-lg leading-[1.8]">
-                      He earned his Doctor of Medicine (MD) with honors from the University of Alberta and completed his
-                      Certification in the College of Family Physicians (CCFP) at McGill University.
-                    </p>
-                  </div>
-                  <div className="space-y-8 pt-0 md:pt-12">
-                    <p className="font-alfabet font-light text-black/80 text-lg leading-[1.8]">
-                      In 2024, he presented his seminal work on AI ethics, "The KNGHT Doctrine," at the World Economic
-                      Forum in Davos. This framework for ethical AI in medicine remains the focus of his research.
-                    </p>
-                    <p className="font-alfabet font-light text-black/80 text-lg leading-[1.8]">
-                      Dr. Ghahary is also an actor, filmmaker, and executive producer. He is currently the founder and
-                      CEO of Damavand Pictures, where he explores the intersection of storytelling and healthcare
-                      innovation.
-                    </p>
-                    <div className="pt-8 border-t border-black/5">
-                      <p className="font-alfabet font-light text-[10px] tracking-widest uppercase text-slate-400">
-                        Last updated: January 2025
-                      </p>
-                    </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div variants={fadeInUp} className="border-t border-black/10 pt-16">
+              <FadeIn className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   <div>
-                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40">
+                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
                       Core Values
                     </h4>
                   </div>
@@ -376,26 +416,19 @@ export function HomePage() {
                     </ul>
                   </div>
                 </div>
-              </motion.div>
+              </FadeIn>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Projects Section - Editorial List Style */}
       <section className="relative z-30 bg-[#0a0a0a] text-white py-32 md:py-48" id="projects" ref={projectsRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24"
-            initial={{ opacity: 0, y: 20 }}
-            animate={projectsRef.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
             <div className="md:col-span-3">
-              <div className="sticky top-32 border-t border-white/10 pt-6">
-                <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 block mb-4">
-                  02 / Ventures
-                </span>
+              <div className={`sticky top-32 border-t border-white/10 pt-6 ${projectsRef.isInView ? "fade-up" : ""}`}>
+                <span className="font-alfabet text-[10px] text-white/30 block mb-4">03 / Ventures</span>
                 <h2 className="font-ivyjournal text-4xl md:text-5xl text-white leading-[0.9]">
                   Selected
                   <br />
@@ -407,9 +440,8 @@ export function HomePage() {
             <div className="md:col-span-9">
               <div className="space-y-0 divide-y divide-white/10 border-t border-white/10">
                 {/* Armada Housecall */}
-                <motion.div
-                  variants={fadeInUp}
-                  className="group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12"
+                <div
+                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${projectsRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
@@ -417,7 +449,8 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
-                        Armada Housecall<sup className="text-lg md:text-2xl opacity-50">™</sup>
+                        Armada Housecall
+                        <sup className="md:text-2xl opacity-50 relative -translate-y-3 text-3xl my-0">™</sup>
                       </h3>
                       <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
                         Virtual Care Platform
@@ -433,12 +466,11 @@ export function HomePage() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Armada AssistMD */}
-                <motion.div
-                  variants={fadeInUp}
-                  className="group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12"
+                <div
+                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${projectsRef.isInView ? "fade-up fade-delay-2" : ""}`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
@@ -446,7 +478,7 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
-                        Armada AssistMD<sup className="text-lg md:text-2xl opacity-50">™</sup>
+                        Armada AssistMD<sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
                       </h3>
                       <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
                         AI Clinical Assistant
@@ -462,12 +494,11 @@ export function HomePage() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Armada ArkPass */}
-                <motion.div
-                  variants={fadeInUp}
-                  className="group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12"
+                <div
+                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${projectsRef.isInView ? "fade-up fade-delay-3" : ""}`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
@@ -475,7 +506,7 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
-                        Armada ArkPass<sup className="text-lg md:text-2xl opacity-50">™</sup>
+                        Armada ArkPass<sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
                       </h3>
                       <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
                         Patient Data Platform
@@ -491,26 +522,21 @@ export function HomePage() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Security & Principles Section - Minimalist */}
-      <section className="bg-white py-32 md:py-48" ref={trustRef.ref}>
+      <section className="relative z-20 bg-white py-32 md:py-48" ref={trustRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24"
-            variants={staggerContainer}
-            initial="hidden"
-            animate={trustRef.isInView ? "visible" : "hidden"}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3">
-              <div className="sticky top-32 border-t border-black/10 pt-6">
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${trustRef.isInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
-                  03 / Principles
+                  04 / Principles
                 </span>
                 <h2 className="font-ivyjournal text-4xl md:text-5xl text-black leading-[0.9]">
                   Trust &<br />
@@ -520,8 +546,10 @@ export function HomePage() {
             </div>
 
             <div className="md:col-span-8 md:col-start-5">
-              <motion.div variants={fadeInUp} className="mb-24">
-                <p className="font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16">
+              <div className="mb-24">
+                <p
+                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                >
                   Every Armada MD product is designed with patient safety, data security, and ethical principles at its
                   foundation.
                 </p>
@@ -535,9 +563,12 @@ export function HomePage() {
                   ].map((item, i) => (
                     <div
                       key={i}
-                      className="border-l border-black/10 pl-6 py-2 group hover:border-black/40 transition-colors duration-500"
+                      className={`border-l border-black/10 pl-6 py-2 group hover:border-black/40 transition-colors duration-500 ${trustRef.isInView ? `fade-up fade-delay-${i + 2}` : ""}`}
                     >
-                      <item.icon className="w-6 h-6 text-black mb-6 opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+                      {React.createElement(item.icon, {
+                        className:
+                          "w-6 h-6 text-black mb-6 opacity-60 group-hover:opacity-100 transition-opacity duration-500",
+                      })}
                       <h3 className="font-alfabet text-xs tracking-widest uppercase mb-2 text-black">{item.title}</h3>
                       <p className="font-alfabet font-light text-black/40 text-[10px] uppercase tracking-wider">
                         {item.desc}
@@ -545,95 +576,124 @@ export function HomePage() {
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div variants={fadeInUp} className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
-                <div className="flex flex-wrap gap-16 md:gap-32 justify-center items-center">
-                  <div className="text-center">
-                    <p className="font-ivyjournal text-6xl md:text-8xl text-black mb-4">
-                      <AnimatedCounter end={20} suffix="+" shouldStart={trustRef.isInView} />
-                    </p>
-                    <p className="font-alfabet font-light text-black/40 text-[10px] uppercase tracking-[0.2em]">
-                      Years Experience
-                    </p>
+              <FadeIn className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                  <div>
+                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
+                      Core Values
+                    </h4>
                   </div>
-                  <div className="text-center">
-                    <p className="font-ivyjournal text-6xl md:text-8xl text-black mb-4">
-                      <AnimatedCounter end={100} suffix="%" shouldStart={trustRef.isInView} />
-                    </p>
-                    <p className="font-alfabet font-light text-black/40 text-[10px] uppercase tracking-[0.2em]">
-                      Data Sovereignty
-                    </p>
+                  <div className="md:col-span-2">
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 font-alfabet font-light text-black text-sm tracking-wide">
+                      {[
+                        "Technological Parity",
+                        "Innovation Productivity",
+                        "Patient-Centricity",
+                        "Clinician-Centricity",
+                        "Data Sovereignty",
+                        "Public Trust",
+                        "The Hippocratic Oath",
+                        "Ethics in AI",
+                        "Compliance Excellence",
+                        "Global Collaboration",
+                      ].map((value, i) => (
+                        <li key={i} className="flex items-center gap-4 group cursor-default">
+                          <span className="w-1 h-1 bg-black rounded-full opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
+                          <span className="group-hover:translate-x-2 transition-transform duration-500 ease-out">
+                            {value}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
-              </motion.div>
+              </FadeIn>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Ethical AI Section - Featured */}
-      <section className="bg-black text-white py-32 md:py-48 relative overflow-hidden" ref={ethicalRef.ref}>
-        <div className="absolute inset-0 bg-[url('/images/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 relative z-10">
-          <motion.div
-            className="flex flex-col items-center text-center max-w-5xl mx-auto"
-            variants={staggerContainer}
-            initial="hidden"
-            animate={ethicalRef.isInView ? "visible" : "hidden"}
-          >
-            <motion.span
-              variants={fadeInUp}
-              className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-white/40 mb-12 border border-white/10 px-4 py-2 rounded-full"
-            >
-              04 / Ethics
-            </motion.span>
+      {/* Ethics Section - The KNGHT Doctrine */}
+      <section className="relative z-20 bg-neutral-50 py-32 md:py-48" ref={ethicalRef.ref}>
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
+            <div className="md:col-span-3">
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${ethicalRef.isInView ? "fade-up" : ""}`}>
+                <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
+                  05 / Ethics
+                </span>
+                <h2 className="font-ivyjournal text-4xl md:text-5xl text-black leading-[0.9]">
+                  The KNGHT
+                  <br />
+                  Doctrine
+                </h2>
+              </div>
+            </div>
 
-            <motion.h2
-              variants={fadeInUp}
-              className="font-ivyjournal text-6xl md:text-8xl lg:text-9xl mb-12 leading-[0.9]"
-            >
-              Building Trust Through{" "}
-              <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-white bg-clip-text text-transparent italic">
-                Transparency
-              </span>
-            </motion.h2>
+            <div className="md:col-span-8 md:col-start-5">
+              <div className="mb-24">
+                <p
+                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${ethicalRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                >
+                  A framework for ethical AI in medicine presented at the World Economic Forum in Davos, 2024.
+                </p>
 
-            <motion.p
-              variants={fadeInUp}
-              className="font-alfabet font-light text-white/60 text-xl md:text-2xl leading-relaxed mb-16 max-w-3xl"
-            >
-              "AI in healthcare must be built on a foundation of ethical principles, transparency, and patient-centered
-              design."
-            </motion.p>
+                <p
+                  className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${ethicalRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                >
+                  The KNGHT Doctrine establishes a new standard for healthcare technology, prioritizing patient
+                  sovereignty and clinical integrity above algorithmic efficiency. It serves as the ethical foundation
+                  for all Armada MD innovations.
+                </p>
 
-            <motion.a
-              href="https://knghtdoctrine.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              variants={fadeInUp}
-              className="group inline-flex items-center gap-4 font-alfabet text-sm border border-white/20 px-10 py-5 rounded-full hover:bg-white hover:text-black transition-all duration-500"
-            >
-              <span className="tracking-widest uppercase text-xs">Read The KNGHT Doctrine</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </motion.a>
-          </motion.div>
+                <FadeIn className="bg-white p-16 md:p-24 rounded-[2rem] shadow-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div>
+                      <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
+                        Core Values
+                      </h4>
+                    </div>
+                    <div className="md:col-span-2">
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 font-alfabet font-light text-black text-sm tracking-wide">
+                        {[
+                          "Technological Parity",
+                          "Innovation Productivity",
+                          "Patient-Centricity",
+                          "Clinician-Centricity",
+                          "Data Sovereignty",
+                          "Public Trust",
+                          "The Hippocratic Oath",
+                          "Ethics in AI",
+                          "Compliance Excellence",
+                          "Global Collaboration",
+                        ].map((value, i) => (
+                          <li key={i} className="flex items-center gap-4 group cursor-default">
+                            <span className="w-1 h-1 bg-black rounded-full opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
+                            <span className="group-hover:translate-x-2 transition-transform duration-500 ease-out">
+                              {value}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </FadeIn>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Contact Section - Minimal */}
-      <section className="bg-white py-32 md:py-48" ref={contactRef.ref}>
+      <section className="relative z-20 bg-white pt-32 pb-12 md:pt-48 md:pb-16" ref={contactRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24"
-            variants={staggerContainer}
-            initial="hidden"
-            animate={contactRef.isInView ? "visible" : "hidden"}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
             <div className="md:col-span-3">
-              <div className="sticky top-32 border-t border-black/10 pt-6">
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${contactRef.isInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
-                  05 / Contact
+                  06 / Contact
                 </span>
                 <h2 className="font-ivyjournal text-4xl md:text-5xl text-black leading-[0.9]">
                   Get in
@@ -645,7 +705,7 @@ export function HomePage() {
 
             <div className="md:col-span-8 md:col-start-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-24">
-                <motion.div variants={fadeInUp} className="group">
+                <div className={`group ${contactRef.isInView ? "fade-up fade-delay-1" : ""}`}>
                   <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40 group-hover:text-black transition-colors duration-500">
                     General Inquiries
                   </h3>
@@ -658,9 +718,9 @@ export function HomePage() {
                   <p className="font-alfabet font-light text-black/40 text-sm">
                     Questions about Dr. Ghahary or Armada MD
                   </p>
-                </motion.div>
+                </div>
 
-                <motion.div variants={fadeInUp} className="group">
+                <div className={`group ${contactRef.isInView ? "fade-up fade-delay-2" : ""}`}>
                   <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40 group-hover:text-black transition-colors duration-500">
                     Press & Media
                   </h3>
@@ -671,9 +731,9 @@ export function HomePage() {
                     press@armadamd.com
                   </a>
                   <p className="font-alfabet font-light text-black/40 text-sm">Interviews and media kits</p>
-                </motion.div>
+                </div>
 
-                <motion.div variants={fadeInUp} className="group">
+                <div className={`group ${contactRef.isInView ? "fade-up fade-delay-3" : ""}`}>
                   <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40 group-hover:text-black transition-colors duration-500">
                     Product Demos
                   </h3>
@@ -684,9 +744,9 @@ export function HomePage() {
                     demo@armadamd.com
                   </a>
                   <p className="font-alfabet font-light text-black/40 text-sm">Schedule a platform walkthrough</p>
-                </motion.div>
+                </div>
 
-                <motion.div variants={fadeInUp} className="flex items-end">
+                <div className={`flex items-end ${contactRef.isInView ? "fade-up fade-delay-4" : ""}`}>
                   <a
                     href="https://www.linkedin.com/in/alighahary"
                     target="_blank"
@@ -696,38 +756,38 @@ export function HomePage() {
                     <span>Connect on LinkedIn</span>
                     <ExternalLink className="w-3 h-3 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform duration-300" />
                   </a>
-                </motion.div>
+                </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Footer - Minimal */}
       <footer className="bg-white py-16 border-t border-black/5">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="font-alfabet font-light text-black/30 text-[10px] uppercase tracking-widest">
+          <p className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest">
             © {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
           </p>
           <div className="flex gap-12">
-            <a
+            <Link
               href="/privacy"
-              className="font-alfabet font-light text-black/30 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
+              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
             >
               Privacy
-            </a>
-            <a
+            </Link>
+            <Link
               href="/terms"
-              className="font-alfabet font-light text-black/30 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
+              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
             >
               Terms
-            </a>
-            <a
+            </Link>
+            <Link
               href="/legal"
-              className="font-alfabet font-light text-black/30 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
+              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
             >
               Legal
-            </a>
+            </Link>
           </div>
         </div>
       </footer>

@@ -1,5 +1,4 @@
 // Client-side analytics utilities
-import { v4 as uuidv4 } from "uuid"
 
 // Get or create session ID
 export function getSessionId(): string {
@@ -7,7 +6,8 @@ export function getSessionId(): string {
 
   let sessionId = sessionStorage.getItem("analytics_session_id")
   if (!sessionId) {
-    sessionId = uuidv4()
+    // Use native Web Crypto API for UUID generation
+    sessionId = window.crypto.randomUUID()
     sessionStorage.setItem("analytics_session_id", sessionId)
   }
   return sessionId
@@ -41,10 +41,15 @@ export async function trackEvent(eventType: string, eventName: string, metadata:
   }
 }
 
+// Track page view
+export async function trackPageView(pathname: string) {
+  return trackEvent("page_view", "Page View", { pathname })
+}
+
 // Track scroll depth
 export function trackScrollDepth() {
-  // Scroll tracking requires the scroll_tracking table to be created in Supabase
-  // To re-enable, run the SQL script: scripts/00-run-this-first.sql
+  // Scroll tracking is currently disabled to prevent database errors
+  // To re-enable, ensure the scroll_tracking table exists in Supabase
   return () => {} // Return empty cleanup function
 }
 
@@ -91,4 +96,28 @@ export function trackPerformance() {
       }
     }, 0)
   })
+}
+
+export async function trackPerformanceMetric(metricName: string, metricValue: number) {
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 5000)
+
+    await fetch("/api/analytics/performance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        pageUrl: window.location.pathname,
+        metricName,
+        metricValue,
+      }),
+      signal: controller.signal,
+    })
+
+    clearTimeout(timeoutId)
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") {
+      console.log("[v0] Performance tracking skipped:", error)
+    }
+  }
 }
