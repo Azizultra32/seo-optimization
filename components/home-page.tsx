@@ -369,6 +369,21 @@ export function HomePage() {
                     His work focuses on bridging the gap between traditional medical practice and cutting-edge
                     technology, advocating for systems that empower both patients and providers.
                   </p>
+                  <div className={`pt-8 border-t border-black/5 ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}>
+                    <p className="font-alfabet font-light text-[10px] tracking-widest uppercase text-slate-400">
+                      Last updated: January 2025
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                  <div>
+                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
+                      Core Values
+                    </h4>
+                  
                 </div>
               </div>
             </div>
