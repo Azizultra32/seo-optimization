@@ -376,39 +376,6 @@ export function HomePage() {
                   </div>
                 </div>
               </div>
-
-              <div className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  <div>
-                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
-                      Core Values
-                    </h4>
-                  </div>
-                  <div className="md:col-span-2">
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 font-alfabet font-light text-black text-sm tracking-wide">
-                      {[
-                        "Technological Parity",
-                        "Innovation Productivity",
-                        "Patient-Centricity",
-                        "Clinician-Centricity",
-                        "Data Sovereignty",
-                        "Public Trust",
-                        "The Hippocratic Oath",
-                        "Ethics in AI",
-                        "Compliance Excellence",
-                        "Global Collaboration",
-                      ].map((value, i) => (
-                        <li key={i} className="flex items-center gap-4 group cursor-default">
-                          <span className="w-1 h-1 bg-black rounded-full opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
-                          <span className="group-hover:translate-x-2 transition-transform duration-500 ease-out">
-                            {value}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -569,46 +536,16 @@ export function HomePage() {
                   ))}
                 </div>
               </div>
-
-              <div className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  <div>
-                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
-                      Core Values
-                    </h4>
-                  </div>
-                  <div className="md:col-span-2">
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 font-alfabet font-light text-black text-sm tracking-wide">
-                      {[
-                        "Technological Parity",
-                        "Innovation Productivity",
-                        "Patient-Centricity",
-                        "Clinician-Centricity",
-                        "Data Sovereignty",
-                        "Public Trust",
-                        "The Hippocratic Oath",
-                        "Ethics in AI",
-                        "Compliance Excellence",
-                        "Global Collaboration",
-                      ].map((value, i) => (
-                        <li key={i} className="flex items-center gap-4 group cursor-default">
-                          <span className="w-1 h-1 bg-black rounded-full opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
-                          <span className="group-hover:translate-x-2 transition-transform duration-500 ease-out">
-                            {value}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Ethics Section - The KNGHT Doctrine */}
-      <section className="relative z-20 bg-neutral-50 py-32 md:py-48" ref={ethicalRef.ref}>
+      {/* Ethical AI Principles Section - Quote Style */}
+      <section
+        className="relative z-20 bg-gradient-to-b from-white via-zinc-50 to-white py-32 md:py-48"
+        ref={ethicalRef.ref}
+      >
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3">
@@ -639,39 +576,6 @@ export function HomePage() {
                   sovereignty and clinical integrity above algorithmic efficiency. It serves as the ethical foundation
                   for all Armada MD innovations.
                 </p>
-
-                <div className="bg-white p-16 md:p-24 rounded-[2rem] shadow-sm">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div>
-                      <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
-                        Core Values
-                      </h4>
-                    </div>
-                    <div className="md:col-span-2">
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 font-alfabet font-light text-black text-sm tracking-wide">
-                        {[
-                          "Technological Parity",
-                          "Innovation Productivity",
-                          "Patient-Centricity",
-                          "Clinician-Centricity",
-                          "Data Sovereignty",
-                          "Public Trust",
-                          "The Hippocratic Oath",
-                          "Ethics in AI",
-                          "Compliance Excellence",
-                          "Global Collaboration",
-                        ].map((value, i) => (
-                          <li key={i} className="flex items-center gap-4 group cursor-default">
-                            <span className="w-1 h-1 bg-black rounded-full opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
-                            <span className="group-hover:translate-x-2 transition-transform duration-500 ease-out">
-                              {value}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
