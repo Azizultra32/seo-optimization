@@ -625,14 +625,14 @@ export function HomePage() {
             </div>
 
             <div className="md:col-span-8 md:col-start-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-24">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
                 <div className={`group ${contactRef.isInView ? "fade-up fade-delay-1" : ""}`}>
                   <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40 group-hover:text-black transition-colors duration-500">
                     General Inquiries
                   </h3>
                   <a
                     href="mailto:info@armadamd.com"
-                    className="font-ivyjournal text-3xl md:text-4xl text-black hover:text-slate-600 transition-colors block mb-4"
+                    className="font-ivyjournal text-2xl md:text-3xl text-black hover:text-slate-600 transition-colors block mb-4"
                   >
                     info@armadamd.com
                   </a>
@@ -647,7 +647,7 @@ export function HomePage() {
                   </h3>
                   <a
                     href="mailto:press@armadamd.com"
-                    className="font-ivyjournal text-3xl md:text-4xl text-black hover:text-slate-600 transition-colors block mb-4"
+                    className="font-ivyjournal text-2xl md:text-3xl text-black hover:text-slate-600 transition-colors block mb-4"
                   >
                     press@armadamd.com
                   </a>
@@ -660,14 +660,16 @@ export function HomePage() {
                   </h3>
                   <a
                     href="mailto:demo@armadamd.com"
-                    className="font-ivyjournal text-3xl md:text-4xl text-black hover:text-slate-600 transition-colors block mb-4"
+                    className="font-ivyjournal text-2xl md:text-3xl text-black hover:text-slate-600 transition-colors block mb-4"
                   >
                     demo@armadamd.com
                   </a>
                   <p className="font-alfabet font-light text-black/40 text-sm">Schedule a platform walkthrough</p>
                 </div>
 
-                <div className={`flex items-end ${contactRef.isInView ? "fade-up fade-delay-4" : ""}`}>
+                <div
+                  className={`flex items-end md:col-span-2 lg:col-span-3 ${contactRef.isInView ? "fade-up fade-delay-4" : ""}`}
+                >
                   <a
                     href="https://www.linkedin.com/in/alighahary"
                     target="_blank"
