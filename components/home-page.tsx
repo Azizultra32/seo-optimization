@@ -13,14 +13,6 @@ import { motion } from "@/components/ui/motion"
 import { useInView } from "@/hooks/use-in-view"
 import { trackPerformance } from "@/lib/performance"
 
-const FadeIn = ({
-  children,
-  delay = 0,
-  className = "",
-}: { children: React.ReactNode; delay?: number; className?: string }) => {
-  return <div className={`opacity-100 ${className}`}>{children}</div>
-}
-
 const useSafeInView = (options: any) => {
   const inView = useInView(options)
   return { ref: inView.ref, isInView: true }
@@ -228,7 +220,7 @@ export function HomePage() {
 
         <div className="relative z-10">
           {/* Header */}
-          <FadeIn className="px-6 py-8 md:px-12 md:py-10 flex justify-between items-center" delay={2.2}>
+          <div className="px-6 py-8 md:px-12 md:py-10 flex justify-between items-center">
             <div className="hidden md:block">
               <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Est. 2004</span>
             </div>
@@ -244,11 +236,11 @@ export function HomePage() {
             <div className="hidden md:block">
               <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Vancouver, BC</span>
             </div>
-          </FadeIn>
+          </div>
 
           {/* Hero Content */}
-          <FadeIn className="flex min-h-[80vh] items-center justify-center px-6">
-            <FadeIn className="text-center flex flex-col items-center max-w-6xl mx-auto" delay={2.5}>
+          <div className="flex min-h-[80vh] items-center justify-center px-6">
+            <div className="text-center flex flex-col items-center max-w-6xl mx-auto">
               <div className="mb-10 relative flex justify-center gap-3">
                 <span className="trailer-title-1 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
                   Physician
@@ -284,8 +276,8 @@ export function HomePage() {
                 <span className="font-alfabet text-[9px] tracking-[0.2em] uppercase">Scroll to Explore</span>
                 <div className="h-12 w-[1px] bg-gradient-to-b from-black to-transparent"></div>
               </motion.div>
-            </FadeIn>
-          </FadeIn>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -385,7 +377,7 @@ export function HomePage() {
                 </div>
               </div>
 
-              <FadeIn className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
+              <div className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   <div>
                     <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
@@ -416,7 +408,7 @@ export function HomePage() {
                     </ul>
                   </div>
                 </div>
-              </FadeIn>
+              </div>
             </div>
           </div>
         </div>
@@ -578,7 +570,7 @@ export function HomePage() {
                 </div>
               </div>
 
-              <FadeIn className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
+              <div className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   <div>
                     <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
@@ -609,7 +601,7 @@ export function HomePage() {
                     </ul>
                   </div>
                 </div>
-              </FadeIn>
+              </div>
             </div>
           </div>
         </div>
@@ -648,7 +640,7 @@ export function HomePage() {
                   for all Armada MD innovations.
                 </p>
 
-                <FadeIn className="bg-white p-16 md:p-24 rounded-[2rem] shadow-sm">
+                <div className="bg-white p-16 md:p-24 rounded-[2rem] shadow-sm">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                     <div>
                       <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
@@ -679,7 +671,7 @@ export function HomePage() {
                       </ul>
                     </div>
                   </div>
-                </FadeIn>
+                </div>
               </div>
             </div>
           </div>
