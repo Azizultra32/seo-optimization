@@ -369,21 +369,6 @@ export function HomePage() {
                     His work focuses on bridging the gap between traditional medical practice and cutting-edge
                     technology, advocating for systems that empower both patients and providers.
                   </p>
-                  <div className={`pt-8 border-t border-black/5 ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}>
-                    <p className="font-alfabet font-light text-[10px] tracking-widest uppercase text-slate-400">
-                      Last updated: January 2025
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  <div>
-                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
-                      Core Values
-                    </h4>
-                  
                 </div>
               </div>
             </div>
@@ -546,39 +531,6 @@ export function HomePage() {
                   ))}
                 </div>
               </div>
-
-              <div className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  <div>
-                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
-                      Core Values
-                    </h4>
-                  </div>
-                  <div className="md:col-span-2">
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 font-alfabet font-light text-black text-sm tracking-wide">
-                      {[
-                        "Technological Parity",
-                        "Innovation Productivity",
-                        "Patient-Centricity",
-                        "Clinician-Centricity",
-                        "Data Sovereignty",
-                        "Public Trust",
-                        "The Hippocratic Oath",
-                        "Ethics in AI",
-                        "Compliance Excellence",
-                        "Global Collaboration",
-                      ].map((value, i) => (
-                        <li key={i} className="flex items-center gap-4 group cursor-default">
-                          <span className="w-1 h-1 bg-black rounded-full opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
-                          <span className="group-hover:translate-x-2 transition-transform duration-500 ease-out">
-                            {value}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -616,6 +568,39 @@ export function HomePage() {
                   sovereignty and clinical integrity above algorithmic efficiency. It serves as the ethical foundation
                   for all Armada MD innovations.
                 </p>
+              </div>
+
+              <div className="bg-white p-16 md:p-24 rounded-[2rem] shadow-sm">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                  <div>
+                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
+                      Core Values
+                    </h4>
+                  </div>
+                  <div className="md:col-span-2">
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 font-alfabet font-light text-black text-sm tracking-wide">
+                      {[
+                        "Technological Parity",
+                        "Innovation Productivity",
+                        "Patient-Centricity",
+                        "Clinician-Centricity",
+                        "Data Sovereignty",
+                        "Public Trust",
+                        "The Hippocratic Oath",
+                        "Ethics in AI",
+                        "Compliance Excellence",
+                        "Global Collaboration",
+                      ].map((value, i) => (
+                        <li key={i} className="flex items-center gap-4 group cursor-default">
+                          <span className="w-1 h-1 bg-black rounded-full opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
+                          <span className="group-hover:translate-x-2 transition-transform duration-500 ease-out">
+                            {value}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
