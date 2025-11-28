@@ -29,7 +29,6 @@ export function HomePage() {
   const trustRef = useSafeInView({ threshold: 0.2 })
   const ethicalRef = useSafeInView({ threshold: 0.3 })
   const contactRef = useSafeInView({ threshold: 0.3 })
-  const expertiseRef = useSafeInView({ threshold: 0.3 })
 
   useEffect(() => {
     setMounted(true)
@@ -341,54 +340,72 @@ export function HomePage() {
             </div>
 
             <div className="md:col-span-8 md:col-start-5">
-              <div className="mb-24">
-                <p
-                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${aboutRef.isInView ? "fade-up fade-delay-1" : ""}`}
-                >
-                  Armada MD is building the next generation of medical AI systems—designed to empower clinicians, not
-                  replace them. Our technology augments decision-making, enhances patient care, and protects the art of
-                  medicine.
-                </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+                <div className="space-y-8">
+                  <p
+                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                  >
+                    Dr. Ali Ghahary is a physician, entrepreneur, and thought leader reimagining healthcare on a global
+                    scale. As a board-certified general practitioner (CCFP) with over 20 years of front-line clinical
+                    experience, he combines deep medical expertise with a passion for innovation.
+                  </p>
+                  <p
+                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-3" : ""}`}
+                  >
+                    He earned his Doctor of Medicine (MD) with honors from the University of Alberta and completed his
+                    Certification in the College of Family Physicians (CCFP) at McGill University.
+                  </p>
+                </div>
+                <div className="space-y-8 pt-0 md:pt-12">
+                  <p
+                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
+                  >
+                    Dr. Ghahary is also an actor, filmmaker, and executive producer. He is currently the founder and CEO
+                    of Damavand Pictures, where he explores the intersection of storytelling and healthcare innovation.
+                  </p>
+                  <p
+                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
+                  >
+                    His work focuses on bridging the gap between traditional medical practice and cutting-edge
+                    technology, advocating for systems that empower both patients and providers.
+                  </p>
+                  <div className={`pt-8 border-t border-black/5 ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}>
+                    <p className="font-alfabet font-light text-[10px] tracking-widest uppercase text-slate-400">
+                      Last updated: January 2025
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-                <p
-                  className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
-                >
-                  Founded by Dr. Andrew Gundling, a physician-technologist with a decade of clinical experience, Armada
-                  MD represents a new approach to healthcare technology: one that prioritizes clinical wisdom, patient
-                  sovereignty, and the human elements of medicine that algorithms cannot replicate.
-                </p>
-
-                {/* Core Values section */}
-                <div className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div>
-                      <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
-                        Core Values
-                      </h4>
-                    </div>
-                    <div className="md:col-span-2">
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 font-alfabet font-light text-black text-sm tracking-wide">
-                        {[
-                          "Technological Parity",
-                          "Innovation Productivity",
-                          "Patient-Centricity",
-                          "Clinician-Centricity",
-                          "Data Sovereignty",
-                          "Public Trust",
-                          "The Hippocratic Oath",
-                          "Ethics in AI",
-                          "Compliance Excellence",
-                          "Global Collaboration",
-                        ].map((value, i) => (
-                          <li key={i} className="flex items-center gap-4 group cursor-default">
-                            <span className="w-1 h-1 bg-black rounded-full opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
-                            <span className="group-hover:translate-x-2 transition-transform duration-500 ease-out">
-                              {value}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+              <div className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                  <div>
+                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
+                      Core Values
+                    </h4>
+                  </div>
+                  <div className="md:col-span-2">
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 font-alfabet font-light text-black text-sm tracking-wide">
+                      {[
+                        "Technological Parity",
+                        "Innovation Productivity",
+                        "Patient-Centricity",
+                        "Clinician-Centricity",
+                        "Data Sovereignty",
+                        "Public Trust",
+                        "The Hippocratic Oath",
+                        "Ethics in AI",
+                        "Compliance Excellence",
+                        "Global Collaboration",
+                      ].map((value, i) => (
+                        <li key={i} className="flex items-center gap-4 group cursor-default">
+                          <span className="w-1 h-1 bg-black rounded-full opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
+                          <span className="group-hover:translate-x-2 transition-transform duration-500 ease-out">
+                            {value}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -552,76 +569,7 @@ export function HomePage() {
                   ))}
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Ethical AI Principles Section - Quote Style */}
-      <section
-        className="relative z-20 bg-gradient-to-b from-white via-zinc-50 to-white py-32 md:py-48"
-        ref={ethicalRef.ref}
-      >
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
-            <div className="md:col-span-3">
-              <div className={`sticky top-32 border-t border-black/10 pt-6 ${ethicalRef.isInView ? "fade-up" : ""}`}>
-                <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
-                  05 / Ethics
-                </span>
-                <h2 className="font-ivyjournal text-4xl md:text-5xl text-black leading-[0.9]">
-                  The KNGHT
-                  <br />
-                  Doctrine
-                </h2>
-              </div>
-            </div>
-
-            <div className="md:col-span-8 md:col-start-5">
-              <div className="mb-24">
-                <p
-                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${ethicalRef.isInView ? "fade-up fade-delay-1" : ""}`}
-                >
-                  A framework for ethical AI in medicine presented at the World Economic Forum in Davos, 2024.
-                </p>
-
-                <p
-                  className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${ethicalRef.isInView ? "fade-up fade-delay-2" : ""}`}
-                >
-                  The KNGHT Doctrine establishes a new standard for healthcare technology, prioritizing patient
-                  sovereignty and clinical integrity above algorithmic efficiency. It serves as the ethical foundation
-                  for all Armada MD innovations.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Expertise Section - Editorial Layout */}
-      <section className="relative z-20 bg-white py-32 md:py-48" ref={expertiseRef.ref}>
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
-            <div className="md:col-span-3 relative">
-              <div className={`sticky top-32 border-t border-black/10 pt-6 ${expertiseRef.isInView ? "fade-up" : ""}`}>
-                <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
-                  06 / Expertise
-                </span>
-                <h2 className="font-ivyjournal text-4xl md:text-5xl text-black leading-[0.9]">Clinical Wisdom</h2>
-              </div>
-            </div>
-
-            <div className="md:col-span-8 md:col-start-5">
-              <div className="mb-24">
-                <p
-                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${expertiseRef.isInView ? "fade-up fade-delay-1" : ""}`}
-                >
-                  Armada MD bridges the worlds of clinical medicine, AI research, and systems engineering to create
-                  tools that physicians actually want to use.
-                </p>
-              </div>
-
-              {/* Core Values section */}
               <div className="bg-neutral-50 p-16 md:p-24 rounded-[2rem]">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   <div>
@@ -659,6 +607,44 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* Ethics Section - The KNGHT Doctrine */}
+      <section className="relative z-20 bg-neutral-50 py-32 md:py-48" ref={ethicalRef.ref}>
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
+            <div className="md:col-span-3">
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${ethicalRef.isInView ? "fade-up" : ""}`}>
+                <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
+                  05 / Ethics
+                </span>
+                <h2 className="font-ivyjournal text-4xl md:text-5xl text-black leading-[0.9]">
+                  The KNGHT
+                  <br />
+                  Doctrine
+                </h2>
+              </div>
+            </div>
+
+            <div className="md:col-span-8 md:col-start-5">
+              <div className="mb-24">
+                <p
+                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${ethicalRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                >
+                  A framework for ethical AI in medicine presented at the World Economic Forum in Davos, 2024.
+                </p>
+
+                <p
+                  className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${ethicalRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                >
+                  The KNGHT Doctrine establishes a new standard for healthcare technology, prioritizing patient
+                  sovereignty and clinical integrity above algorithmic efficiency. It serves as the ethical foundation
+                  for all Armada MD innovations.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section - Minimal */}
       <section className="relative z-20 bg-white pt-32 pb-12 md:pt-48 md:pb-16" ref={contactRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
@@ -666,7 +652,7 @@ export function HomePage() {
             <div className="md:col-span-3">
               <div className={`sticky top-32 border-t border-black/10 pt-6 ${contactRef.isInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
-                  07 / Contact
+                  06 / Contact
                 </span>
                 <h2 className="font-ivyjournal text-4xl md:text-5xl text-black leading-[0.9]">
                   Get in
