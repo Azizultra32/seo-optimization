@@ -10,13 +10,8 @@ import { Lock, Shield, CheckCircle, Award, ExternalLink } from "@/components/ico
 import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-demo-dialog"
 import { trackPageView } from "@/lib/analytics"
 import { motion } from "@/components/ui/motion"
-import { useInView } from "@/hooks/use-in-view"
+import { useSafeInView } from "@/hooks/use-in-view"
 import { trackPerformance } from "@/lib/performance"
-
-const useSafeInView = (options: any) => {
-  const inView = useInView(options)
-  return { ref: inView.ref, isInView: true }
-}
 
 export function HomePage() {
   const [mounted, setMounted] = useState(false)
