@@ -266,7 +266,7 @@ export function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                <span className="bg-gradient-to-r from-[#CD853F] via-[#8B7355] to-[#2C1810] bg-clip-text text-transparent italic pr-2">
+                <span className="bg-gradient-to-r from-[#CD853F] via-[#8B7355] to-[#2C1810] bg-clip-text text-transparent font-normal">
                   Reimagining
                 </span>{" "}
                 the future of healthcare through ethical AI, interoperability, and patient empowerment.
