@@ -261,12 +261,12 @@ export function HomePage() {
               </motion.h1>
 
               <motion.p
-                className="trailer-subtitle text-lg md:text-2xl font-alfabet font-normal text-black leading-relaxed max-w-4xl"
+                className="trailer-subtitle font-alfabet font-normal text-black leading-relaxed max-w-4xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                <span className="bg-gradient-to-r from-[#CD853F] via-[#8B7355] to-[#2C1810] bg-clip-text text-transparent font-normal text-lg tracking-[0.025em]">
+                <span className="bg-gradient-to-r from-[#CD853F] via-[#8B7355] to-[#2C1810] bg-clip-text text-transparent italic pr-2">
                   Reimagining
                 </span>{" "}
                 the future of healthcare through ethical AI, interoperability, and patient empowerment.
