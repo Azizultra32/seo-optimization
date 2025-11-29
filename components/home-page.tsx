@@ -3,7 +3,6 @@
 import React from "react"
 
 import { useEffect, useState, useRef } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { Lock, Shield, CheckCircle, Award, ExternalLink } from "@/components/icons"
 // import { CommandBar } from "@/components/command-bar"; // Temporarily disabled
@@ -194,92 +193,71 @@ export function HomePage() {
 
       {/* Hero Section with DNA Video Background */}
       <section className="relative min-h-screen w-full overflow-hidden bg-white">
-        <div className="fixed top-0 left-0 w-full h-screen z-0">
-          <motion.video
-            ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover brightness-110"
-            style={{ objectPosition: "center center" }}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            controls={false}
-            poster="/images/dna-helix-background.jpeg"
-            disablePictureInPicture
-            disableRemotePlayback
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.25 }}
-            transition={{ duration: 3.5, ease: "easeInOut" }}
-          >
-            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3watermarked_preview-Bk5N138nsMFSjnIXU2MYPxuk7C2dB7.mp4" type="video/mp4" />
-          </motion.video>
-
-          <div className="absolute inset-0 bg-zinc-50/49 pointer-events-none" />
-        </div>
-
-        <div className="relative z-10">
-          {/* Header */}
-          <div className="px-6 py-8 md:px-12 md:py-10 flex justify-between items-center">
-            <div className="hidden md:block">
-              <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Est. 2004</span>
+        {/* Hero Content */}
+        <div className="flex min-h-[80vh] items-center justify-center px-6">
+          <div className="text-center flex flex-col items-center max-w-6xl mx-auto">
+            <div className="mb-10 relative flex justify-center gap-3">
+              <span className="trailer-title-1 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
+                Physician
+              </span>
+              <span className="trailer-title-2 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
+                Entrepreneur
+              </span>
+              <span className="trailer-title-3 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
+                Founder
+              </span>
             </div>
 
-            <motion.button
-              className="logo-hover transition-all mx-auto md:mx-0 opacity-90 hover:opacity-100"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+            <motion.h1 className="trailer-subtitle font-ivyjournal text-black/95 text-4xl md:text-5xl lg:text-6xl leading-[0.9] tracking-tight mb-6 font-normal">
+              Dr. Ali Ghahary
+              <span className="block text-lg md:text-xl lg:text-2xl font-light mt-3 font-alfabet tracking-normal text-slate-600">
+                MD, CCFP
+              </span>
+            </motion.h1>
+
+            <motion.p
+              className="trailer-subtitle font-alfabet font-normal text-black leading-relaxed max-w-4xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <Image src="/images/ag-logo.svg" alt="AG Logo" width={140} height={46} className="h-10 md:h-12 w-auto" />
-            </motion.button>
+              <span className="bg-gradient-to-r from-[#CD853F] via-[#8B7355] to-[#2C1810] bg-clip-text text-transparent font-normal">
+                Reimagining
+              </span>{" "}
+              the future of healthcare through ethical AI, interoperability, and patient empowerment.
+            </motion.p>
 
-            <div className="hidden md:block">
-              <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Vancouver, BC</span>
-            </div>
-          </div>
-
-          {/* Hero Content */}
-          <div className="flex min-h-[80vh] items-center justify-center px-6">
-            <div className="text-center flex flex-col items-center max-w-6xl mx-auto">
-              <div className="mb-10 relative flex justify-center gap-3">
-                <span className="trailer-title-1 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
-                  Physician
-                </span>
-                <span className="trailer-title-2 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
-                  Entrepreneur
-                </span>
-                <span className="trailer-title-3 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
-                  Founder
-                </span>
-              </div>
-
-              <motion.h1 className="trailer-subtitle font-ivyjournal text-black/95 text-4xl md:text-5xl lg:text-6xl leading-[0.9] tracking-tight mb-6 font-normal">
-                Dr. Ali Ghahary
-                <span className="block text-lg md:text-xl lg:text-2xl font-light mt-3 font-alfabet tracking-normal text-slate-600">
-                  MD, CCFP
-                </span>
-              </motion.h1>
-
-              <motion.p
-                className="trailer-subtitle font-alfabet font-normal text-black leading-relaxed max-w-4xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <span className="bg-gradient-to-r from-[#CD853F] via-[#8B7355] to-[#2C1810] bg-clip-text text-transparent font-normal">
-                  Reimagining
-                </span>{" "}
-                the future of healthcare through ethical AI, interoperability, and patient empowerment.
-              </motion.p>
-
-              <motion.div className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40">
-                <span className="font-alfabet text-[9px] tracking-[0.2em] uppercase">Scroll to Explore</span>
-                <div className="h-12 w-[1px] bg-gradient-to-b from-black to-transparent"></div>
-              </motion.div>
-            </div>
+            <motion.div className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40">
+              <span className="font-alfabet text-[9px] tracking-[0.2em] uppercase">Scroll to Explore</span>
+              <div className="h-12 w-[1px] bg-gradient-to-b from-black to-transparent"></div>
+            </motion.div>
           </div>
         </div>
       </section>
+
+      <div className="fixed top-0 left-0 w-full h-screen z-0">
+        <motion.video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover brightness-110"
+          style={{ objectPosition: "center center" }}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          controls={false}
+          poster="/images/dna-helix-background.jpeg"
+          disablePictureInPicture
+          disableRemotePlayback
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.2 }}
+          transition={{ duration: 3.5, ease: "easeInOut" }}
+        >
+          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3watermarked_preview-Bk5N138nsMFSjnIXU2MYPxuk7C2dB7.mp4" type="video/mp4" />
+        </motion.video>
+
+        <div className="absolute inset-0 bg-white/85 pointer-events-none" />
+      </div>
 
       {/* Vision & Biography Section - Editorial Layout */}
       <section
@@ -320,10 +298,7 @@ export function HomePage() {
       </section>
 
       {/* About Section - Refined Grid Layout */}
-      <section
-        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-zinc-50 py-32 md:py-48"
-        ref={aboutRef.ref}
-      >
+      <section className="relative z-20 bg-white/90 backdrop-blur-sm py-24 md:py-32 px-6 md:px-12" ref={aboutRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3 relative">
@@ -484,7 +459,7 @@ export function HomePage() {
       </section>
 
       {/* Security & Principles Section - Minimalist */}
-      <section className="relative z-20 bg-white py-32 md:py-48" ref={trustRef.ref}>
+      <section className="relative z-20 bg-white/90 backdrop-blur-sm py-32 md:py-48" ref={trustRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3">
@@ -536,8 +511,8 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Ethics Section - The KNGHT Doctrine */}
-      <section className="relative z-20 bg-neutral-50 py-32 md:py-48" ref={ethicalRef.ref}>
+      {/* Ethical AI Section with KNGHT Doctrine */}
+      <section className="relative z-20 bg-neutral-50/90 backdrop-blur-sm py-32 md:py-48" ref={ethicalRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3">
@@ -608,7 +583,10 @@ export function HomePage() {
       </section>
 
       {/* Contact Section - Minimal */}
-      <section className="relative z-20 bg-white pt-32 pb-12 md:pt-48 md:pb-16" ref={contactRef.ref}>
+      <section
+        className="relative z-20 bg-white/90 backdrop-blur-sm pt-32 pb-12 md:pt-48 md:pb-16"
+        ref={contactRef.ref}
+      >
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
             <div className="md:col-span-3">
@@ -687,7 +665,7 @@ export function HomePage() {
       </section>
 
       {/* Footer - Minimal */}
-      <footer className="bg-white py-16 border-t border-black/5">
+      <footer className="relative z-20 bg-white/90 backdrop-blur-sm py-16 border-t border-black/5">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest">
             © {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
