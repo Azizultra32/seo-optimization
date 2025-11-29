@@ -308,10 +308,10 @@ export function HomePage() {
                   className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-16 text-black font-light -ml-1 md:-ml-2 ${visionRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
                   <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
-                    Reimagining
+                    Transforming
                   </span>
-                  healthcare requires more than just technology—it demands a fundamental shift in how we view the
-                  patient-provider relationship.
+                  healthcare isn't a software problem—it's a philosophical one. It starts with how we think about
+                  patients, clinicians, and data.
                 </h3>
               </div>
             </div>
@@ -345,29 +345,29 @@ export function HomePage() {
                   <p
                     className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
                   >
-                    Dr. Ali Ghahary is a physician, entrepreneur, and thought leader reimagining healthcare on a global
-                    scale. As a board-certified general practitioner (CCFP) with over 20 years of front-line clinical
-                    experience, he combines deep medical expertise with a passion for innovation.
+                    Dr. Ali Ghahary is a Canadian physician, entrepreneur, and multidisciplinary creator.
+                    Board-certified (CCFP) with over 20 years of clinical experience, he combines frontline medical
+                    expertise with a commitment to ethical innovation.
                   </p>
                   <p
                     className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-3" : ""}`}
                   >
-                    He earned his Doctor of Medicine (MD) with honors from the University of Alberta and completed his
-                    Certification in the College of Family Physicians (CCFP) at McGill University.
+                    MD with Honours from the University of Alberta. CCFP Certification from McGill University.
                   </p>
                 </div>
                 <div className="space-y-8 pt-0 md:pt-12">
                   <p
                     className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
                   >
-                    Dr. Ghahary is also an actor, filmmaker, and executive producer. He is currently the founder and CEO
-                    of Damavand Pictures, where he explores the intersection of storytelling and healthcare innovation.
+                    His clinical career revealed a truth: healthcare is held back not by talent, but by fragmented
+                    systems and technologies built without clinicians in the room. In response, he founded ArmadaMD.
                   </p>
                   <p
                     className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
                   >
-                    His work focuses on bridging the gap between traditional medical practice and cutting-edge
-                    technology, advocating for systems that empower both patients and providers.
+                    Outside medicine, he leads Damavand Pictures as an actor, filmmaker, and executive
+                    producer—exploring stories of identity, culture, and resilience. Every venture shares one objective:
+                    build systems that serve people, not the other way around.
                   </p>
                 </div>
               </div>
@@ -407,13 +407,13 @@ export function HomePage() {
                         <sup className="md:text-2xl opacity-50 relative -translate-y-3 text-3xl my-0">™</sup>
                       </h3>
                       <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
-                        Virtual Care Platform
+                        Home-Based Care Platform
                       </span>
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
-                        A comprehensive telehealth platform enabling physicians to deliver high-quality virtual care
-                        with integrated scheduling, documentation, and patient management.
+                        Exam-enabled care in the home through nurse-led visits, intelligent documentation, and rapid
+                        physician oversight. Built for global scale and clinical reliability.
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <HousecallDemo />
@@ -435,13 +435,13 @@ export function HomePage() {
                         Armada AssistMD<sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
                       </h3>
                       <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
-                        AI Clinical Assistant
+                        AI Clinical Documentation
                       </span>
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
-                        An AI-powered clinical documentation tool that helps physicians save time while maintaining
-                        accuracy and compliance in patient records.
+                        Real-time clinical intelligence that structures conversations into accurate, defensible medical
+                        notes—reducing cognitive load while enhancing clarity.
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <AssistMDDemo />
@@ -463,13 +463,13 @@ export function HomePage() {
                         Armada ArkPass<sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
                       </h3>
                       <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
-                        Patient Data Platform
+                        Patient-Owned Health Data
                       </span>
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
-                        A secure, patient-controlled health data platform enabling seamless sharing of medical records
-                        across providers and systems.
+                        A secure, patient-controlled identity and medical-record layer built for seamless
+                        interoperability across clinics, provinces, and countries.
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <ArkPassDemo />
@@ -504,8 +504,7 @@ export function HomePage() {
                 <p
                   className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
-                  Every Armada MD product is designed with patient safety, data security, and ethical principles at its
-                  foundation.
+                  If it can't be trusted, it shouldn't exist. Every system I build follows this rule.
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
@@ -558,15 +557,14 @@ export function HomePage() {
                 <p
                   className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${ethicalRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
-                  A framework for ethical AI in medicine presented at the World Economic Forum in Davos, 2024.
+                  An ethical framework for AI in medicine, presented at the World Economic Forum (Davos) 2024.
                 </p>
 
                 <p
                   className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${ethicalRef.isInView ? "fade-up fade-delay-2" : ""}`}
                 >
-                  The KNGHT Doctrine establishes a new standard for healthcare technology, prioritizing patient
-                  sovereignty and clinical integrity above algorithmic efficiency. It serves as the ethical foundation
-                  for all Armada MD innovations.
+                  The KNGHT Doctrine prioritizes patient sovereignty and clinical integrity above algorithmic
+                  efficiency. Ethics isn't a branding exercise—it's infrastructure.
                 </p>
               </div>
 
