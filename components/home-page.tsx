@@ -272,6 +272,22 @@ export function HomePage() {
                 the future of healthcare through ethical AI, interoperability, and patient empowerment.
               </motion.p>
 
+              <motion.div
+                className="trailer-subtitle mt-10 flex flex-col items-center gap-3"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                <Link
+                  href="#contact"
+                  className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#603010] via-[#8B7355] to-black px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
+                >
+                  <span>Book a Demo</span>
+                  <span className="h-2 w-2 rounded-full bg-white/80 shadow-[0_0_0_3px] shadow-white/20" aria-hidden="true" />
+                </Link>
+                <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">Response within 24 hours</span>
+              </motion.div>
+
               <motion.div className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40">
                 <span className="font-alfabet text-[9px] tracking-[0.2em] uppercase">Scroll to Explore</span>
                 <div className="h-12 w-[1px] bg-gradient-to-b from-black to-transparent"></div>
@@ -606,7 +622,7 @@ export function HomePage() {
       </section>
 
       {/* Contact Section - Minimal */}
-      <section className="relative z-20 bg-white pt-32 pb-12 md:pt-48 md:pb-16" ref={contactRef.ref}>
+      <section id="contact" className="relative z-20 bg-white pt-32 pb-12 md:pt-48 md:pb-16" ref={contactRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
             <div className="md:col-span-3">
