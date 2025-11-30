@@ -14,9 +14,12 @@ import { useSafeInView } from "@/hooks/use-in-view"
 import { trackPerformance } from "@/lib/performance"
 
 export function HomePage() {
-  const [mounted, setMounted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [selectedDemo, setSelectedDemo] = useState<string | null>(null)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+    if (typeof window === "undefined") return false
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  })
 
   const visionRef = useSafeInView({ threshold: 0.2 })
   const aboutRef = useSafeInView({ threshold: 0.2 })
@@ -26,8 +29,26 @@ export function HomePage() {
   const contactRef = useSafeInView({ threshold: 0.3 })
 
   useEffect(() => {
-    setMounted(true)
-    if (videoRef.current) {
+    if (typeof window === "undefined") return
+
+    // Honor reduced-motion preferences and align the hero video playback accordingly
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const handleMotionPreference = () => {
+      setPrefersReducedMotion(motionQuery.matches)
+
+      if (videoRef.current) {
+        if (motionQuery.matches) {
+          videoRef.current.pause()
+        } else {
+          videoRef.current.play().catch(() => videoRef.current?.load())
+        }
+      }
+    }
+
+    handleMotionPreference()
+    motionQuery.addEventListener("change", handleMotionPreference)
+
+    if (!motionQuery.matches && videoRef.current) {
       videoRef.current.load()
     }
 
@@ -35,9 +56,10 @@ export function HomePage() {
     trackPageView(window.location.pathname)
 
     // Track Core Web Vitals
-    if (typeof window !== "undefined" && "PerformanceObserver" in window) {
+    let observer: PerformanceObserver | undefined
+    if ("PerformanceObserver" in window) {
       try {
-        const observer = new PerformanceObserver((list) => {
+        observer = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
             if (entry.entryType === "largest-contentful-paint") {
               trackPerformance("LCP", entry.startTime)
@@ -46,10 +68,14 @@ export function HomePage() {
         })
         observer.observe({ entryTypes: ["largest-contentful-paint"] })
 
-        return () => observer.disconnect()
       } catch (e) {
         console.error("Performance tracking error:", e)
       }
+    }
+
+    return () => {
+      motionQuery.removeEventListener("change", handleMotionPreference)
+      observer?.disconnect()
     }
   }, [])
 
@@ -80,6 +106,8 @@ export function HomePage() {
     }),
   }
 
+  const heroAnimationsEnabled = !prefersReducedMotion
+
   return (
     <div className="min-h-screen bg-white selection:bg-black selection:text-white">
       {/* Hero Section with DNA Video Background */}
@@ -89,23 +117,23 @@ export function HomePage() {
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover brightness-110"
             style={{ objectPosition: "center center" }}
-            autoPlay
+            autoPlay={!prefersReducedMotion}
             muted
-            loop
+            loop={!prefersReducedMotion}
             playsInline
-            preload="auto"
+            preload={prefersReducedMotion ? "metadata" : "auto"}
             controls={false}
             poster="/images/dna-helix-background.jpeg"
             disablePictureInPicture
             disableRemotePlayback
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.25 }}
-            transition={{ duration: 3.5, ease: "easeInOut" }}
+            initial={heroAnimationsEnabled ? { opacity: 0 } : false}
+            animate={heroAnimationsEnabled ? { opacity: 0.25 } : { opacity: 1 }}
+            transition={heroAnimationsEnabled ? { duration: 3.5, ease: "easeInOut" } : { duration: 0 }}
           >
             <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3watermarked_preview-Bk5N138nsMFSjnIXU2MYPxuk7C2dB7.mp4" type="video/mp4" />
           </motion.video>
 
-          <div className="absolute inset-0 bg-zinc-50/49 pointer-events-none" />
+          <div className="absolute inset-0 bg-hero-overlay backdrop-blur-[1px] pointer-events-none" />
         </div>
 
         <div className="relative z-10">
@@ -117,8 +145,8 @@ export function HomePage() {
 
             <motion.button
               className="logo-hover transition-all mx-auto md:mx-0 opacity-90 hover:opacity-100"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={heroAnimationsEnabled ? { scale: 1.02 } : undefined}
+              whileTap={heroAnimationsEnabled ? { scale: 0.98 } : undefined}
             >
               <Image src="/images/ag-logo.svg" alt="AG Logo" width={140} height={46} className="h-10 md:h-12 w-auto" />
             </motion.button>
@@ -132,13 +160,13 @@ export function HomePage() {
           <div className="flex min-h-[80vh] items-center justify-center px-6">
             <div className="text-center flex flex-col items-center max-w-6xl mx-auto">
               <div className="mb-10 relative flex justify-center gap-3">
-                <span className="trailer-title-1 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
+                <span className="trailer-title-1 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">
                   Physician
                 </span>
-                <span className="trailer-title-2 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
+                <span className="trailer-title-2 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">
                   Entrepreneur
                 </span>
-                <span className="trailer-title-3 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-gradient-to-r from-[#603010] via-[#696969] to-black bg-clip-text text-transparent">
+                <span className="trailer-title-3 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">
                   Founder
                 </span>
               </div>
@@ -152,11 +180,11 @@ export function HomePage() {
 
               <motion.p
                 className="trailer-subtitle font-alfabet font-normal text-black leading-relaxed max-w-4xl"
-                initial={{ opacity: 0, y: 20 }}
+                initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
+                transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.4 } : { duration: 0 }}
               >
-                <span className="bg-gradient-to-r from-[#CD853F] via-[#8B7355] to-[#2C1810] bg-clip-text text-transparent font-normal">
+                <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">
                   Reimagining
                 </span>{" "}
                 the future of healthcare through ethical AI, interoperability, and patient empowerment.
@@ -164,13 +192,13 @@ export function HomePage() {
 
               <motion.div
                 className="trailer-subtitle mt-10 flex flex-col items-center gap-3"
-                initial={{ opacity: 0, y: 20 }}
+                initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
+                transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.6 } : { duration: 0 }}
               >
                 <Link
                   href="#contact"
-                  className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#603010] via-[#8B7355] to-black px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
+                  className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
                 >
                   <span>Book a Demo</span>
                   <span className="h-2 w-2 rounded-full bg-white/80 shadow-[0_0_0_3px] shadow-white/20" aria-hidden="true" />
@@ -178,7 +206,12 @@ export function HomePage() {
                 <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">Response within 24 hours</span>
               </motion.div>
 
-              <motion.div className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40">
+              <motion.div
+                className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40"
+                initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
+                animate={{ opacity: 1, y: 0 }}
+                transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.8 } : { duration: 0 }}
+              >
                 <span className="font-alfabet text-[9px] tracking-[0.2em] uppercase">Scroll to Explore</span>
                 <div className="h-12 w-[1px] bg-gradient-to-b from-black to-transparent"></div>
               </motion.div>
