@@ -187,7 +187,6 @@ export function HomePage() {
                 the future of healthcare through ethical AI, interoperability, and patient empowerment.
               </motion.p>
 
-              
               <motion.div
                 className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40"
                 initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
@@ -586,6 +585,27 @@ export function HomePage() {
                   <p className="font-alfabet font-light text-black/40 text-sm">Schedule a platform walkthrough</p>
                 </div>
               </div>
+
+              <motion.div
+                className="mt-16 flex flex-col items-center gap-3"
+                initial={{ opacity: 0, y: 20 }}
+                animate={contactRef.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                <a
+                  href="mailto:demo@armadamd.com"
+                  className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
+                >
+                  <span>Book a Demo</span>
+                  <span
+                    className="h-2 w-2 rounded-full bg-white/80 shadow-[0_0_0_3px] shadow-white/20"
+                    aria-hidden="true"
+                  />
+                </a>
+                <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">
+                  Response within 24 hours
+                </span>
+              </motion.div>
             </div>
           </div>
         </div>
