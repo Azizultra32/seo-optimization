@@ -321,9 +321,9 @@ export function AssistMDDemo() {
             </div>
             <div className="space-y-3">
               <h4 className="font-alfabet font-semibold text-black">What Physicians Say:</h4>
-              <blockquote className="border-l-4 border-blue-600 pl-4 italic text-black/70 font-alfabet">
-                "AssistMD has given me back 2 hours every day. I can see more patients and still leave on time."
-              </blockquote>
+                <blockquote className="border-l-4 border-blue-600 pl-4 italic text-black/70 font-alfabet">
+                  “AssistMD has given me back 2 hours every day. I can see more patients and still leave on time.”
+                </blockquote>
               <p className="text-sm text-black/60 font-alfabet">— Dr. Sarah Chen, Family Medicine</p>
             </div>
           </motion.div>

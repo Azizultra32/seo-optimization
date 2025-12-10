@@ -18,26 +18,23 @@ export function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [selectedDemo, setSelectedDemo] = useState<string | null>(null)
   const [isVideoPaused, setIsVideoPaused] = useState(false)
-  const [heroInView, setHeroInView] = useState(false)
+  const heroInView = true
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
     if (typeof window === "undefined") return false
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches
   })
 
-  const visionRef = useSafeInView({ threshold: 0.2 })
-  const aboutRef = useSafeInView({ threshold: 0.2 })
-  const projectsRef = useSafeInView({ threshold: 0.1 })
-  const trustRef = useSafeInView({ threshold: 0.2 })
-  const ethicalRef = useSafeInView({ threshold: 0.3 })
-  const contactRef = useSafeInView({ threshold: 0.3 })
+  const { ref: visionSectionRef, isInView: isVisionInView } = useSafeInView({ threshold: 0.2 })
+  const { ref: aboutSectionRef, isInView: isAboutInView } = useSafeInView({ threshold: 0.2 })
+  const { ref: projectsSectionRef, isInView: isProjectsInView } = useSafeInView({ threshold: 0.1 })
+  const { ref: trustSectionRef, isInView: isTrustInView } = useSafeInView({ threshold: 0.2 })
+  const { ref: ethicalSectionRef, isInView: isEthicalInView } = useSafeInView({ threshold: 0.3 })
+  const { ref: contactSectionRef, isInView: isContactInView } = useSafeInView({ threshold: 0.3 })
 
   useCoreWebVitals()
 
   useEffect(() => {
     if (typeof window === "undefined") return
-
-    // Hero is immediately in view on page load
-    setHeroInView(true)
 
     // Honor reduced-motion preferences and align the hero video playback accordingly
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -244,12 +241,12 @@ export function HomePage() {
       <section
         id="vision"
         className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-white py-32 md:py-48 text-transparent bg-transparent"
-        ref={visionRef.ref}
+        ref={visionSectionRef}
       >
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 bg-transparent text-transparent">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3 relative">
-              <div className={`sticky top-32 border-t border-black/10 pt-6 ${visionRef.isInView ? "fade-up" : ""}`}>
+                <div className={`sticky top-32 border-t border-black/10 pt-6 ${isVisionInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
                   01 / Vision
                 </span>
@@ -264,12 +261,12 @@ export function HomePage() {
             <div className="md:col-span-8 md:col-start-5">
               <div className="mb-24">
                 <h3
-                  className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-16 text-black font-light -ml-1 md:-ml-2 ${visionRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                  className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-16 text-black font-light -ml-1 md:-ml-2 ${isVisionInView ? "fade-up fade-delay-1" : ""}`}
                 >
                   <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
                     Transforming
                   </span>
-                  healthcare isn't a software problem—it's a philosophical one.
+                    healthcare isn’t a software problem—it’s a philosophical one.
                 </h3>
               </div>
             </div>
@@ -280,12 +277,12 @@ export function HomePage() {
       {/* About Section - Refined Grid Layout */}
       <section
         className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-zinc-50 py-32 md:py-48"
-        ref={aboutRef.ref}
+        ref={aboutSectionRef}
       >
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3 relative">
-              <div className={`sticky top-32 border-t border-black/10 pt-6 ${aboutRef.isInView ? "fade-up" : ""}`}>
+                <div className={`sticky top-32 border-t border-black/10 pt-6 ${isAboutInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
                   02 / Biography
                 </span>
@@ -301,20 +298,20 @@ export function HomePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
                 <div className="space-y-8">
                   <p
-                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                      className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${isAboutInView ? "fade-up fade-delay-2" : ""}`}
                   >
                     Dr. Ali Ghahary is a Canadian physician, entrepreneur, and technologist. Board-certified (CCFP) with
-                    over 20 years of clinical experience, he combines frontline medical expertise with a builder's
+                      over 20 years of clinical experience, he combines frontline medical expertise with a builder’s
                     mindset for ethical technology.
                   </p>
                   <p
-                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                      className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-2" : ""}`}
                   >
                     <strong className="font-medium text-black">Clinical experience:</strong> Board-certified physician
                     (CCFP) with 20+ years of frontline medical practice.
                   </p>
                   <p
-                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                      className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-2" : ""}`}
                   >
                     <strong className="font-medium text-black">Education:</strong> MD with Honours, University of
                     Alberta. CCFP Certification, McGill University.
@@ -322,13 +319,13 @@ export function HomePage() {
                 </div>
                 <div className="space-y-8 pt-0 md:pt-12">
                   <p
-                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-3" : ""}`}
+                      className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-3" : ""}`}
                   >
                     <strong className="font-medium text-black">Technology focus:</strong> Healthcare systems are held
                     back by fragmentation and tools built without clinicians. ArmadaMD changes that.
                   </p>
                   <p
-                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
+                      className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-4" : ""}`}
                   >
                     <strong className="font-medium text-black">Creative work:</strong> Leads Damavand Pictures as actor,
                     filmmaker, and executive producer—stories of identity, culture, and resilience.
@@ -341,11 +338,11 @@ export function HomePage() {
       </section>
 
       {/* Projects Section - Editorial List Style */}
-      <section className="relative z-30 bg-[#0a0a0a] text-white py-32 md:py-48" id="projects" ref={projectsRef.ref}>
+      <section className="relative z-30 bg-[#0a0a0a] text-white py-32 md:py-48" id="projects" ref={projectsSectionRef}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
             <div className="md:col-span-3">
-              <div className={`sticky top-32 border-t border-white/10 pt-6 ${projectsRef.isInView ? "fade-up" : ""}`}>
+              <div className={`sticky top-32 border-t border-white/10 pt-6 ${isProjectsInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] text-white/30 block mb-4">03 / Ventures</span>
                 <h2 className="font-ivyjournal text-4xl md:text-5xl text-white leading-[0.9]">
                   Selected
@@ -359,7 +356,7 @@ export function HomePage() {
               <div className="space-y-0 divide-y divide-white/10 border-t border-white/10">
                 {/* Armada Housecall */}
                 <div
-                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${projectsRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${isProjectsInView ? "fade-up fade-delay-1" : ""}`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
@@ -391,7 +388,7 @@ export function HomePage() {
 
                 {/* Armada AssistMD */}
                 <div
-                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${projectsRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${isProjectsInView ? "fade-up fade-delay-2" : ""}`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
@@ -422,7 +419,7 @@ export function HomePage() {
 
                 {/* Armada ArkPass */}
                 <div
-                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${projectsRef.isInView ? "fade-up fade-delay-3" : ""}`}
+                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${isProjectsInView ? "fade-up fade-delay-3" : ""}`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
@@ -467,11 +464,11 @@ export function HomePage() {
       </section>
 
       {/* Security & Principles Section - Minimalist */}
-      <section className="relative z-20 bg-white py-32 md:py-48" ref={trustRef.ref}>
+      <section className="relative z-20 bg-white py-32 md:py-48" ref={trustSectionRef}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3">
-              <div className={`sticky top-32 border-t border-black/10 pt-6 ${trustRef.isInView ? "fade-up" : ""}`}>
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${isTrustInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
                   04 / Principles
                 </span>
@@ -485,9 +482,9 @@ export function HomePage() {
             <div className="md:col-span-8 md:col-start-5">
               <div className="mb-24">
                 <p
-                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${isTrustInView ? "fade-up fade-delay-1" : ""}`}
                 >
-                  If it can't be trusted, it shouldn't exist. Every system follows this rule.
+                  If it can’t be trusted, it shouldn’t exist. Every system follows this rule.
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
@@ -499,7 +496,7 @@ export function HomePage() {
                   ].map((item, i) => (
                     <div
                       key={i}
-                      className={`border-l border-black/10 pl-6 py-2 group hover:border-black/40 transition-colors duration-500 ${trustRef.isInView ? `fade-up fade-delay-${i + 2}` : ""}`}
+                      className={`border-l border-black/10 pl-6 py-2 group hover:border-black/40 transition-colors duration-500 ${isTrustInView ? `fade-up fade-delay-${i + 2}` : ""}`}
                     >
                       {React.createElement(item.icon, {
                         className:
@@ -519,11 +516,11 @@ export function HomePage() {
       </section>
 
       {/* Ethics Section - The KNGHT Doctrine */}
-      <section className="relative z-20 bg-neutral-50 py-32 md:py-48" ref={ethicalRef.ref}>
+      <section className="relative z-20 bg-neutral-50 py-32 md:py-48" ref={ethicalSectionRef}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3">
-              <div className={`sticky top-32 border-t border-black/10 pt-6 ${ethicalRef.isInView ? "fade-up" : ""}`}>
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${isEthicalInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
                   05 / Ethics
                 </span>
@@ -538,16 +535,16 @@ export function HomePage() {
             <div className="md:col-span-8 md:col-start-5">
               <div className="mb-24">
                 <p
-                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${ethicalRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${isEthicalInView ? "fade-up fade-delay-1" : ""}`}
                 >
                   An ethical framework for AI in medicine, presented at the World Economic Forum (Davos) 2024.
                 </p>
 
                 <p
-                  className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${ethicalRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                  className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${isEthicalInView ? "fade-up fade-delay-2" : ""}`}
                 >
                   The KNGHT Doctrine prioritizes patient sovereignty and clinical integrity above algorithmic
-                  efficiency. Ethics isn't a branding exercise—it's infrastructure.
+                    efficiency. Ethics isn’t a branding exercise—it’s infrastructure.
                 </p>
               </div>
 
@@ -589,11 +586,11 @@ export function HomePage() {
       </section>
 
       {/* Contact Section - Minimal */}
-      <section id="contact" className="relative z-20 bg-white pt-32 pb-12 md:pt-48 md:pb-16" ref={contactRef.ref}>
+      <section id="contact" className="relative z-20 bg-white pt-32 pb-12 md:pt-48 md:pb-16" ref={contactSectionRef}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
             <div className="md:col-span-3">
-              <div className={`sticky top-32 border-t border-black/10 pt-6 ${contactRef.isInView ? "fade-up" : ""}`}>
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${isContactInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
                   06 / Contact
                 </span>
@@ -606,7 +603,7 @@ export function HomePage() {
             </div>
 
             <div className="md:col-span-9 flex flex-col justify-center">
-              <div className={`group ${contactRef.isInView ? "fade-up fade-delay-1" : ""}`}>
+              <div className={`group ${isContactInView ? "fade-up fade-delay-1" : ""}`}>
                 <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
                   General Inquiries
                 </h3>
@@ -622,7 +619,7 @@ export function HomePage() {
               <motion.div
                 className="mt-12 flex flex-col items-start gap-3"
                 initial={{ opacity: 0, y: 20 }}
-                animate={contactRef.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={isContactInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 <a
@@ -638,7 +635,7 @@ export function HomePage() {
                   />
                 </a>
                 <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">
-                  Let's start a conversation
+                  Let’s start a conversation
                 </span>
               </motion.div>
             </div>

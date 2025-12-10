@@ -238,9 +238,9 @@ export default function SEOAdminPage() {
             <Card>
               <CardContent className="py-12 text-center">
                 <p className="font-alfabet text-black/60 text-base mb-4">No recommendations yet</p>
-                <p className="font-alfabet text-black/40 text-sm">
-                  Click "Analyze Homepage" to generate AI-powered SEO recommendations
-                </p>
+                  <p className="font-alfabet text-black/40 text-sm">
+                    Click “Analyze Homepage” to generate AI-powered SEO recommendations
+                  </p>
               </CardContent>
             </Card>
           ) : (
