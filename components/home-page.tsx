@@ -135,9 +135,8 @@ export function HomePage() {
             preload="metadata"
             className="absolute inset-0 w-full h-full object-cover opacity-30"
             aria-label="DNA double helix animation representing healthcare innovation and genomics"
-            poster="/images/3watermarked-preview.mp4"
           >
-            <source src="/videos/dna-background.mp4" type="video/mp4" />
+            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3watermarked_preview-Bk5N138nsMFSjnIXU2MYPxuk7C2dB7.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-hero-overlay backdrop-blur-[1px]" />
         </div>
