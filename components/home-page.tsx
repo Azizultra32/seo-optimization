@@ -132,7 +132,10 @@ export function HomePage() {
           >
             <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3watermarked_preview-Bk5N138nsMFSjnIXU2MYPxuk7C2dB7.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-hero-overlay backdrop-blur-[1px]" />
+          <div
+            className="absolute inset-0 bg-hero-overlay backdrop-blur-[1px] pointer-events-none"
+            aria-hidden="true"
+          />
         </div>
 
         <div className="absolute top-0 left-0 right-0 w-full px-6 py-8 md:px-12 md:py-10 flex justify-between items-center z-10">
@@ -170,7 +173,7 @@ export function HomePage() {
         </button>
 
         {/* Hero Content */}
-        <div className="flex min-h-[80vh] items-center justify-center px-6">
+        <div className="relative z-10 flex min-h-[80vh] items-center justify-center px-6">
           <div className="text-center flex flex-col items-center max-w-6xl mx-auto">
             <div className="mb-10 relative flex justify-center gap-3">
               {["Physician", "Entrepreneur", "Founder"].map((label, index) => (
@@ -206,13 +209,18 @@ export function HomePage() {
             </motion.h1>
 
             <motion.p
-              className="font-alfabet font-normal text-black leading-relaxed max-w-4xl"
+              className="hero-subtitle font-alfabet font-normal text-black leading-relaxed max-w-4xl"
               initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
               animate={{ opacity: 1, y: 0 }}
               transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.4 } : { duration: 0 }}
             >
-              <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">Rebuilding</span>{" "}
-              healthcare from first principles—ethical AI, true interoperability, patient sovereignty.
+              <AnimatedText
+                text="Rebuilding healthcare from first principles—ethical AI, true interoperability, patient sovereignty."
+                baseDelay={700}
+                wordDelay={140}
+                letterDelay={24}
+                disabled={!heroAnimationsEnabled}
+              />
             </motion.p>
 
             <motion.div
