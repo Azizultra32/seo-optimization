@@ -4,8 +4,18 @@ import { getSupabaseUrl } from "@/lib/supabase/config"
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    let body
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json({ success: false, error: "Invalid JSON body" }, { status: 400 })
+    }
+
     const { eventType, eventName, pageUrl, metadata, sessionId } = body
+
+    if (!eventType || !eventName) {
+      return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 })
+    }
 
     const supabaseUrl = getSupabaseUrl()
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -32,6 +42,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("[v0] Analytics tracking error:", error)
-    return NextResponse.json({ error: "Failed to track event" }, { status: 500 })
+    return NextResponse.json({ success: false, error: "Failed to track event" }, { status: 200 })
   }
 }

@@ -16,16 +16,18 @@ export function getSessionId(): string {
 // Track custom event
 export async function trackEvent(eventType: string, eventName: string, metadata: Record<string, any> = {}) {
   try {
+    if (!eventType || !eventName) return
+
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 5000)
 
-    await fetch("/api/analytics/track", {
+    const response = await fetch("/api/analytics/track", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         eventType,
         eventName,
-        pageUrl: window.location.pathname,
+        pageUrl: typeof window !== "undefined" ? window.location.pathname : "",
         metadata,
         sessionId: getSessionId(),
       }),
@@ -33,6 +35,10 @@ export async function trackEvent(eventType: string, eventName: string, metadata:
     })
 
     clearTimeout(timeoutId)
+
+    if (!response.ok && process.env.NODE_ENV === "development") {
+      console.log("[v0] Analytics tracking returned non-ok status:", response.status)
+    }
   } catch (error) {
     // Only log in development
     if (process.env.NODE_ENV === "development") {

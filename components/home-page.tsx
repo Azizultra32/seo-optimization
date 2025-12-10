@@ -565,17 +565,19 @@ export function HomePage() {
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 <a
-                  href="mailto:info@armadamd.com?subject=Demo%20Request"
+                  href="https://www.linkedin.com/in/alighahary"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
                 >
-                  <span>Book a Demo</span>
+                  <span>Connect on LinkedIn</span>
                   <span
                     className="h-2 w-2 rounded-full bg-white/80 shadow-[0_0_0_3px] shadow-white/20"
                     aria-hidden="true"
                   />
                 </a>
                 <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">
-                  Response within 24 hours
+                  Let's start a conversation
                 </span>
               </motion.div>
             </div>
