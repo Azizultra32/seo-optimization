@@ -542,15 +542,15 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="md:col-span-8 md:col-start-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+            <div className="md:col-span-9">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-12">
                 <div className={`group ${contactRef.isInView ? "fade-up fade-delay-1" : ""}`}>
-                  <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40 group-hover:text-black transition-colors duration-500">
+                  <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
                     General Inquiries
                   </h3>
                   <a
                     href="mailto:info@armadamd.com"
-                    className="font-ivyjournal text-2xl md:text-3xl text-black hover:text-slate-600 transition-colors block mb-4"
+                    className="font-ivyjournal text-xl lg:text-2xl text-black hover:text-slate-600 transition-colors block mb-3 break-all"
                   >
                     info@armadamd.com
                   </a>
@@ -560,25 +560,27 @@ export function HomePage() {
                 </div>
 
                 <div className={`group ${contactRef.isInView ? "fade-up fade-delay-2" : ""}`}>
-                  <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40 group-hover:text-black transition-colors duration-500">
+                  <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
                     Press & Media
                   </h3>
                   <a
                     href="mailto:press@armadamd.com"
-                    className="font-ivyjournal text-2xl md:text-3xl text-black hover:text-slate-600 transition-colors block mb-4"
+                    className="font-ivyjournal text-xl lg:text-2xl text-black hover:text-slate-600 transition-colors block mb-3 break-all"
                   >
                     press@armadamd.com
                   </a>
                   <p className="font-alfabet font-light text-black/40 text-sm">Interviews and media kits</p>
                 </div>
 
-                <div className={`group ${contactRef.isInView ? "fade-up fade-delay-3" : ""}`}>
-                  <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40 group-hover:text-black transition-colors duration-500">
+                <div
+                  className={`group sm:col-span-2 xl:col-span-1 ${contactRef.isInView ? "fade-up fade-delay-3" : ""}`}
+                >
+                  <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
                     Product Demos
                   </h3>
                   <a
                     href="mailto:demo@armadamd.com"
-                    className="font-ivyjournal text-2xl md:text-3xl text-black hover:text-slate-600 transition-colors block mb-4"
+                    className="font-ivyjournal text-xl lg:text-2xl text-black hover:text-slate-600 transition-colors block mb-3 break-all"
                   >
                     demo@armadamd.com
                   </a>
