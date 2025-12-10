@@ -183,8 +183,8 @@ export function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.4 } : { duration: 0 }}
               >
-                <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">Reimagining</span>{" "}
-                the future of healthcare through ethical AI, interoperability, and patient empowerment.
+                <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">Rebuilding</span>{" "}
+                healthcare from first principles—ethical AI, true interoperability, patient sovereignty.
               </motion.p>
 
               <motion.div
@@ -230,8 +230,7 @@ export function HomePage() {
                   <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
                     Transforming
                   </span>
-                  healthcare isn't a software problem—it's a philosophical one. It starts with how we think about
-                  patients, clinicians, and data.
+                  healthcare isn't a software problem—it's a philosophical one.
                 </h3>
               </div>
             </div>
@@ -265,19 +264,14 @@ export function HomePage() {
                   <p
                     className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
                   >
-                    Dr. Ali Ghahary is a Canadian physician, entrepreneur, and multidisciplinary creator.
-                    Board-certified (CCFP) with over 20 years of clinical experience, he combines frontline medical
-                    expertise with a commitment to ethical innovation.
-                  </p>
-                  <p
-                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-3" : ""}`}
-                  >
-                    MD with Honours from the University of Alberta. CCFP Certification from McGill University.
+                    Dr. Ali Ghahary is a Canadian physician, entrepreneur, and technologist. Board-certified (CCFP) with
+                    over 20 years of clinical experience, he combines frontline medical expertise with a builder's
+                    mindset for ethical technology.
                   </p>
                 </div>
                 <div className="space-y-8 pt-0 md:pt-12">
                   <p
-                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
+                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-3" : ""}`}
                   >
                     His clinical career revealed a truth: healthcare is held back not by talent, but by fragmented
                     systems and technologies built without clinicians in the room. In response, he founded ArmadaMD.
@@ -333,7 +327,7 @@ export function HomePage() {
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
                         Exam-enabled care in the home through nurse-led visits, intelligent documentation, and rapid
-                        physician oversight. Built for global scale and clinical reliability.
+                        physician oversight. Designed for global scale. Built for clinical reliability.
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <HousecallDemo />
@@ -361,7 +355,7 @@ export function HomePage() {
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
                         Real-time clinical intelligence that structures conversations into accurate, defensible medical
-                        notes—reducing cognitive load while enhancing clarity.
+                        notes. Less friction. More clarity.
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <AssistMDDemo />
@@ -388,8 +382,8 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
-                        A secure, patient-controlled identity and medical-record layer built for seamless
-                        interoperability across clinics, provinces, and countries.
+                        A secure, patient-controlled identity and medical-record layer. True interoperability—across
+                        clinics, provinces, borders.
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <ArkPassDemo />
@@ -553,9 +547,7 @@ export function HomePage() {
                 >
                   info@armadamd.com
                 </a>
-                <p className="font-alfabet font-light text-black/40 text-sm">
-                  Questions, press inquiries, or partnership opportunities
-                </p>
+                <p className="font-alfabet font-light text-black/40 text-sm">Questions, press, or partnerships</p>
               </div>
 
               <motion.div
