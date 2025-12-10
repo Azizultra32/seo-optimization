@@ -141,24 +141,7 @@ export function HomePage() {
           <div className="absolute inset-0 bg-hero-overlay backdrop-blur-[1px]" />
         </div>
 
-        <button
-          onClick={toggleVideo}
-          className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-black/10 hover:bg-black/20 backdrop-blur-sm transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
-          aria-label={isVideoPaused ? "Play background video" : "Pause background video"}
-        >
-          {isVideoPaused ? (
-            <svg className="w-4 h-4 text-black/60" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          ) : (
-            <svg className="w-4 h-4 text-black/60" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-            </svg>
-          )}
-        </button>
-
-        {/* Header */}
-        <div className="px-6 py-8 md:px-12 md:py-10 flex justify-between items-center">
+        <div className="absolute top-0 left-0 right-0 w-full px-6 py-8 md:px-12 md:py-10 flex justify-between items-center z-10">
           <div className="hidden md:block">
             <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Est. 2004</span>
           </div>
@@ -175,6 +158,22 @@ export function HomePage() {
             <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Vancouver, BC</span>
           </div>
         </div>
+
+        <button
+          onClick={toggleVideo}
+          className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-black/10 hover:bg-black/20 backdrop-blur-sm transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
+          aria-label={isVideoPaused ? "Play background video" : "Pause background video"}
+        >
+          {isVideoPaused ? (
+            <svg className="w-4 h-4 text-black/60" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4 text-black/60" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+            </svg>
+          )}
+        </button>
 
         {/* Hero Content */}
         <div className="flex min-h-[80vh] items-center justify-center px-6">
