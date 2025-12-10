@@ -125,6 +125,7 @@ const structuredData = {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://drghahary.com"),
   title: "Dr. Ali Ghahary MD, CCFP | Physician, Entrepreneur, Founder | Armada MD",
   description:
     "Dr. Ali Ghahary is a physician, entrepreneur, and founder reimagining healthcare through ethical AI, interoperability, and patient empowerment. Founder of Armada Housecall™, AssistMD™, and ArkPass™.",
