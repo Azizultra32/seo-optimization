@@ -67,7 +67,6 @@ export function HomePage() {
           }
         })
         observer.observe({ entryTypes: ["largest-contentful-paint"] })
-
       } catch (e) {
         console.error("Performance tracking error:", e)
       }
@@ -184,9 +183,7 @@ export function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.4 } : { duration: 0 }}
               >
-                <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">
-                  Reimagining
-                </span>{" "}
+                <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">Reimagining</span>{" "}
                 the future of healthcare through ethical AI, interoperability, and patient empowerment.
               </motion.p>
 
@@ -201,9 +198,14 @@ export function HomePage() {
                   className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
                 >
                   <span>Book a Demo</span>
-                  <span className="h-2 w-2 rounded-full bg-white/80 shadow-[0_0_0_3px] shadow-white/20" aria-hidden="true" />
+                  <span
+                    className="h-2 w-2 rounded-full bg-white/80 shadow-[0_0_0_3px] shadow-white/20"
+                    aria-hidden="true"
+                  />
                 </Link>
-                <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">Response within 24 hours</span>
+                <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">
+                  Response within 24 hours
+                </span>
               </motion.div>
 
               <motion.div
@@ -603,20 +605,6 @@ export function HomePage() {
                   </a>
                   <p className="font-alfabet font-light text-black/40 text-sm">Schedule a platform walkthrough</p>
                 </div>
-
-                <div
-                  className={`flex items-end md:col-span-2 lg:col-span-3 ${contactRef.isInView ? "fade-up fade-delay-4" : ""}`}
-                >
-                  <a
-                    href="https://www.linkedin.com/in/alighahary"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-4 font-alfabet text-xs tracking-widest uppercase bg-black text-white px-10 py-5 rounded-full hover:bg-slate-800 transition-all duration-500 group"
-                  >
-                    <span>Connect on LinkedIn</span>
-                    <ExternalLink className="w-3 h-3 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform duration-300" />
-                  </a>
-                </div>
               </div>
             </div>
           </div>
@@ -629,7 +617,17 @@ export function HomePage() {
           <p className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest">
             © {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
           </p>
-          <div className="flex gap-12">
+          <div className="flex items-center gap-12">
+            {/* LinkedIn link added to footer */}
+            <a
+              href="https://www.linkedin.com/in/alighahary"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors inline-flex items-center gap-2"
+            >
+              LinkedIn
+              <ExternalLink className="w-3 h-3" />
+            </a>
             <Link
               href="/privacy"
               className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
