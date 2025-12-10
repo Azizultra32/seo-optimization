@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
-import { getSupabaseUrl } from "@/lib/supabase/config"
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,21 +7,21 @@ export async function POST(request: NextRequest) {
     try {
       body = await request.json()
     } catch {
-      return NextResponse.json({ success: false, error: "Invalid JSON body" }, { status: 400 })
+      return NextResponse.json({ success: false, error: "Invalid JSON body" }, { status: 200 })
     }
 
     const { eventType, eventName, pageUrl, metadata, sessionId } = body
 
     if (!eventType || !eventName) {
-      return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 })
+      return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 200 })
     }
 
-    const supabaseUrl = getSupabaseUrl()
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-    if (!supabaseKey) {
-      console.error("[v0] Missing Supabase service role key")
-      return NextResponse.json({ success: false, error: "Missing configuration" }, { status: 200 })
+    if (!supabaseUrl || !supabaseKey) {
+      // Silently skip analytics if not configured
+      return NextResponse.json({ success: true, skipped: true })
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey)
@@ -37,11 +36,15 @@ export async function POST(request: NextRequest) {
       metadata: metadata || {},
     })
 
-    if (error) throw error
+    if (error) {
+      // Log but don't throw - analytics should not break the app
+      console.error("[v0] Analytics insert error:", error.message)
+      return NextResponse.json({ success: false, error: error.message }, { status: 200 })
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("[v0] Analytics tracking error:", error)
-    return NextResponse.json({ success: false, error: "Failed to track event" }, { status: 200 })
+    return NextResponse.json({ success: false, error: "Internal error" }, { status: 200 })
   }
 }

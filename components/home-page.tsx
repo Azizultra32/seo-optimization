@@ -424,7 +424,7 @@ export function HomePage() {
                 <p
                   className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
-                  If it can't be trusted, it shouldn't exist. Every system I build follows this rule.
+                  If it can't be trusted, it shouldn't exist. Every system follows this rule.
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
