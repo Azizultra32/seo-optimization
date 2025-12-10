@@ -347,6 +347,10 @@
   .bg-hero-overlay {
     background-image: var(--hero-overlay);
   }
+
+  .hero-subtitle .animated-word:first-child {
+    @apply bg-brand-gradient-soft bg-clip-text text-transparent;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
