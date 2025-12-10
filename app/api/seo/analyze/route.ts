@@ -13,6 +13,54 @@ function getOpenAIClient() {
   return openaiClient
 }
 
+type SchemaRecommendation = {
+  type: string
+  properties: string[]
+}
+
+type Recommendation = {
+  meta_title: string
+  meta_description: string
+  keywords: string[]
+  schema_recommendations: SchemaRecommendation
+  content_improvements: string[]
+  confidence: number
+}
+
+// Normalize model output so downstream consumers always receive a complete, actionable payload
+function normalizeRecommendations(raw: unknown): Recommendation {
+  const fallback: Recommendation = {
+    meta_title: "Add the correct meta title",
+    meta_description: "Add the correct meta description",
+    keywords: [],
+    schema_recommendations: { type: "Article", properties: [] },
+    content_improvements: [
+      "Add an FAQ section that answers common patient questions to build trust.",
+      "Include author credentials and medical review details to satisfy E-E-A-T.",
+      "Add internal links to related services and blog posts for stronger topical authority.",
+      "Compress and add descriptive alt text to images to improve accessibility and SEO.",
+      "Surface calls-to-action that guide users to book appointments or learn more.",
+    ],
+    confidence: 0.8,
+  }
+
+  if (!raw || typeof raw !== "object") return fallback
+
+  const recommendation = raw as Partial<Recommendation>
+
+  return {
+    meta_title: recommendation.meta_title || fallback.meta_title,
+    meta_description: recommendation.meta_description || fallback.meta_description,
+    keywords: Array.isArray(recommendation.keywords) ? recommendation.keywords : fallback.keywords,
+    schema_recommendations: recommendation.schema_recommendations || fallback.schema_recommendations,
+    content_improvements:
+      Array.isArray(recommendation.content_improvements) && recommendation.content_improvements.length > 0
+        ? recommendation.content_improvements
+        : fallback.content_improvements,
+    confidence: typeof recommendation.confidence === "number" ? recommendation.confidence : fallback.confidence,
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { url, content, currentMeta } = await request.json()
@@ -31,14 +79,15 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "system",
-          content: `You are an expert SEO analyst specializing in medical and healthcare websites. 
+          content: `You are an expert SEO analyst specializing in medical and healthcare websites.
           Analyze the provided content and generate optimized SEO recommendations that:
           - Follow YMYL (Your Money Your Life) best practices
           - Meet E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) standards
           - Are optimized for both traditional search engines and AI answer engines
           - Include medical terminology appropriately
           - Maintain professional, trustworthy tone
-          
+          - Provide 5-7 prioritized suggestions that mix quick wins (alt text, headings, schema) and depth improvements (FAQs, trust signals, internal links)
+
           Return your analysis as JSON with this structure:
           {
             "meta_title": "optimized title (50-60 chars)",
@@ -48,7 +97,7 @@ export async function POST(request: NextRequest) {
               "type": "schema type to add",
               "properties": ["list of important properties"]
             },
-            "content_improvements": ["suggestion 1", "suggestion 2"],
+            "content_improvements": ["suggestion 1", "suggestion 2", "suggestion 3", "suggestion 4", "suggestion 5"],
             "confidence": 0.85
           }`,
         },
@@ -69,7 +118,7 @@ Analyze and provide SEO recommendations.`,
       response_format: { type: "json_object" },
     })
 
-    const recommendations = JSON.parse(completion.choices[0].message.content || "{}")
+    const recommendations = normalizeRecommendations(JSON.parse(completion.choices[0].message.content || "{}"))
 
     console.log("[v0] Generated recommendations:", recommendations)
 
