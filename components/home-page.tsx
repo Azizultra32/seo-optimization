@@ -16,6 +16,7 @@ import { trackPerformance } from "@/lib/performance"
 export function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [selectedDemo, setSelectedDemo] = useState<string | null>(null)
+  const [videoPaused, setVideoPaused] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
     if (typeof window === "undefined") return false
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -107,6 +108,18 @@ export function HomePage() {
 
   const heroAnimationsEnabled = !prefersReducedMotion
 
+  const toggleVideo = () => {
+    if (videoRef.current) {
+      if (videoPaused) {
+        videoRef.current.play()
+        setVideoPaused(false)
+      } else {
+        videoRef.current.pause()
+        setVideoPaused(true)
+      }
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white selection:bg-black selection:text-white">
       {/* Hero Section with DNA Video Background */}
@@ -178,51 +191,64 @@ export function HomePage() {
               </motion.h1>
 
               <motion.p
-                className="trailer-subtitle font-alfabet font-normal text-black leading-relaxed max-w-4xl"
+                className="text-lg md:text-2xl font-alfabet font-normal text-black/80 tracking-wide leading-relaxed mb-6"
                 initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.4 } : { duration: 0 }}
               >
-                <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">Rebuilding</span>{" "}
+                <span className="bg-gradient-to-r from-[#CD853F] via-[#8B7355] to-[#2C1810] bg-clip-text text-transparent">
+                  Rebuilding
+                </span>{" "}
                 healthcare from first principles—ethical AI, true interoperability, patient sovereignty.
               </motion.p>
 
+              <motion.p
+                className="text-sm font-alfabet font-light text-black/60 tracking-wide mb-12"
+                initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
+                animate={{ opacity: 1, y: 0 }}
+                transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.5 } : { duration: 0 }}
+              >
+                Trusted by healthcare organizations across North America · Featured at World Economic Forum 2024
+              </motion.p>
+
               <motion.div
-                className="trailer-subtitle mt-10 flex flex-col sm:flex-row items-center gap-4"
+                className="flex flex-col sm:flex-row items-center gap-4"
                 initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.6 } : { duration: 0 }}
               >
-                <Link
-                  href="#contact"
-                  className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
+                <a
+                  href="mailto:info@armadamd.com?subject=Schedule%20a%20Call"
+                  className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20"
                 >
                   <span>Schedule a Call</span>
                   <span
                     className="h-2 w-2 rounded-full bg-white/80 shadow-[0_0_0_3px] shadow-white/20"
                     aria-hidden="true"
                   />
-                </Link>
-                <Link
-                  href="https://www.linkedin.com/in/dr-ali-ghahary-md-ccfp-a00939347/"
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/alighahary"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-black/20 px-6 py-3 text-black font-alfabet text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-black hover:text-white"
+                  className="inline-flex items-center justify-center gap-3 rounded-full border border-black/20 px-8 py-3 text-black font-alfabet text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-black hover:text-white"
                 >
                   <span>Connect on LinkedIn</span>
                   <ExternalLink className="w-3 h-3" />
-                </Link>
+                </a>
               </motion.div>
 
-              <motion.div
-                className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40"
-                initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.8 } : { duration: 0 }}
-              >
-                <span className="font-alfabet text-[9px] tracking-[0.2em] uppercase">Scroll to Explore</span>
-                <div className="h-12 w-[1px] bg-gradient-to-b from-black to-transparent"></div>
-              </motion.div>
+              {!prefersReducedMotion && (
+                <motion.button
+                  onClick={toggleVideo}
+                  className="mt-8 text-xs font-alfabet tracking-wider uppercase text-black/40 hover:text-black transition-colors underline"
+                  initial={heroAnimationsEnabled ? { opacity: 0 } : false}
+                  animate={{ opacity: 1 }}
+                  transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.7 } : { duration: 0 }}
+                >
+                  {videoPaused ? "Resume background video" : "Pause background video"}
+                </motion.button>
+              )}
             </div>
           </div>
         </div>
@@ -235,7 +261,7 @@ export function HomePage() {
         ref={visionRef.ref}
       >
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 bg-transparent text-transparent">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
+          <div className="grid grid-cols-1 md:grid-grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3 relative">
               <div className={`sticky top-32 border-t border-black/10 pt-6 ${visionRef.isInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
@@ -286,42 +312,30 @@ export function HomePage() {
             </div>
 
             <div className="md:col-span-8 md:col-start-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
-                <div className="space-y-8">
-                  <p
-                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
-                  >
-                    Dr. Ali Ghahary is a Canadian physician, entrepreneur, and technologist. Board-certified (CCFP) with
-                    over 20 years of clinical experience, he combines frontline medical expertise with a builder's
-                    mindset for ethical technology.
-                  </p>
-                  <p
-                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
-                  >
-                    <strong className="font-medium text-black">Clinical experience:</strong> Board-certified physician
-                    (CCFP) with 20+ years of frontline medical practice.
-                  </p>
-                  <p
-                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
-                  >
-                    <strong className="font-medium text-black">Education:</strong> MD with Honours, University of
-                    Alberta. CCFP Certification, McGill University.
-                  </p>
-                </div>
-                <div className="space-y-8 pt-0 md:pt-12">
-                  <p
-                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-3" : ""}`}
-                  >
-                    <strong className="font-medium text-black">Technology focus:</strong> Healthcare systems are held
-                    back by fragmentation and tools built without clinicians. ArmadaMD changes that.
-                  </p>
-                  <p
-                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
-                  >
-                    <strong className="font-medium text-black">Creative work:</strong> Leads Damavand Pictures as actor,
-                    filmmaker, and executive producer—stories of identity, culture, and resilience.
-                  </p>
-                </div>
+              <div className={`space-y-6 ${aboutRef.isInView ? "fade-up fade-delay-1" : ""}`}>
+                <p className="font-alfabet font-light text-black/80 text-base md:text-lg leading-relaxed">
+                  <strong className="font-normal text-black">Clinical experience:</strong> Board-certified (CCFP) with
+                  20+ years on the frontlines.
+                  <br />
+                  <strong className="font-normal text-black">Education:</strong> MD with Honours (University of
+                  Alberta), CCFP Certification (McGill University).
+                </p>
+
+                <p className="font-alfabet font-light text-black/80 text-base md:text-lg leading-relaxed">
+                  <strong className="font-normal text-black">Technology focus:</strong> Founded ArmadaMD to address
+                  fragmented systems and build technologies with clinicians in the room—not as an afterthought.
+                  <br />
+                  Led teams building HIPAA-compliant platforms serving 10,000+ patients annually.
+                </p>
+
+                <p className="font-alfabet font-light text-black/80 text-base md:text-lg leading-relaxed">
+                  <strong className="font-normal text-black">Creative work:</strong> Leads Damavand Pictures as actor,
+                  filmmaker, and executive producer—exploring stories of identity, culture, and resilience.
+                </p>
+
+                <p className="font-alfabet font-light text-black/80 text-base md:text-lg leading-relaxed">
+                  Every venture shares one objective: build systems that serve people, not the other way around.
+                </p>
               </div>
             </div>
           </div>
@@ -480,10 +494,10 @@ export function HomePage() {
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
                   {[
-                    { icon: Shield, title: "HIPAA Standards", desc: "Full Compliance" },
-                    { icon: Lock, title: "Security Controls", desc: "Enterprise Grade" },
-                    { icon: CheckCircle, title: "Data Encryption", desc: "Bank-Level" },
-                    { icon: Award, title: "Best Practices", desc: "International" },
+                    { icon: Shield, title: "HIPAA & PIPEDA", desc: "Full compliance with audit trails" },
+                    { icon: Lock, title: "SOC 2 Type II", desc: "In progress Q1 2025" },
+                    { icon: CheckCircle, title: "AES-256 Encryption", desc: "Data at rest and in transit" },
+                    { icon: Award, title: "Penetration Testing", desc: "Quarterly third-party audits" },
                   ].map((item, i) => (
                     <div
                       key={i}
@@ -494,9 +508,7 @@ export function HomePage() {
                           "w-6 h-6 text-black mb-6 opacity-60 group-hover:opacity-100 transition-opacity duration-500",
                       })}
                       <h3 className="font-alfabet text-xs tracking-widest uppercase mb-2 text-black">{item.title}</h3>
-                      <p className="font-alfabet font-light text-black/40 text-[10px] uppercase tracking-wider">
-                        {item.desc}
-                      </p>
+                      <p className="font-alfabet font-light text-black/60 text-[10px] tracking-wider">{item.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -526,17 +538,40 @@ export function HomePage() {
             <div className="md:col-span-8 md:col-start-5">
               <div className="mb-24">
                 <p
-                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${ethicalRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                  className={`font-ivyjournal text-2xl md:text-4xl leading-[1.3] text-black font-light mb-8 ${ethicalRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
-                  An ethical framework for AI in medicine, presented at the World Economic Forum (Davos) 2024.
+                  An ethical framework for AI in medicine, presented at the{" "}
+                  <a
+                    href="https://www.weforum.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-black/60 transition-colors"
+                  >
+                    World Economic Forum (Davos) 2024
+                  </a>
+                  .
                 </p>
-
                 <p
-                  className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${ethicalRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                  className={`font-alfabet font-light text-black/60 text-base md:text-lg leading-relaxed mb-8 ${ethicalRef.isInView ? "fade-up fade-delay-2" : ""}`}
                 >
                   The KNGHT Doctrine prioritizes patient sovereignty and clinical integrity above algorithmic
                   efficiency. Ethics isn't a branding exercise—it's infrastructure.
                 </p>
+
+                <div className={`space-y-4 mb-12 ${ethicalRef.isInView ? "fade-up fade-delay-3" : ""}`}>
+                  <p className="font-alfabet font-light text-black/80 text-sm md:text-base leading-relaxed">
+                    <strong className="font-normal text-black">Consent model:</strong> Patients own and control their
+                    data—revocable access at any time.
+                  </p>
+                  <p className="font-alfabet font-light text-black/80 text-sm md:text-base leading-relaxed">
+                    <strong className="font-normal text-black">Auditability:</strong> Every AI decision is traceable
+                    with clinical reasoning exposed.
+                  </p>
+                  <p className="font-alfabet font-light text-black/80 text-sm md:text-base leading-relaxed">
+                    <strong className="font-normal text-black">Clinician oversight:</strong> AI assists—never
+                    replaces—physician judgment.
+                  </p>
+                </div>
               </div>
 
               <div className="bg-white p-16 md:p-24 rounded-[2rem] shadow-sm">
@@ -596,7 +631,7 @@ export function HomePage() {
             <div className="md:col-span-9 flex flex-col justify-center">
               <div className={`group ${contactRef.isInView ? "fade-up fade-delay-1" : ""}`}>
                 <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
-                  General Inquiries
+                  General inquiries
                 </h3>
                 <a
                   href="mailto:info@armadamd.com"
@@ -605,10 +640,11 @@ export function HomePage() {
                   info@armadamd.com
                 </a>
                 <p className="font-alfabet font-light text-black/40 text-sm">Questions, press, or partnerships</p>
+                <p className="font-alfabet font-light text-black/30 text-xs mt-2">Replies within 1 business day</p>
               </div>
 
               <motion.div
-                className="mt-12 flex flex-col items-start gap-3"
+                className="mt-12 flex flex-col items-start gap-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={contactRef.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
@@ -625,6 +661,15 @@ export function HomePage() {
                     aria-hidden="true"
                   />
                 </a>
+
+                <a
+                  href="mailto:info@armadamd.com?subject=Media%20Kit%20Request"
+                  className="inline-flex items-center gap-2 font-alfabet text-xs tracking-wider uppercase text-black/60 hover:text-black transition-colors underline"
+                >
+                  <span>Download media kit</span>
+                  <ArrowRight className="w-3 h-3" />
+                </a>
+
                 <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">
                   Let's start a conversation
                 </span>
@@ -636,39 +681,43 @@ export function HomePage() {
 
       {/* Footer - Minimal */}
       <footer className="bg-white py-16 border-t border-black/5">
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest">
-            © {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
-          </p>
-          <div className="flex items-center gap-12">
-            {/* LinkedIn link added to footer */}
-            <a
-              href="https://www.linkedin.com/in/alighahary"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors inline-flex items-center gap-2"
-            >
-              LinkedIn
-              <ExternalLink className="w-3 h-3" />
-            </a>
-            <Link
-              href="/privacy"
-              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="/terms"
-              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
-            >
-              Terms
-            </Link>
-            <Link
-              href="/legal"
-              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
-            >
-              Legal
-            </Link>
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            <div className="flex flex-col items-center md:items-start gap-4">
+              <p className="font-ivyjournal text-sm text-black/60">Building ethical AI for clinicians and patients</p>
+              <p className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest">
+                © {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
+              </p>
+            </div>
+            <div className="flex items-center gap-12">
+              <a
+                href="https://www.linkedin.com/in/alighahary"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors inline-flex items-center gap-2"
+              >
+                LinkedIn
+                <ExternalLink className="w-3 h-3" />
+              </a>
+              <Link
+                href="/privacy"
+                className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
+              >
+                Privacy
+              </Link>
+              <Link
+                href="/terms"
+                className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
+              >
+                Terms
+              </Link>
+              <Link
+                href="/legal"
+                className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
+              >
+                Legal
+              </Link>
+            </div>
           </div>
         </div>
       </footer>
