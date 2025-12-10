@@ -10,6 +10,7 @@ import { Lock, Shield, CheckCircle, Award, ExternalLink, ArrowRight } from "@/co
 import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-demo-dialog"
 import { trackPageView } from "@/lib/analytics"
 import { motion } from "@/components/ui/motion"
+import { useCoreWebVitals } from "@/hooks/use-core-web-vitals"
 import { useSafeInView } from "@/hooks/use-in-view"
 import { observeCoreWebVitals } from "@/lib/performance"
 
@@ -29,6 +30,8 @@ export function HomePage() {
   const trustRef = useSafeInView({ threshold: 0.2 })
   const ethicalRef = useSafeInView({ threshold: 0.3 })
   const contactRef = useSafeInView({ threshold: 0.3 })
+
+  useCoreWebVitals()
 
   useEffect(() => {
     if (typeof window === "undefined") return
