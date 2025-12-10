@@ -230,6 +230,61 @@
   animation-delay: 2.4s;
 }
 
+/* Word and letter cascade animations for hero typography */
+@keyframes wordCascade {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes letterCascade {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.animated-text {
+  column-gap: 0.12em;
+  row-gap: 0.12em;
+}
+
+.animated-word {
+  display: inline-flex;
+  overflow: hidden;
+  animation: wordCascade 0.9s ease-out forwards;
+}
+
+.animated-letter {
+  display: inline-block;
+  animation: letterCascade 0.65s ease-out forwards;
+}
+
+.animated-space {
+  display: inline-block;
+  width: 0.35em;
+}
+
+.animated-static {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
 @theme inline {
   --font-sans: "Geist", "Geist Fallback";
   --font-mono: "Geist Mono", "Geist Mono Fallback";
