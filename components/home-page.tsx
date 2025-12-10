@@ -10,8 +10,8 @@ import { Lock, Shield, CheckCircle, Award, ExternalLink, ArrowRight } from "@/co
 import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-demo-dialog"
 import { trackPageView } from "@/lib/analytics"
 import { motion } from "@/components/ui/motion"
+import { useCoreWebVitals } from "@/hooks/use-core-web-vitals"
 import { useSafeInView } from "@/hooks/use-in-view"
-import { trackPerformance } from "@/lib/performance"
 
 export function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -28,6 +28,8 @@ export function HomePage() {
   const trustRef = useSafeInView({ threshold: 0.2 })
   const ethicalRef = useSafeInView({ threshold: 0.3 })
   const contactRef = useSafeInView({ threshold: 0.3 })
+
+  useCoreWebVitals()
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -56,26 +58,8 @@ export function HomePage() {
     // Track page view
     trackPageView(window.location.pathname)
 
-    // Track Core Web Vitals
-    let observer: PerformanceObserver | undefined
-    if ("PerformanceObserver" in window) {
-      try {
-        observer = new PerformanceObserver((list) => {
-          for (const entry of list.getEntries()) {
-            if (entry.entryType === "largest-contentful-paint") {
-              trackPerformance("LCP", entry.startTime)
-            }
-          }
-        })
-        observer.observe({ entryTypes: ["largest-contentful-paint"] })
-      } catch (e) {
-        console.error("Performance tracking error:", e)
-      }
-    }
-
     return () => {
       motionQuery.removeEventListener("change", handleMotionPreference)
-      observer?.disconnect()
     }
   }, [])
 
