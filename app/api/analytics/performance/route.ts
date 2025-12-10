@@ -3,10 +3,32 @@ import { createClient } from "@supabase/supabase-js"
 import { getSupabaseUrl } from "@/lib/supabase/config"
 import { z } from "zod"
 
-const performancePayloadSchema = z.object({
-  pageUrl: z.string().min(1, "pageUrl is required"),
-  metrics: z.record(z.coerce.number({ invalid_type_error: "metrics values must be numbers" })),
-})
+const performanceMetricsSchema = z.record(
+  z.coerce.number({ invalid_type_error: "metrics values must be numbers" }),
+)
+
+const performancePayloadSchema = z
+  .object({
+    pageUrl: z.string().min(1, "pageUrl is required"),
+    metrics: performanceMetricsSchema.optional(),
+    metricName: z.string().min(1, "metricName is required").optional(),
+    metricValue: z
+      .union([
+        z.number({ invalid_type_error: "metricValue must be a number" }),
+        z.string().transform((val) => Number(val)),
+      ])
+      .optional(),
+  })
+  .refine(
+    (data) =>
+      data.metrics && Object.keys(data.metrics).length > 0
+        ? true
+        : data.metricName !== undefined && data.metricValue !== undefined,
+    {
+      message: "metrics or metricName/metricValue is required",
+      path: ["metrics"],
+    },
+  )
 
 export async function POST(request: NextRequest) {
   let parsedPayload: z.infer<typeof performancePayloadSchema> | undefined
@@ -27,7 +49,13 @@ export async function POST(request: NextRequest) {
     }
 
     parsedPayload = parsedResult.data
-    const { pageUrl, metrics } = parsedPayload
+    const { pageUrl, metrics, metricName, metricValue } = parsedPayload
+
+    const resolvedMetrics: Record<string, number> | undefined = metrics
+      ? metrics
+      : metricName !== undefined && metricValue !== undefined
+        ? { [metricName]: metricValue }
+        : undefined
 
     const supabaseUrl = getSupabaseUrl()
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -45,7 +73,7 @@ export async function POST(request: NextRequest) {
 
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    const entries = Object.entries(metrics)
+    const entries = Object.entries(resolvedMetrics ?? {})
       .filter(([, metricValue]) => Number.isFinite(metricValue))
       .map(([metricName, metricValue]) => ({
         page_url: pageUrl,
@@ -56,7 +84,7 @@ export async function POST(request: NextRequest) {
 
     if (entries.length === 0) {
       console.error("[v0] No valid metrics provided for performance payload", {
-        metricKeys: Object.keys(metrics),
+        metricKeys: resolvedMetrics ? Object.keys(resolvedMetrics) : [],
       })
 
       return NextResponse.json(
@@ -74,7 +102,11 @@ export async function POST(request: NextRequest) {
     console.error("[v0] Performance tracking error", {
       error,
       pageUrl: parsedPayload?.pageUrl,
-      metricCount: parsedPayload ? Object.keys(parsedPayload.metrics).length : undefined,
+      metricCount: parsedPayload?.metrics
+        ? Object.keys(parsedPayload.metrics).length
+        : parsedPayload?.metricName
+          ? 1
+          : undefined,
     })
     return NextResponse.json({ error: "Failed to track performance" }, { status: 500 })
   }

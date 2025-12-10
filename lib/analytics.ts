@@ -114,8 +114,7 @@ export async function trackPerformanceMetric(metricName: string, metricValue: nu
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         pageUrl: window.location.pathname,
-        metricName,
-        metricValue,
+        metrics: { [metricName]: metricValue },
       }),
       signal: controller.signal,
     })
