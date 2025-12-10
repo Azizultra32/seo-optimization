@@ -12,11 +12,13 @@ import { trackPageView } from "@/lib/analytics"
 import { motion } from "@/components/ui/motion"
 import { useCoreWebVitals } from "@/hooks/use-core-web-vitals"
 import { useSafeInView } from "@/hooks/use-in-view"
+import { observeCoreWebVitals } from "@/lib/performance"
 
 export function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [selectedDemo, setSelectedDemo] = useState<string | null>(null)
   const [isVideoPaused, setIsVideoPaused] = useState(false)
+  const [heroInView, setHeroInView] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
     if (typeof window === "undefined") return false
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -33,6 +35,9 @@ export function HomePage() {
 
   useEffect(() => {
     if (typeof window === "undefined") return
+
+    // Hero is immediately in view on page load
+    setHeroInView(true)
 
     // Honor reduced-motion preferences and align the hero video playback accordingly
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -58,8 +63,11 @@ export function HomePage() {
     // Track page view
     trackPageView(window.location.pathname)
 
+    const cleanupVitals = observeCoreWebVitals()
+
     return () => {
       motionQuery.removeEventListener("change", handleMotionPreference)
+      cleanupVitals()
     }
   }, [])
 
@@ -112,11 +120,12 @@ export function HomePage() {
         <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
           <video
             ref={videoRef}
-            autoPlay={!prefersReducedMotion}
+            autoPlay={!prefersReducedMotion && heroInView}
             muted
             loop
             playsInline
-            preload="metadata"
+            preload={heroInView ? "metadata" : "none"}
+            poster="/images/dna-poster.jpg"
             className="absolute inset-0 w-full h-full object-cover opacity-30"
             aria-label="DNA double helix animation representing healthcare innovation and genomics"
           >
