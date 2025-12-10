@@ -37,14 +37,13 @@ export async function POST(request: NextRequest) {
     })
 
     if (error) {
-      // Log but don't throw - analytics should not break the app
-      console.error("[v0] Analytics insert error:", error.message)
-      return NextResponse.json({ success: false, error: error.message }, { status: 200 })
+      const errorMessage = typeof error.message === "string" ? error.message : String(error)
+      // Skip logging entirely - analytics failures should be silent
+      return NextResponse.json({ success: false, skipped: true })
     }
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("[v0] Analytics tracking error:", error)
-    return NextResponse.json({ success: false, error: "Internal error" }, { status: 200 })
+    return NextResponse.json({ success: false, skipped: true })
   }
 }
