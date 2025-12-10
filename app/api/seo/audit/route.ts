@@ -3,6 +3,14 @@ import { type NextRequest, NextResponse } from "next/server"
 // This endpoint will be called by a cron job to audit all pages
 export async function POST(request: NextRequest) {
   try {
+    if (!process.env.CRON_SECRET) {
+      return NextResponse.json({ error: "Cron secret is not configured" }, { status: 500 })
+    }
+
+    if (!process.env.SITE_URL) {
+      return NextResponse.json({ error: "Site URL is not configured" }, { status: 500 })
+    }
+
     // Verify this is an authorized cron job request
     const authHeader = request.headers.get("authorization")
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
