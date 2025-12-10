@@ -225,13 +225,21 @@ export function HomePage() {
             <div className="md:col-span-8 md:col-start-5">
               <div className="mb-24">
                 <h3
-                  className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-16 text-black font-light -ml-1 md:-ml-2 ${visionRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                  className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-10 text-black font-light -ml-1 md:-ml-2 ${visionRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
                   <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
                     Transforming
                   </span>
-                  healthcare isn't a software problem—it's a philosophical one.
+                  healthcare starts by rebuilding the incentives, ethics, and trust it runs on.
                 </h3>
+
+                <p
+                  className={`font-alfabet font-light text-black/80 text-xl leading-[1.8] max-w-4xl ${visionRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                >
+                  Software matters, but philosophy determines whether it serves people or merely optimizes processes. My work
+                  blends clinical judgment, principled design, and interoperable infrastructure so care teams can work as
+                  one system—never as siloed vendors.
+                </p>
               </div>
             </div>
           </div>
@@ -265,23 +273,24 @@ export function HomePage() {
                     className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
                   >
                     Dr. Ali Ghahary is a Canadian physician, entrepreneur, and technologist. Board-certified (CCFP) with
-                    over 20 years of clinical experience, he combines frontline medical expertise with a builder's
-                    mindset for ethical technology.
+                    over 20 years of clinical experience, he brings frontline urgency and a builder's mindset to the
+                    ethical use of technology.
                   </p>
                 </div>
                 <div className="space-y-8 pt-0 md:pt-12">
                   <p
                     className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-3" : ""}`}
                   >
-                    His clinical career revealed a truth: healthcare is held back not by talent, but by fragmented
-                    systems and technologies built without clinicians in the room. In response, he founded ArmadaMD.
+                    His clinical career revealed a truth: healthcare is held back not by talent, but by fragmented systems
+                    built without clinicians in the room. In response, he founded ArmadaMD to close that gap with
+                    interoperable, clinician-led products.
                   </p>
                   <p
                     className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
                   >
-                    Outside medicine, he leads Damavand Pictures as an actor, filmmaker, and executive
-                    producer—exploring stories of identity, culture, and resilience. Every venture shares one objective:
-                    build systems that serve people, not the other way around.
+                    Outside medicine, he leads Damavand Pictures as an actor, filmmaker, and executive producer—exploring
+                    stories of identity, culture, and resilience. Across ventures the throughline is simple: build systems
+                    that serve people, not the other way around.
                   </p>
                 </div>
               </div>
@@ -327,7 +336,7 @@ export function HomePage() {
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
                         Exam-enabled care in the home through nurse-led visits, intelligent documentation, and rapid
-                        physician oversight. Designed for global scale. Built for clinical reliability.
+                        physician oversight. Designed for global scale, built to keep patients and clinicians fully in sync.
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <HousecallDemo />
@@ -355,7 +364,7 @@ export function HomePage() {
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
                         Real-time clinical intelligence that structures conversations into accurate, defensible medical
-                        notes. Less friction. More clarity.
+                        notes. Less friction for clinicians, better context for every patient encounter.
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <AssistMDDemo />
@@ -383,7 +392,7 @@ export function HomePage() {
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
                         A secure, patient-controlled identity and medical-record layer. True interoperability—across
-                        clinics, provinces, borders.
+                        clinics, provinces, borders—with patient agency built in by design.
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <ArkPassDemo />
@@ -416,9 +425,15 @@ export function HomePage() {
             <div className="md:col-span-8 md:col-start-5">
               <div className="mb-24">
                 <p
-                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-10 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
                   If it can't be trusted, it shouldn't exist. Every system follows this rule.
+                </p>
+                <p
+                  className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] max-w-3xl ${trustRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                >
+                  Trust is engineered, not implied. Security controls, governance, and transparent safeguards are baked into
+                  every release so patients, clinicians, and partners can rely on the outcomes.
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
