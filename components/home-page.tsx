@@ -542,60 +542,30 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="md:col-span-9">
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-12">
-                <div className={`group ${contactRef.isInView ? "fade-up fade-delay-1" : ""}`}>
-                  <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
-                    General Inquiries
-                  </h3>
-                  <a
-                    href="mailto:info@armadamd.com"
-                    className="font-ivyjournal text-xl lg:text-2xl text-black hover:text-slate-600 transition-colors block mb-3 break-all"
-                  >
-                    info@armadamd.com
-                  </a>
-                  <p className="font-alfabet font-light text-black/40 text-sm">
-                    Questions about Dr. Ghahary or Armada MD
-                  </p>
-                </div>
-
-                <div className={`group ${contactRef.isInView ? "fade-up fade-delay-2" : ""}`}>
-                  <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
-                    Press & Media
-                  </h3>
-                  <a
-                    href="mailto:press@armadamd.com"
-                    className="font-ivyjournal text-xl lg:text-2xl text-black hover:text-slate-600 transition-colors block mb-3 break-all"
-                  >
-                    press@armadamd.com
-                  </a>
-                  <p className="font-alfabet font-light text-black/40 text-sm">Interviews and media kits</p>
-                </div>
-
-                <div
-                  className={`group sm:col-span-2 xl:col-span-1 ${contactRef.isInView ? "fade-up fade-delay-3" : ""}`}
+            <div className="md:col-span-9 flex flex-col justify-center">
+              <div className={`group ${contactRef.isInView ? "fade-up fade-delay-1" : ""}`}>
+                <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
+                  General Inquiries
+                </h3>
+                <a
+                  href="mailto:info@armadamd.com"
+                  className="font-ivyjournal text-3xl md:text-4xl text-black hover:text-slate-600 transition-colors block mb-3"
                 >
-                  <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
-                    Product Demos
-                  </h3>
-                  <a
-                    href="mailto:demo@armadamd.com"
-                    className="font-ivyjournal text-xl lg:text-2xl text-black hover:text-slate-600 transition-colors block mb-3 break-all"
-                  >
-                    demo@armadamd.com
-                  </a>
-                  <p className="font-alfabet font-light text-black/40 text-sm">Schedule a platform walkthrough</p>
-                </div>
+                  info@armadamd.com
+                </a>
+                <p className="font-alfabet font-light text-black/40 text-sm">
+                  Questions, press inquiries, or partnership opportunities
+                </p>
               </div>
 
               <motion.div
-                className="mt-16 flex flex-col items-center gap-3"
+                className="mt-12 flex flex-col items-start gap-3"
                 initial={{ opacity: 0, y: 20 }}
                 animate={contactRef.isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 <a
-                  href="mailto:demo@armadamd.com"
+                  href="mailto:info@armadamd.com?subject=Demo%20Request"
                   className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
                 >
                   <span>Book a Demo</span>
