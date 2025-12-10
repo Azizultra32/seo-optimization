@@ -5,7 +5,7 @@ import React from "react"
 import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Lock, Shield, CheckCircle, Award, ExternalLink } from "@/components/icons"
+import { Lock, Shield, CheckCircle, Award, ExternalLink, ArrowRight } from "@/components/icons"
 // import { CommandBar } from "@/components/command-bar"; // Temporarily disabled
 import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-demo-dialog"
 import { trackPageView } from "@/lib/analytics"
@@ -188,6 +188,33 @@ export function HomePage() {
               </motion.p>
 
               <motion.div
+                className="trailer-subtitle mt-10 flex flex-col sm:flex-row items-center gap-4"
+                initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
+                animate={{ opacity: 1, y: 0 }}
+                transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.6 } : { duration: 0 }}
+              >
+                <Link
+                  href="#contact"
+                  className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
+                >
+                  <span>Schedule a Call</span>
+                  <span
+                    className="h-2 w-2 rounded-full bg-white/80 shadow-[0_0_0_3px] shadow-white/20"
+                    aria-hidden="true"
+                  />
+                </Link>
+                <Link
+                  href="https://www.linkedin.com/in/dr-ali-ghahary-md-ccfp-a00939347/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-black/20 px-6 py-3 text-black font-alfabet text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-black hover:text-white"
+                >
+                  <span>Connect on LinkedIn</span>
+                  <ExternalLink className="w-3 h-3" />
+                </Link>
+              </motion.div>
+
+              <motion.div
                 className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40"
                 initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
                 animate={{ opacity: 1, y: 0 }}
@@ -225,21 +252,13 @@ export function HomePage() {
             <div className="md:col-span-8 md:col-start-5">
               <div className="mb-24">
                 <h3
-                  className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-10 text-black font-light -ml-1 md:-ml-2 ${visionRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                  className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-16 text-black font-light -ml-1 md:-ml-2 ${visionRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
                   <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
                     Transforming
                   </span>
-                  healthcare starts by rebuilding the incentives, ethics, and trust it runs on.
+                  healthcare isn't a software problem—it's a philosophical one.
                 </h3>
-
-                <p
-                  className={`font-alfabet font-light text-black/80 text-xl leading-[1.8] max-w-4xl ${visionRef.isInView ? "fade-up fade-delay-2" : ""}`}
-                >
-                  Software matters, but philosophy determines whether it serves people or merely optimizes processes. My work
-                  blends clinical judgment, principled design, and interoperable infrastructure so care teams can work as
-                  one system—never as siloed vendors.
-                </p>
               </div>
             </div>
           </div>
@@ -273,24 +292,34 @@ export function HomePage() {
                     className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
                   >
                     Dr. Ali Ghahary is a Canadian physician, entrepreneur, and technologist. Board-certified (CCFP) with
-                    over 20 years of clinical experience, he brings frontline urgency and a builder's mindset to the
-                    ethical use of technology.
+                    over 20 years of clinical experience, he combines frontline medical expertise with a builder's
+                    mindset for ethical technology.
+                  </p>
+                  <p
+                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                  >
+                    <strong className="font-medium text-black">Clinical experience:</strong> Board-certified physician
+                    (CCFP) with 20+ years of frontline medical practice.
+                  </p>
+                  <p
+                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                  >
+                    <strong className="font-medium text-black">Education:</strong> MD with Honours, University of
+                    Alberta. CCFP Certification, McGill University.
                   </p>
                 </div>
                 <div className="space-y-8 pt-0 md:pt-12">
                   <p
                     className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-3" : ""}`}
                   >
-                    His clinical career revealed a truth: healthcare is held back not by talent, but by fragmented systems
-                    built without clinicians in the room. In response, he founded ArmadaMD to close that gap with
-                    interoperable, clinician-led products.
+                    <strong className="font-medium text-black">Technology focus:</strong> Healthcare systems are held
+                    back by fragmentation and tools built without clinicians. ArmadaMD changes that.
                   </p>
                   <p
                     className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
                   >
-                    Outside medicine, he leads Damavand Pictures as an actor, filmmaker, and executive producer—exploring
-                    stories of identity, culture, and resilience. Across ventures the throughline is simple: build systems
-                    that serve people, not the other way around.
+                    <strong className="font-medium text-black">Creative work:</strong> Leads Damavand Pictures as actor,
+                    filmmaker, and executive producer—stories of identity, culture, and resilience.
                   </p>
                 </div>
               </div>
@@ -334,9 +363,12 @@ export function HomePage() {
                       </span>
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
-                      <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
+                      <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-4 group-hover:text-white/80 transition-colors duration-500">
                         Exam-enabled care in the home through nurse-led visits, intelligent documentation, and rapid
-                        physician oversight. Designed for global scale, built to keep patients and clinicians fully in sync.
+                        physician oversight. Designed for global scale. Built for clinical reliability.
+                      </p>
+                      <p className="font-alfabet text-[11px] tracking-wide uppercase text-white/40 mb-8">
+                        {"<"}5 min physician response · HIPAA/PIPEDA compliant
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <HousecallDemo />
@@ -362,9 +394,12 @@ export function HomePage() {
                       </span>
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
-                      <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
+                      <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-4 group-hover:text-white/80 transition-colors duration-500">
                         Real-time clinical intelligence that structures conversations into accurate, defensible medical
-                        notes. Less friction for clinicians, better context for every patient encounter.
+                        notes. Less friction. More clarity.
+                      </p>
+                      <p className="font-alfabet text-[11px] tracking-wide uppercase text-white/40 mb-8">
+                        90% reduction in documentation time · SOC 2 Type II
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <AssistMDDemo />
@@ -390,9 +425,12 @@ export function HomePage() {
                       </span>
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
-                      <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
+                      <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-4 group-hover:text-white/80 transition-colors duration-500">
                         A secure, patient-controlled identity and medical-record layer. True interoperability—across
-                        clinics, provinces, borders—with patient agency built in by design.
+                        clinics, provinces, borders.
+                      </p>
+                      <p className="font-alfabet text-[11px] tracking-wide uppercase text-white/40 mb-8">
+                        End-to-end encryption · Patient-controlled access
                       </p>
                       <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
                         <ArkPassDemo />
@@ -400,6 +438,16 @@ export function HomePage() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="mt-16 flex justify-center">
+                <Link
+                  href="#contact"
+                  className="inline-flex items-center justify-center gap-3 rounded-full border border-white/20 px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white hover:text-black"
+                >
+                  <span>Discuss a Partnership</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </div>
           </div>
@@ -425,15 +473,9 @@ export function HomePage() {
             <div className="md:col-span-8 md:col-start-5">
               <div className="mb-24">
                 <p
-                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-10 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                  className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
                   If it can't be trusted, it shouldn't exist. Every system follows this rule.
-                </p>
-                <p
-                  className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] max-w-3xl ${trustRef.isInView ? "fade-up fade-delay-2" : ""}`}
-                >
-                  Trust is engineered, not implied. Security controls, governance, and transparent safeguards are baked into
-                  every release so patients, clinicians, and partners can rely on the outcomes.
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
