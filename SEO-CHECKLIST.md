@@ -83,3 +83,12 @@
 - [ ] Add press mentions and media coverage
 - [ ] Include patient testimonials (with consent)
 - [ ] Add FAQ section with schema markup for rich results
+
+## ✏️ Editorial Critique & Style Improvements
+
+- [ ] Voice consistency: The homepage alternates between poetic lines ("rebuilding healthcare from first principles") and product copy. Tighten the hero paragraph to one clear outcome statement and reserve the lyrical tone for pull quotes.
+- [ ] Calls-to-action: Add a primary CTA near the hero (e.g., "Schedule a call" or "See a demo") and a secondary CTA linking to LinkedIn. Repeat a CTA after the projects list to capture intent once visitors have context.
+- [ ] Scannability: Break longer biography sentences into two lines each, and use bolded lead-ins (e.g., "Clinical experience:" "Technology focus:") so readers can skim credentials quickly.
+- [ ] Proof points: Pair each venture with a measurable proof ("<5 min physician response," "HIPAA/PIPEDA compliant") to move beyond aspirational language.
+- [ ] Accessibility: Add descriptive alt text for the hero poster image and ensure video controls are suppressed only when motion is allowed; offer a "View static image" link for visitors who prefer no motion.
+- [ ] Terminology hygiene: Standardize trademark styling (™) on first mention of product names in each section and use consistent capitalization for headings and labels.
