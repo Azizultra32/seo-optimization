@@ -27,16 +27,6 @@ type Recommendation = {
   confidence: number
 }
 
-const DEFAULT_CONTENT_IMPROVEMENTS = [
-  "Add an FAQ section that answers common patient questions to build trust.",
-  "Include author credentials and medical review details to satisfy E-E-A-T.",
-  "Add internal links to related services and blog posts for stronger topical authority.",
-  "Compress and add descriptive alt text to images to improve accessibility and SEO.",
-  "Surface calls-to-action that guide users to book appointments or learn more.",
-  "Improve Core Web Vitals by optimizing LCP assets and reducing render-blocking scripts.",
-  "Ensure canonical tags are present and correct to prevent duplicate content issues.",
-]
-
 // Normalize model output so downstream consumers always receive a complete, actionable payload
 function normalizeRecommendations(raw: unknown): Recommendation {
   const fallback: Recommendation = {
@@ -44,58 +34,29 @@ function normalizeRecommendations(raw: unknown): Recommendation {
     meta_description: "Add the correct meta description",
     keywords: [],
     schema_recommendations: { type: "Article", properties: [] },
-    content_improvements: DEFAULT_CONTENT_IMPROVEMENTS,
+    content_improvements: [
+      "Add an FAQ section that answers common patient questions to build trust.",
+      "Include author credentials and medical review details to satisfy E-E-A-T.",
+      "Add internal links to related services and blog posts for stronger topical authority.",
+      "Compress and add descriptive alt text to images to improve accessibility and SEO.",
+      "Surface calls-to-action that guide users to book appointments or learn more.",
+    ],
     confidence: 0.8,
   }
 
   if (!raw || typeof raw !== "object") return fallback
 
   const recommendation = raw as Partial<Recommendation>
-  const normalizedSchema = recommendation.schema_recommendations
-    ? {
-        type: typeof recommendation.schema_recommendations.type === "string"
-          ? recommendation.schema_recommendations.type
-          : fallback.schema_recommendations.type,
-        properties: Array.isArray(recommendation.schema_recommendations.properties)
-          ? recommendation.schema_recommendations.properties.filter((prop): prop is string => typeof prop === "string")
-          : fallback.schema_recommendations.properties,
-      }
-    : fallback.schema_recommendations
-
-  const normalizedContentImprovements = Array.isArray(recommendation.content_improvements)
-    ? recommendation.content_improvements.filter((improvement): improvement is string => typeof improvement === "string")
-    : []
-
-  // Ensure we always return at least six prioritized, actionable improvements with technical coverage
-  const supplementedImprovements = [
-    ...normalizedContentImprovements,
-    ...DEFAULT_CONTENT_IMPROVEMENTS.filter(
-      (fallbackImprovement) => !normalizedContentImprovements.includes(fallbackImprovement),
-    ),
-  ]
-  const technicalKeywords = ["performance", "core web vitals", "index", "canonical", "schema", "crawl"]
-  const technicalCount = supplementedImprovements.filter((item) =>
-    technicalKeywords.some((keyword) => item.toLowerCase().includes(keyword)),
-  ).length
-  if (technicalCount < 2) {
-    supplementedImprovements.push(
-      "Audit indexing and robots directives to ensure priority pages are crawlable.",
-      "Verify canonical, hreflang, and sitemap signals to resolve duplication or targeting conflicts.",
-    )
-  }
-
-  const trimmedMetaTitle = typeof recommendation.meta_title === "string" ? recommendation.meta_title.trim() : ""
-  const trimmedMetaDescription =
-    typeof recommendation.meta_description === "string" ? recommendation.meta_description.trim() : ""
 
   return {
-    meta_title: trimmedMetaTitle || fallback.meta_title,
-    meta_description: trimmedMetaDescription || fallback.meta_description,
-    keywords: Array.isArray(recommendation.keywords)
-      ? recommendation.keywords.filter((keyword): keyword is string => typeof keyword === "string")
-      : fallback.keywords,
-    schema_recommendations: normalizedSchema,
-    content_improvements: supplementedImprovements.slice(0, Math.max(6, supplementedImprovements.length)),
+    meta_title: recommendation.meta_title || fallback.meta_title,
+    meta_description: recommendation.meta_description || fallback.meta_description,
+    keywords: Array.isArray(recommendation.keywords) ? recommendation.keywords : fallback.keywords,
+    schema_recommendations: recommendation.schema_recommendations || fallback.schema_recommendations,
+    content_improvements:
+      Array.isArray(recommendation.content_improvements) && recommendation.content_improvements.length > 0
+        ? recommendation.content_improvements
+        : fallback.content_improvements,
     confidence: typeof recommendation.confidence === "number" ? recommendation.confidence : fallback.confidence,
   }
 }
@@ -125,7 +86,7 @@ export async function POST(request: NextRequest) {
           - Are optimized for both traditional search engines and AI answer engines
           - Include medical terminology appropriately
           - Maintain professional, trustworthy tone
-          - Provide at least six prioritized suggestions that mix quick wins (alt text, headings, schema) and depth improvements (FAQs, trust signals, internal links)
+          - Provide 5-7 prioritized suggestions that mix quick wins (alt text, headings, schema) and depth improvements (FAQs, trust signals, internal links)
 
           Return your analysis as JSON with this structure:
           {
@@ -136,11 +97,7 @@ export async function POST(request: NextRequest) {
               "type": "schema type to add",
               "properties": ["list of important properties"]
             },
-            "content_improvements": [
-              "At least six prioritized, actionable recommendations (on-page copy, headings, internal links, media, accessibility)",
-              "Include at least two technical SEO fixes (performance, indexing, canonicalization, schema gaps)",
-              "Call out quick wins with clear next steps and example phrasing"
-            ],
+            "content_improvements": ["suggestion 1", "suggestion 2", "suggestion 3", "suggestion 4", "suggestion 5"],
             "confidence": 0.85
           }`,
         },
