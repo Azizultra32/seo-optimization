@@ -1,12 +1,14 @@
 import React from "react"
 
-const MotionComponent = ({ children, className, ...props }: any) => {
-  return (
-    <div className={className} {...props}>
+const MotionVideo = React.forwardRef<HTMLVideoElement, React.ComponentPropsWithoutRef<"video">>(
+  ({ children, className, ...props }, ref) => (
+    <video ref={ref} className={className} {...props}>
       {children}
-    </div>
-  )
-}
+    </video>
+  ),
+)
+
+MotionVideo.displayName = "MotionVideo"
 
 export const motion = {
   div: ({ children, className, ...props }: any) => (
@@ -29,9 +31,5 @@ export const motion = {
       {children}
     </button>
   ),
-  video: React.forwardRef(({ children, className, ...props }: any, ref: any) => (
-    <video ref={ref} className={className} {...props}>
-      {children}
-    </video>
-  )),
+  video: MotionVideo,
 }

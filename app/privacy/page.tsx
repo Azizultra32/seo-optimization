@@ -19,7 +19,7 @@ export default function PrivacyPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Overview</h2>
             <p>
-              Harvest Studio ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy
+                Harvest Studio (“we,” “our,” or “us”) is committed to protecting your privacy. This Privacy Policy
               explains how we collect, use, disclose, and safeguard your information when you visit our website.
             </p>
           </section>

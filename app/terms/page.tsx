@@ -19,7 +19,7 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Acceptance of Terms</h2>
             <p>
-              By accessing and using Harvest Studio's website and services, you accept and agree to be bound by the
+                By accessing and using Harvest Studio’s website and services, you accept and agree to be bound by the
               terms and provision of this agreement.
             </p>
           </section>
@@ -27,7 +27,7 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Use License</h2>
             <p>
-              Permission is granted to temporarily access the materials on Harvest Studio's website for personal,
+                Permission is granted to temporarily access the materials on Harvest Studio’s website for personal,
               non-commercial transitory viewing only.
             </p>
           </section>
@@ -47,7 +47,7 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Disclaimer</h2>
             <p>
-              The materials on Harvest Studio's website are provided on an 'as is' basis. Harvest Studio makes no
+                The materials on Harvest Studio’s website are provided on an “as is” basis. Harvest Studio makes no
               warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without
               limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or
               non-infringement of intellectual property or other violation of rights.
@@ -59,7 +59,7 @@ export default function TermsPage() {
             <p>
               In no event shall Harvest Studio or its suppliers be liable for any damages (including, without
               limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or
-              inability to use the materials on Harvest Studio's website.
+                inability to use the materials on Harvest Studio’s website.
             </p>
           </section>
 
