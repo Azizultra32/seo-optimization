@@ -13,6 +13,7 @@ import { motion } from "@/components/ui/motion"
 import { useCoreWebVitals } from "@/hooks/use-core-web-vitals"
 import { useSafeInView } from "@/hooks/use-in-view"
 import { observeCoreWebVitals } from "@/lib/performance"
+import { AnimatedText } from "@/components/animated-text"
 
 export function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -172,26 +173,40 @@ export function HomePage() {
         <div className="flex min-h-[80vh] items-center justify-center px-6">
           <div className="text-center flex flex-col items-center max-w-6xl mx-auto">
             <div className="mb-10 relative flex justify-center gap-3">
-              <span className="trailer-title-1 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">
-                Physician
-              </span>
-              <span className="trailer-title-2 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">
-                Entrepreneur
-              </span>
-              <span className="trailer-title-3 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">
-                Founder
-              </span>
+              {["Physician", "Entrepreneur", "Founder"].map((label, index) => (
+                <AnimatedText
+                  key={label}
+                  text={label}
+                  baseDelay={100 + index * 350}
+                  letterDelay={40}
+                  disabled={!heroAnimationsEnabled}
+                  className="font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent"
+                />
+              ))}
             </div>
 
-            <motion.h1 className="trailer-subtitle font-ivyjournal text-black/95 text-4xl md:text-5xl lg:text-6xl leading-[0.9] tracking-tight mb-6 font-normal">
-              Dr. Ali Ghahary
+            <motion.h1 className="font-ivyjournal text-black/95 text-4xl md:text-5xl lg:text-6xl leading-[0.9] tracking-tight mb-6 font-normal">
+              <AnimatedText
+                text="Dr. Ali Ghahary"
+                baseDelay={450}
+                wordDelay={240}
+                letterDelay={36}
+                disabled={!heroAnimationsEnabled}
+                className="leading-[0.9]"
+              />
               <span className="block text-lg md:text-xl lg:text-2xl font-light mt-3 font-alfabet tracking-normal text-slate-600">
-                MD, CCFP
+                <AnimatedText
+                  text="MD, CCFP"
+                  baseDelay={900}
+                  wordDelay={220}
+                  letterDelay={38}
+                  disabled={!heroAnimationsEnabled}
+                />
               </span>
             </motion.h1>
 
             <motion.p
-              className="trailer-subtitle font-alfabet font-normal text-black leading-relaxed max-w-4xl"
+              className="font-alfabet font-normal text-black leading-relaxed max-w-4xl"
               initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
               animate={{ opacity: 1, y: 0 }}
               transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.4 } : { duration: 0 }}
@@ -201,7 +216,7 @@ export function HomePage() {
             </motion.p>
 
             <motion.div
-              className="trailer-subtitle mt-10 flex flex-col sm:flex-row items-center gap-4"
+              className="mt-10 flex flex-col sm:flex-row items-center gap-4"
               initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
               animate={{ opacity: 1, y: 0 }}
               transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.6 } : { duration: 0 }}
@@ -228,7 +243,7 @@ export function HomePage() {
             </motion.div>
 
             <motion.div
-              className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40"
+              className="mt-24 flex flex-col items-center gap-4 opacity-40"
               initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
               animate={{ opacity: 1, y: 0 }}
               transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.8 } : { duration: 0 }}
