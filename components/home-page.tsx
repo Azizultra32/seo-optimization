@@ -368,7 +368,7 @@ export function HomePage() {
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
                         Armada Housecall
-                        <sup className="md:text-2xl opacity-50 relative -translate-y-3 text-3xl my-0">™</sup>
+                        <span className="align-super text-[10px] md:text-xs ml-1 opacity-60">™</span>
                       </h3>
                       <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
                         Home-Based Care Platform
