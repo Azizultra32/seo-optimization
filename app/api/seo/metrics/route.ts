@@ -11,13 +11,16 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = await createClient()
+    const normalizedClicks = typeof clicks === "number" && clicks > 0 ? clicks : 0
+    const normalizedImpressions = typeof impressions === "number" && impressions > 0 ? impressions : 0
+
     const { data, error } = await supabase
       .from("page_metrics")
       .insert({
         url,
         date,
-        clicks: clicks || 0,
-        impressions: impressions || 0,
+        clicks: normalizedClicks,
+        impressions: normalizedImpressions,
         queries: queries || [],
       })
       .select()
@@ -42,7 +45,9 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const url = request.nextUrl.searchParams.get("url")
-    const days = Number.parseInt(request.nextUrl.searchParams.get("days") || "30")
+    const daysParam = request.nextUrl.searchParams.get("days")
+    const parsedDays = Number.parseInt(daysParam || "30", 10)
+    const days = Number.isFinite(parsedDays) && parsedDays > 0 ? Math.min(parsedDays, 365) : 30
 
     if (!url) {
       return NextResponse.json({ error: "URL parameter is required" }, { status: 400 })
