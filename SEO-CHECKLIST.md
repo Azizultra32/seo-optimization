@@ -87,7 +87,7 @@
 ## ✏️ Editorial Critique & Style Improvements
 
 - [x] Voice consistency: Hero paragraph tightened to "Rebuilding healthcare from first principles—ethical AI, true interoperability, patient sovereignty."
-- [x] Calls-to-action: Added "Schedule a Call" (primary) and "Connect on LinkedIn" (secondary) near hero, plus "Discuss a Partnership" after projects list.
+- [x] Calls-to-action: Kept "Connect on LinkedIn" near hero and "Discuss a Partnership" after projects list while removing the direct call booking prompt.
 - [x] Scannability: Biography uses bolded lead-ins (Clinical experience:, Education:, Technology focus:, Creative work:) for quick scanning.
 - [x] Proof points: Each venture has measurable proofs (<5 min physician response, HIPAA/PIPEDA compliant, 90% reduction in documentation time, SOC 2 Type II, End-to-end encryption).
 - [x] Accessibility: Video has aria-label describing DNA animation, pause/play toggle button for motion preferences, respects prefers-reduced-motion.
