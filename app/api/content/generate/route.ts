@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import OpenAI from "openai"
-import { createClient } from "@supabase/supabase-js"
+import { createServiceRoleClient } from "@/lib/supabase/service-role"
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,10 +17,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Initialize Supabase
-    const supabase = createClient(
-      process.env.SUPABASE_POSTGRES_URL || process.env.SUPABASE_URL || "",
-      process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-    )
+    const supabase = createServiceRoleClient()
 
     // Get template if no custom prompt
     let prompt = customPrompt
@@ -201,15 +198,14 @@ Write in a professional, authoritative tone that reflects medical expertise and 
 
     // Log error
     try {
-      const supabase = createClient(
-        process.env.SUPABASE_POSTGRES_URL || process.env.SUPABASE_URL || "",
-        process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-      )
+      const supabase = createServiceRoleClient()
       await supabase.from("content_generation_log").insert({
         success: false,
         error_message: error instanceof Error ? error.message : "Unknown error",
       })
-    } catch {}
+    } catch (loggingError) {
+      console.error("[v0] Failed to log content generation error:", loggingError)
+    }
 
     return NextResponse.json(
       { error: "Failed to generate content", details: error instanceof Error ? error.message : "Unknown error" },

@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import OpenAI from "openai"
-import { createClient } from "@supabase/supabase-js"
+import { createServiceRoleClient } from "@/lib/supabase/service-role"
 
 // Topics for automatic content generation
 const AUTO_TOPICS = [
@@ -30,10 +30,7 @@ export async function GET(request: NextRequest) {
       apiKey: process.env.OPENAI_API_KEY,
     })
 
-    const supabase = createClient(
-      process.env.SUPABASE_POSTGRES_URL || process.env.SUPABASE_URL || "",
-      process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-    )
+    const supabase = createServiceRoleClient()
 
     // Check how many drafts were created in the last week
     const oneWeekAgo = new Date()
