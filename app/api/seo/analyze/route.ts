@@ -67,6 +67,17 @@ function normalizeRecommendations(raw: unknown): Recommendation {
   }
 }
 
+function parseModelContent(content: string | null | undefined) {
+  if (!content) return {}
+
+  try {
+    return JSON.parse(content)
+  } catch (error) {
+    console.warn("[v0] Failed to parse model response as JSON:", error)
+    return {}
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { url, content, currentMeta } = await request.json()
@@ -124,7 +135,7 @@ Analyze and provide SEO recommendations.`,
       response_format: { type: "json_object" },
     })
 
-    const recommendations = normalizeRecommendations(JSON.parse(completion.choices[0].message.content || "{}"))
+    const recommendations = normalizeRecommendations(parseModelContent(completion.choices[0]?.message?.content))
 
     console.log("[v0] Generated recommendations:", recommendations)
 
