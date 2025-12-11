@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
+import { createServiceRoleClient } from "@/lib/supabase/service-role"
 
 export async function GET() {
   try {
-    const supabase = createClient(
-      process.env.SUPABASE_POSTGRES_URL || process.env.SUPABASE_URL || "",
-      process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-    )
+    const supabase = createServiceRoleClient()
 
     // Get date range for last 30 days
     const thirtyDaysAgo = new Date()
