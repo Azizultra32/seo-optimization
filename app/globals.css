@@ -31,6 +31,7 @@
   --radius: 0.625rem;
   --brand-gradient: linear-gradient(90deg, #603010 0%, #8b7355 52%, #000000 100%);
   --brand-gradient-soft: linear-gradient(90deg, #603010 0%, #8b7355 60%, #1f130d 100%);
+  --brand-gold: #b08d57; /* Added muted gold accent color token */
   --hero-overlay: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.6) 0%,

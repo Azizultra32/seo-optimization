@@ -193,8 +193,8 @@ export function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.4 } : { duration: 0 }}
             >
-              <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">Rebuilding</span>{" "}
-              healthcare from first principles—ethical AI, true interoperability, patient sovereignty.
+              <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">Reimagining</span>{" "}
+              healthcare where technology serves the patient, not the system.
             </motion.p>
 
             <motion.div
@@ -203,6 +203,13 @@ export function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.6 } : { duration: 0 }}
             >
+              <a
+                href="#projects"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-black px-6 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-black/80"
+              >
+                <span>Explore Projects</span>
+                <ArrowRight className="w-3 h-3" />
+              </a>
               <Link
                 href="https://www.linkedin.com/in/dr-ali-ghahary-md-ccfp-a00939347/"
                 target="_blank"
@@ -215,7 +222,7 @@ export function HomePage() {
             </motion.div>
 
             <motion.div
-              className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40"
+              className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-60"
               initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
               animate={{ opacity: 1, y: 0 }}
               transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.8 } : { duration: 0 }}
@@ -236,7 +243,7 @@ export function HomePage() {
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 bg-transparent text-transparent">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3 relative">
-                <div className={`sticky top-32 border-t border-black/10 pt-6 ${isVisionInView ? "fade-up" : ""}`}>
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${isVisionInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
                   01 / Vision
                 </span>
@@ -251,13 +258,18 @@ export function HomePage() {
             <div className="md:col-span-8 md:col-start-5">
               <div className="mb-24">
                 <h3
-                  className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-16 text-black font-light -ml-1 md:-ml-2 ${isVisionInView ? "fade-up fade-delay-1" : ""}`}
+                  className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-8 text-black font-light -ml-1 md:-ml-2 ${isVisionInView ? "fade-up fade-delay-1" : ""}`}
                 >
                   <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
                     Transforming
                   </span>
-                    healthcare isn’t a software problem—it’s a philosophical one.
+                  healthcare isn't a software problem—it's a philosophical one.
                 </h3>
+                <p
+                  className={`font-alfabet font-light text-black/70 text-xl leading-relaxed max-w-2xl ${isVisionInView ? "fade-up fade-delay-2" : ""}`}
+                >
+                  It starts with asking who technology should truly serve.
+                </p>
               </div>
             </div>
           </div>
@@ -272,7 +284,7 @@ export function HomePage() {
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3 relative">
-                <div className={`sticky top-32 border-t border-black/10 pt-6 ${isAboutInView ? "fade-up" : ""}`}>
+              <div className={`sticky top-32 border-t border-black/10 pt-6 ${isAboutInView ? "fade-up" : ""}`}>
                 <span className="font-alfabet text-[10px] tracking-widest uppercase text-slate-400 block mb-4">
                   02 / Biography
                 </span>
@@ -288,20 +300,20 @@ export function HomePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
                 <div className="space-y-8">
                   <p
-                      className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${isAboutInView ? "fade-up fade-delay-2" : ""}`}
+                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${isAboutInView ? "fade-up fade-delay-2" : ""}`}
                   >
                     Dr. Ali Ghahary is a Canadian physician, entrepreneur, and technologist. Board-certified (CCFP) with
-                      over 20 years of clinical experience, he combines frontline medical expertise with a builder’s
+                    over 20 years of clinical experience, he combines frontline medical expertise with a builder’s
                     mindset for ethical technology.
                   </p>
                   <p
-                      className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-2" : ""}`}
+                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-2" : ""}`}
                   >
                     <strong className="font-medium text-black">Clinical experience:</strong> Board-certified physician
                     (CCFP) with 20+ years of frontline medical practice.
                   </p>
                   <p
-                      className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-2" : ""}`}
+                    className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-2" : ""}`}
                   >
                     <strong className="font-medium text-black">Education:</strong> MD with Honours, University of
                     Alberta. CCFP Certification, McGill University.
@@ -309,13 +321,13 @@ export function HomePage() {
                 </div>
                 <div className="space-y-8 pt-0 md:pt-12">
                   <p
-                      className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-3" : ""}`}
+                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-3" : ""}`}
                   >
                     <strong className="font-medium text-black">Technology focus:</strong> Healthcare systems are held
                     back by fragmentation and tools built without clinicians. ArmadaMD changes that.
                   </p>
                   <p
-                      className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-4" : ""}`}
+                    className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${isAboutInView ? "fade-up fade-delay-4" : ""}`}
                   >
                     <strong className="font-medium text-black">Creative work:</strong> Leads Damavand Pictures as actor,
                     filmmaker, and executive producer—stories of identity, culture, and resilience.
@@ -363,13 +375,13 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-4 group-hover:text-white/80 transition-colors duration-500">
-                        Exam-enabled care in the home through nurse-led visits, intelligent documentation, and rapid
-                        physician oversight. Designed for global scale. Built for clinical reliability.
+                        Clinical-grade care delivered at home. Nurse-led visits with physician oversight in under 5
+                        minutes—designed for global scale.
                       </p>
                       <p className="font-alfabet text-[11px] tracking-wide uppercase text-white/40 mb-8">
                         {"<"}5 min physician response · HIPAA/PIPEDA compliant
                       </p>
-                      <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="flex justify-end opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 transform md:translate-y-4 md:group-hover:translate-y-0">
                         <HousecallDemo />
                       </div>
                     </div>
@@ -394,13 +406,12 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-4 group-hover:text-white/80 transition-colors duration-500">
-                        Real-time clinical intelligence that structures conversations into accurate, defensible medical
-                        notes. Less friction. More clarity.
+                        AI that listens while you practice medicine. Accurate, defensible notes—without typing a word.
                       </p>
                       <p className="font-alfabet text-[11px] tracking-wide uppercase text-white/40 mb-8">
                         90% reduction in documentation time · SOC 2 Type II
                       </p>
-                      <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="flex justify-end opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 transform md:translate-y-4 md:group-hover:translate-y-0">
                         <AssistMDDemo />
                       </div>
                     </div>
@@ -425,13 +436,13 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-4 group-hover:text-white/80 transition-colors duration-500">
-                        A secure, patient-controlled identity and medical-record layer. True interoperability—across
-                        clinics, provinces, borders.
+                        Your health records, finally portable. Patient-owned data that moves with you—across clinics,
+                        provinces, borders.
                       </p>
                       <p className="font-alfabet text-[11px] tracking-wide uppercase text-white/40 mb-8">
                         End-to-end encryption · Patient-controlled access
                       </p>
-                      <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="flex justify-end opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 transform md:translate-y-4 md:group-hover:translate-y-0">
                         <ArkPassDemo />
                       </div>
                     </div>
@@ -519,6 +530,9 @@ export function HomePage() {
                   <br />
                   Doctrine
                 </h2>
+                <p className="font-alfabet text-[10px] tracking-wide text-black/40 mt-4 leading-relaxed">
+                  A framework for building AI that physicians and patients can trust.
+                </p>
               </div>
             </div>
 
@@ -534,7 +548,7 @@ export function HomePage() {
                   className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${isEthicalInView ? "fade-up fade-delay-2" : ""}`}
                 >
                   The KNGHT Doctrine prioritizes patient sovereignty and clinical integrity above algorithmic
-                    efficiency. Ethics isn’t a branding exercise—it’s infrastructure.
+                  efficiency. Ethics isn’t a branding exercise—it’s infrastructure.
                 </p>
               </div>
 
@@ -603,7 +617,9 @@ export function HomePage() {
                 >
                   info@armadamd.com
                 </a>
-                <p className="font-alfabet font-light text-black/40 text-sm">Questions, press, or partnerships</p>
+                <p className="font-alfabet font-light text-black/40 text-sm">
+                  For partnerships, press inquiries, or to start a conversation
+                </p>
               </div>
 
               <motion.div

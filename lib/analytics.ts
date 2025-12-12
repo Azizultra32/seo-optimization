@@ -106,6 +106,8 @@ export function trackPerformance() {
 
 export async function trackPerformanceMetric(metricName: string, metricValue: number) {
   try {
+    if (!metricName || !Number.isFinite(metricValue)) return
+
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 5000)
 
@@ -113,9 +115,8 @@ export async function trackPerformanceMetric(metricName: string, metricValue: nu
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        pageUrl: window.location.pathname,
-        metricName,
-        metricValue,
+        pageUrl: typeof window !== "undefined" ? window.location.pathname : "/",
+        metrics: { [metricName]: metricValue },
       }),
       signal: controller.signal,
     })
