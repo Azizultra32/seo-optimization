@@ -98,20 +98,20 @@ CREATE INDEX IF NOT EXISTS idx_generated_content_created ON public.generated_con
 -- ============================================
 
 -- Add audit columns to ai_recommendations if table exists
-DO $$ 
+DO $$
 BEGIN
   IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='ai_recommendations') THEN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns
                    WHERE table_name='ai_recommendations' AND column_name='updated_at') THEN
       ALTER TABLE public.ai_recommendations ADD COLUMN updated_at TIMESTAMPTZ DEFAULT now();
     END IF;
-    
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns
                    WHERE table_name='ai_recommendations' AND column_name='approved_by') THEN
       ALTER TABLE public.ai_recommendations ADD COLUMN approved_by VARCHAR(255);
     END IF;
-    
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns
                    WHERE table_name='ai_recommendations' AND column_name='status') THEN
       ALTER TABLE public.ai_recommendations ADD COLUMN status VARCHAR(50) DEFAULT 'pending';
     END IF;
@@ -123,11 +123,11 @@ END $$;
 -- ============================================
 
 -- Enable RLS on analytics tables with anon insert-only policy
-ALTER TABLE public.analytics_events ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.analytics_sessions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.page_performance ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.scroll_tracking ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.generated_content ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.analytics_events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.analytics_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.page_performance ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.scroll_tracking ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.generated_content ENABLE ROW LEVEL SECURITY;
 
 -- Allow anonymous users to INSERT analytics data only (no read/update/delete)
 DROP POLICY IF EXISTS "anon can insert events" ON public.analytics_events;
@@ -200,11 +200,11 @@ CREATE POLICY "service role full access content"
   WITH CHECK (true);
 
 -- Enable RLS on existing SEO tables if they exist
-DO $$ 
+DO $$
 BEGIN
   IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='ai_recommendations') THEN
     ALTER TABLE public.ai_recommendations ENABLE ROW LEVEL SECURITY;
-    
+
     DROP POLICY IF EXISTS "service role full access recommendations" ON public.ai_recommendations;
     CREATE POLICY "service role full access recommendations"
       ON public.ai_recommendations
@@ -213,10 +213,10 @@ BEGIN
       USING (true)
       WITH CHECK (true);
   END IF;
-  
+
   IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='page_metrics') THEN
     ALTER TABLE public.page_metrics ENABLE ROW LEVEL SECURITY;
-    
+
     DROP POLICY IF EXISTS "service role full access metrics" ON public.page_metrics;
     CREATE POLICY "service role full access metrics"
       ON public.page_metrics
@@ -238,7 +238,7 @@ SELECT pg_notify('pgrst', 'reload schema');
 -- SUCCESS MESSAGE
 -- ============================================
 
-DO $$ 
+DO $$
 BEGIN
   RAISE NOTICE '✅ Database setup complete! All tables created successfully.';
   RAISE NOTICE '📊 Analytics tables: analytics_events, analytics_sessions, page_performance, scroll_tracking';

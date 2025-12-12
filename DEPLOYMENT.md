@@ -90,7 +90,9 @@ Add these to your Vercel project under Settings → Environment Variables:
 
 ## Database Setup
 
-Run these SQL scripts in Supabase SQL Editor (in order):
+✅ **Database setup is complete.** All required tables and security policies have been created.
+
+If you need to reset the database in the future, you can regenerate the setup scripts.
 
 1. `scripts/create-seo-tables.sql` - SEO automation tables
 2. `scripts/create-content-tables.sql` - Content generation tables

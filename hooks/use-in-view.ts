@@ -8,6 +8,17 @@ interface UseInViewOptions {
   triggerOnce?: boolean
 }
 
+export function useSafeInView(options: UseInViewOptions = {}) {
+  const isV0 = typeof window !== "undefined" && window.location.host.includes("v0.app")
+  const result = useInView(options)
+
+  if (isV0) {
+    return { ref: result.ref, isInView: true }
+  }
+
+  return result
+}
+
 export function useInView(options: UseInViewOptions = {}) {
   const { threshold = 0.1, rootMargin = "0px", triggerOnce = true } = options
   const ref = useRef<HTMLDivElement>(null)
