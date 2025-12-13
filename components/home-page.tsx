@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useMemo } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Lock, Shield, CheckCircle, Award, ExternalLink } from "@/components/icons"
@@ -13,6 +13,104 @@ import { motion } from "@/components/ui/motion"
 import { useSafeInView } from "@/hooks/use-in-view"
 import { useCounter } from "@/hooks/use-counter"
 import { trackPerformance } from "@/lib/performance"
+
+// Cinematic animated letter component
+interface AnimatedLettersProps {
+  text: string
+  className?: string
+  baseDelay?: number
+  letterDelay?: number
+  animationType?: "reveal" | "wave" | "split"
+}
+
+function AnimatedLetters({
+  text,
+  className = "",
+  baseDelay = 0,
+  letterDelay = 0.05,
+  animationType = "reveal"
+}: AnimatedLettersProps) {
+  const letters = text.split("")
+
+  return (
+    <span className={`inline-block ${className}`}>
+      {letters.map((letter, index) => (
+        <motion.span
+          key={index}
+          className="inline-block"
+          initial={{
+            opacity: 0,
+            y: animationType === "wave" ? 20 : 40,
+            rotateX: animationType === "reveal" ? -90 : 0,
+            filter: "blur(10px)"
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            filter: "blur(0px)"
+          }}
+          transition={{
+            duration: 0.8,
+            delay: baseDelay + index * letterDelay,
+            ease: [0.16, 1, 0.3, 1]
+          }}
+          style={{
+            display: letter === " " ? "inline" : "inline-block",
+            minWidth: letter === " " ? "0.3em" : "auto"
+          }}
+        >
+          {letter === " " ? "\u00A0" : letter}
+        </motion.span>
+      ))}
+    </span>
+  )
+}
+
+// Cinematic animated words component
+interface AnimatedWordsProps {
+  text: string
+  className?: string
+  baseDelay?: number
+  wordDelay?: number
+}
+
+function AnimatedWords({
+  text,
+  className = "",
+  baseDelay = 0,
+  wordDelay = 0.15
+}: AnimatedWordsProps) {
+  const words = text.split(" ")
+
+  return (
+    <span className={className}>
+      {words.map((word, index) => (
+        <motion.span
+          key={index}
+          className="inline-block mr-[0.3em]"
+          initial={{
+            opacity: 0,
+            y: 30,
+            filter: "blur(12px)"
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)"
+          }}
+          transition={{
+            duration: 0.9,
+            delay: baseDelay + index * wordDelay,
+            ease: [0.16, 1, 0.3, 1]
+          }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </span>
+  )
+}
 
 export function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -166,50 +264,118 @@ export function HomePage() {
           {/* Hero Content */}
           <div className="flex min-h-[80vh] items-center justify-center px-6">
             <div className="text-center flex flex-col items-center max-w-6xl mx-auto">
-              <div className="mb-10 relative flex justify-center gap-3">
-                <span className="trailer-title-1 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">
-                  Physician
-                </span>
-                <span className="trailer-title-2 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">
-                  Entrepreneur
-                </span>
-                <span className="trailer-title-3 font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">
-                  Founder
-                </span>
+              {/* Animated title badges with staggered reveal */}
+              <div className="mb-10 relative flex justify-center gap-4 md:gap-6">
+                {heroAnimationsEnabled ? (
+                  <>
+                    {["Physician", "Entrepreneur", "Founder"].map((title, index) => (
+                      <motion.span
+                        key={title}
+                        className="font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent"
+                        initial={{ opacity: 0, y: 30, filter: "blur(10px)", scale: 0.8 }}
+                        animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+                        transition={{
+                          duration: 1,
+                          delay: 0.3 + index * 0.7,
+                          ease: [0.16, 1, 0.3, 1]
+                        }}
+                      >
+                        {title}
+                      </motion.span>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <span className="font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">Physician</span>
+                    <span className="font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">Entrepreneur</span>
+                    <span className="font-alfabet font-medium text-[10px] md:text-[11px] tracking-[0.3em] uppercase bg-brand-gradient bg-clip-text text-transparent">Founder</span>
+                  </>
+                )}
               </div>
 
-              <motion.h1 className="trailer-subtitle font-ivyjournal text-black/95 text-4xl md:text-5xl lg:text-6xl leading-[0.9] tracking-tight mb-6 font-normal">
-                Dr. Ali Ghahary
-                <span className="block text-lg md:text-xl lg:text-2xl font-light mt-3 font-alfabet tracking-normal text-slate-600">
-                  MD, CCFP
-                </span>
-              </motion.h1>
+              {/* Main name with letter-by-letter animation */}
+              <h1 className="font-ivyjournal text-black/95 text-4xl md:text-5xl lg:text-7xl leading-[0.9] tracking-tight mb-6 font-normal">
+                {heroAnimationsEnabled ? (
+                  <>
+                    <span className="block">
+                      <AnimatedLetters
+                        text="Dr. Ali Ghahary"
+                        baseDelay={2.4}
+                        letterDelay={0.06}
+                        className="inline-block"
+                      />
+                    </span>
+                    <motion.span
+                      className="block text-lg md:text-xl lg:text-2xl font-light mt-4 font-alfabet tracking-[0.15em] text-slate-600"
+                      initial={{ opacity: 0, y: 20, letterSpacing: "-0.2em", filter: "blur(10px)" }}
+                      animate={{ opacity: 1, y: 0, letterSpacing: "0.15em", filter: "blur(0px)" }}
+                      transition={{ duration: 1.2, delay: 3.6, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      MD, CCFP
+                    </motion.span>
+                  </>
+                ) : (
+                  <>
+                    <span className="block">Dr. Ali Ghahary</span>
+                    <span className="block text-lg md:text-xl lg:text-2xl font-light mt-4 font-alfabet tracking-[0.15em] text-slate-600">
+                      MD, CCFP
+                    </span>
+                  </>
+                )}
+              </h1>
 
-              <motion.p
-                className="trailer-subtitle font-alfabet font-normal text-black leading-relaxed max-w-4xl"
-                initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.4 } : { duration: 0 }}
-              >
-                <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">Reimagining</span>{" "}
-                the future of healthcare through ethical AI, interoperability, and patient empowerment.
-              </motion.p>
+              {/* Tagline with word-by-word animation */}
+              <div className="font-alfabet font-normal text-black leading-relaxed max-w-4xl text-base md:text-lg">
+                {heroAnimationsEnabled ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 4.2 }}
+                  >
+                    <motion.span
+                      className="bg-brand-gradient-soft bg-clip-text text-transparent font-medium text-shine"
+                      initial={{ opacity: 0, scale: 1.5, filter: "blur(20px)" }}
+                      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 1.2, delay: 4.4, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      Reimagining
+                    </motion.span>{" "}
+                    <AnimatedWords
+                      text="the future of healthcare through ethical AI, interoperability, and patient empowerment."
+                      baseDelay={4.8}
+                      wordDelay={0.08}
+                    />
+                  </motion.div>
+                ) : (
+                  <p>
+                    <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-medium">Reimagining</span>{" "}
+                    the future of healthcare through ethical AI, interoperability, and patient empowerment.
+                  </p>
+                )}
+              </div>
 
+              {/* Scroll indicator with enhanced animation */}
               <motion.div
-                className="trailer-subtitle mt-24 flex flex-col items-center gap-4"
-                initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
+                className="mt-24 flex flex-col items-center gap-4"
+                initial={heroAnimationsEnabled ? { opacity: 0, y: 30 } : false}
                 animate={{ opacity: 0.6, y: 0 }}
-                transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.8 } : { duration: 0 }}
+                transition={heroAnimationsEnabled ? { duration: 1, delay: 6 } : { duration: 0 }}
               >
-                <span className="font-alfabet text-[9px] tracking-[0.2em] uppercase">Scroll to Explore</span>
-                <motion.div
-                  className="h-16 w-[1px] bg-gradient-to-b from-black/60 via-black/30 to-transparent relative"
-                  animate={heroAnimationsEnabled ? { scaleY: [1, 1.2, 1] } : undefined}
+                <motion.span
+                  className="font-alfabet text-[9px] tracking-[0.3em] uppercase"
+                  animate={heroAnimationsEnabled ? { opacity: [0.4, 0.8, 0.4] } : undefined}
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
+                  Scroll to Explore
+                </motion.span>
+                <motion.div
+                  className="h-20 w-[1px] bg-gradient-to-b from-black/60 via-black/30 to-transparent relative overflow-hidden"
+                  animate={heroAnimationsEnabled ? { scaleY: [1, 1.1, 1] } : undefined}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                >
                   <motion.div
-                    className="absolute top-0 left-0 w-full h-4 bg-gradient-to-b from-black to-transparent"
-                    animate={heroAnimationsEnabled ? { y: [0, 48, 0] } : undefined}
+                    className="absolute top-0 left-0 w-full h-6 bg-gradient-to-b from-black via-black/50 to-transparent"
+                    animate={heroAnimationsEnabled ? { y: [0, 56, 0] } : undefined}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                   />
                 </motion.div>
@@ -244,14 +410,39 @@ export function HomePage() {
 
             <div className="md:col-span-8 md:col-start-5">
               <div className="mb-24">
-                <h3
-                  className={`font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-16 text-black font-light -ml-1 md:-ml-2 ${visionRef.isInView ? "fade-up fade-delay-1" : ""}`}
-                >
-                  <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
-                    Transforming
-                  </span>
-                  healthcare isn't a software problem—it's a philosophical one. It starts with how we think about
-                  patients, clinicians, and data.
+                <h3 className="font-ivyjournal text-4xl md:text-6xl leading-[1.1] mb-16 text-black font-light -ml-1 md:-ml-2">
+                  {visionRef.isInView ? (
+                    <>
+                      <motion.span
+                        className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2 inline-block text-shine"
+                        initial={{ opacity: 0, x: -50, filter: "blur(15px)" }}
+                        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        Transforming
+                      </motion.span>
+                      {" "}
+                      <AnimatedWords
+                        text="healthcare isn't a software problem—it's a philosophical one."
+                        baseDelay={0.4}
+                        wordDelay={0.06}
+                      />
+                      <br className="hidden md:block" />
+                      <AnimatedWords
+                        text="It starts with how we think about patients, clinicians, and data."
+                        baseDelay={1.2}
+                        wordDelay={0.06}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
+                        Transforming
+                      </span>
+                      healthcare isn't a software problem—it's a philosophical one. It starts with how we think about
+                      patients, clinicians, and data.
+                    </>
+                  )}
                 </h3>
               </div>
             </div>
@@ -422,85 +613,177 @@ export function HomePage() {
               <div className="space-y-0 divide-y divide-white/10 border-t border-white/10">
                 {/* Armada Housecall */}
                 <div
-                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${projectsRef.isInView ? "fade-up fade-delay-1" : ""}`}
+                  className="group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
-                      <span className="font-alfabet text-[10px] text-white/30">01</span>
+                      <motion.span
+                        className="font-alfabet text-[10px] text-white/30"
+                        initial={projectsRef.isInView ? { opacity: 0, scale: 2 } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, scale: 1 } : false}
+                        transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        01
+                      </motion.span>
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
-                        Armada Housecall
+                        {projectsRef.isInView ? (
+                          <AnimatedLetters
+                            text="Armada Housecall"
+                            baseDelay={0.3}
+                            letterDelay={0.04}
+                          />
+                        ) : (
+                          "Armada Housecall"
+                        )}
                         <sup className="md:text-2xl opacity-50 relative -translate-y-3 text-3xl my-0">™</sup>
                       </h3>
-                      <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
+                      <motion.span
+                        className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 block"
+                        initial={projectsRef.isInView ? { opacity: 0, y: 10 } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, y: 0 } : false}
+                        transition={{ duration: 0.6, delay: 1, ease: [0.16, 1, 0.3, 1] }}
+                      >
                         Home-Based Care Platform
-                      </span>
+                      </motion.span>
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
-                      <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
+                      <motion.p
+                        className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500"
+                        initial={projectsRef.isInView ? { opacity: 0, y: 20, filter: "blur(5px)" } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : false}
+                        transition={{ duration: 0.8, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                      >
                         Exam-enabled care in the home through nurse-led visits, intelligent documentation, and rapid
                         physician oversight. Built for global scale and clinical reliability.
-                      </p>
-                      <div className="flex justify-end">
+                      </motion.p>
+                      <motion.div
+                        className="flex justify-end"
+                        initial={projectsRef.isInView ? { opacity: 0, scale: 0.8 } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, scale: 1 } : false}
+                        transition={{ duration: 0.6, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                      >
                         <HousecallDemo />
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
                 </div>
 
                 {/* Armada AssistMD */}
                 <div
-                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${projectsRef.isInView ? "fade-up fade-delay-2" : ""}`}
+                  className="group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
-                      <span className="font-alfabet text-[10px] text-white/30">02</span>
+                      <motion.span
+                        className="font-alfabet text-[10px] text-white/30"
+                        initial={projectsRef.isInView ? { opacity: 0, scale: 2 } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, scale: 1 } : false}
+                        transition={{ duration: 0.8, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        02
+                      </motion.span>
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
-                        Armada AssistMD<sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
+                        {projectsRef.isInView ? (
+                          <AnimatedLetters
+                            text="Armada AssistMD"
+                            baseDelay={2}
+                            letterDelay={0.04}
+                          />
+                        ) : (
+                          "Armada AssistMD"
+                        )}
+                        <sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
                       </h3>
-                      <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
+                      <motion.span
+                        className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 block"
+                        initial={projectsRef.isInView ? { opacity: 0, y: 10 } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, y: 0 } : false}
+                        transition={{ duration: 0.6, delay: 2.7, ease: [0.16, 1, 0.3, 1] }}
+                      >
                         AI Clinical Documentation
-                      </span>
+                      </motion.span>
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
-                      <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
+                      <motion.p
+                        className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500"
+                        initial={projectsRef.isInView ? { opacity: 0, y: 20, filter: "blur(5px)" } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : false}
+                        transition={{ duration: 0.8, delay: 2.9, ease: [0.16, 1, 0.3, 1] }}
+                      >
                         Real-time clinical intelligence that structures conversations into accurate, defensible medical
                         notes—reducing cognitive load while enhancing clarity.
-                      </p>
-                      <div className="flex justify-end">
+                      </motion.p>
+                      <motion.div
+                        className="flex justify-end"
+                        initial={projectsRef.isInView ? { opacity: 0, scale: 0.8 } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, scale: 1 } : false}
+                        transition={{ duration: 0.6, delay: 3.2, ease: [0.16, 1, 0.3, 1] }}
+                      >
                         <AssistMDDemo />
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
                 </div>
 
                 {/* Armada ArkPass */}
                 <div
-                  className={`group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12 ${projectsRef.isInView ? "fade-up fade-delay-3" : ""}`}
+                  className="group py-16 md:py-24 hover:bg-white/[0.02] transition-colors duration-700 -mx-6 px-6 md:-mx-12 md:px-12"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
-                      <span className="font-alfabet text-[10px] text-white/30">03</span>
+                      <motion.span
+                        className="font-alfabet text-[10px] text-white/30"
+                        initial={projectsRef.isInView ? { opacity: 0, scale: 2 } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, scale: 1 } : false}
+                        transition={{ duration: 0.8, delay: 3.5, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        03
+                      </motion.span>
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
-                        Armada ArkPass<sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
+                        {projectsRef.isInView ? (
+                          <AnimatedLetters
+                            text="Armada ArkPass"
+                            baseDelay={3.7}
+                            letterDelay={0.04}
+                          />
+                        ) : (
+                          "Armada ArkPass"
+                        )}
+                        <sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
                       </h3>
-                      <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
+                      <motion.span
+                        className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 block"
+                        initial={projectsRef.isInView ? { opacity: 0, y: 10 } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, y: 0 } : false}
+                        transition={{ duration: 0.6, delay: 4.4, ease: [0.16, 1, 0.3, 1] }}
+                      >
                         Patient-Owned Health Data
-                      </span>
+                      </motion.span>
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
-                      <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500">
+                      <motion.p
+                        className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-8 group-hover:text-white/80 transition-colors duration-500"
+                        initial={projectsRef.isInView ? { opacity: 0, y: 20, filter: "blur(5px)" } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : false}
+                        transition={{ duration: 0.8, delay: 4.6, ease: [0.16, 1, 0.3, 1] }}
+                      >
                         A secure, patient-controlled identity and medical-record layer built for seamless
                         interoperability across clinics, provinces, and countries.
-                      </p>
-                      <div className="flex justify-end">
+                      </motion.p>
+                      <motion.div
+                        className="flex justify-end"
+                        initial={projectsRef.isInView ? { opacity: 0, scale: 0.8 } : false}
+                        animate={projectsRef.isInView ? { opacity: 1, scale: 1 } : false}
+                        transition={{ duration: 0.6, delay: 4.9, ease: [0.16, 1, 0.3, 1] }}
+                      >
                         <ArkPassDemo />
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
                 </div>
