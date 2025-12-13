@@ -31,6 +31,26 @@
   --radius: 0.625rem;
   --brand-gradient: linear-gradient(90deg, #603010 0%, #8b7355 52%, #000000 100%);
   --brand-gradient-soft: linear-gradient(90deg, #603010 0%, #8b7355 60%, #1f130d 100%);
+
+  /* New accent color system - sophisticated teal */
+  --accent-brand: oklch(0.55 0.12 195);
+  --accent-brand-light: oklch(0.70 0.10 195);
+  --accent-brand-dark: oklch(0.40 0.14 195);
+
+  /* Warm gold accent for highlights */
+  --accent-gold: oklch(0.75 0.12 85);
+  --accent-gold-light: oklch(0.85 0.10 85);
+  --accent-gold-dark: oklch(0.60 0.14 85);
+
+  /* New gradient variations */
+  --gradient-accent: linear-gradient(135deg, var(--accent-brand) 0%, var(--accent-brand-dark) 100%);
+  --gradient-gold: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 100%);
+  --gradient-elegant: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+
+  /* Subtle background textures */
+  --noise-opacity: 0.03;
+  --grid-color: rgba(0, 0, 0, 0.03);
+  --dot-color: rgba(0, 0, 0, 0.08);
   --hero-overlay: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.6) 0%,
@@ -292,6 +312,165 @@
   .bg-hero-overlay {
     background-image: var(--hero-overlay);
   }
+
+  /* New accent utilities */
+  .bg-accent-brand {
+    background-color: var(--accent-brand);
+  }
+
+  .bg-accent-gold {
+    background-color: var(--accent-gold);
+  }
+
+  .bg-gradient-accent {
+    background-image: var(--gradient-accent);
+  }
+
+  .bg-gradient-gold {
+    background-image: var(--gradient-gold);
+  }
+
+  .bg-gradient-elegant {
+    background-image: var(--gradient-elegant);
+  }
+
+  .text-accent-brand {
+    color: var(--accent-brand);
+  }
+
+  .text-accent-gold {
+    color: var(--accent-gold);
+  }
+
+  /* Subtle background patterns */
+  .bg-noise {
+    position: relative;
+  }
+
+  .bg-noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: var(--noise-opacity);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .bg-grid {
+    background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .bg-dots {
+    background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Glassmorphism card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .glass-card-dark {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Shimmer effect for CTAs */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    animation: shimmer 3s infinite;
+  }
+
+  /* Glow effect */
+  .glow-accent {
+    box-shadow: 0 0 20px var(--accent-brand), 0 0 40px rgba(0, 128, 128, 0.2);
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 20px var(--accent-gold), 0 0 40px rgba(200, 150, 50, 0.2);
+  }
+}
+
+/* Shimmer animation keyframes */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Counter number animation */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-count {
+  animation: countUp 0.6s ease-out forwards;
+}
+
+/* Pulse ring animation for stats */
+@keyframes pulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.pulse-ring::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid var(--accent-brand);
+  animation: pulseRing 2s ease-out infinite;
+}
+
+/* Gradient text animation */
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-text {
+  background-size: 200% auto;
+  animation: gradientShift 4s ease infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

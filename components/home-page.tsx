@@ -11,6 +11,7 @@ import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-d
 import { trackPageView } from "@/lib/analytics"
 import { motion } from "@/components/ui/motion"
 import { useSafeInView } from "@/hooks/use-in-view"
+import { useCounter } from "@/hooks/use-counter"
 import { trackPerformance } from "@/lib/performance"
 
 export function HomePage() {
@@ -23,10 +24,17 @@ export function HomePage() {
 
   const visionRef = useSafeInView({ threshold: 0.2 })
   const aboutRef = useSafeInView({ threshold: 0.2 })
+  const statsRef = useSafeInView({ threshold: 0.3 })
   const projectsRef = useSafeInView({ threshold: 0.1 })
   const trustRef = useSafeInView({ threshold: 0.2 })
   const ethicalRef = useSafeInView({ threshold: 0.3 })
   const contactRef = useSafeInView({ threshold: 0.3 })
+
+  // Animated counters for stats section
+  const yearsCount = useCounter(20, 2000, 0, statsRef.isInView)
+  const patientsCount = useCounter(100000, 2500, 0, statsRef.isInView)
+  const consultationsCount = useCounter(500000, 2500, 0, statsRef.isInView)
+  const satisfactionCount = useCounter(98, 2000, 0, statsRef.isInView)
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -188,13 +196,23 @@ export function HomePage() {
               </motion.p>
 
               <motion.div
-                className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40"
+                className="trailer-subtitle mt-24 flex flex-col items-center gap-4"
                 initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
-                animate={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 0.6, y: 0 }}
                 transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.8 } : { duration: 0 }}
               >
                 <span className="font-alfabet text-[9px] tracking-[0.2em] uppercase">Scroll to Explore</span>
-                <div className="h-12 w-[1px] bg-gradient-to-b from-black to-transparent"></div>
+                <motion.div
+                  className="h-16 w-[1px] bg-gradient-to-b from-black/60 via-black/30 to-transparent relative"
+                  animate={heroAnimationsEnabled ? { scaleY: [1, 1.2, 1] } : undefined}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <motion.div
+                    className="absolute top-0 left-0 w-full h-4 bg-gradient-to-b from-black to-transparent"
+                    animate={heroAnimationsEnabled ? { y: [0, 48, 0] } : undefined}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                </motion.div>
               </motion.div>
             </div>
           </div>
@@ -204,9 +222,11 @@ export function HomePage() {
       {/* Vision & Biography Section - Editorial Layout */}
       <section
         id="vision"
-        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-white py-32 md:py-48 text-transparent bg-transparent"
+        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-white py-32 md:py-48 text-transparent bg-transparent overflow-hidden"
         ref={visionRef.ref}
       >
+        {/* Subtle dot pattern */}
+        <div className="absolute inset-0 bg-dots opacity-30 pointer-events-none" />
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 bg-transparent text-transparent">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3 relative">
@@ -296,6 +316,93 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* Impact Statistics Section - By the Numbers */}
+      <section
+        className="relative z-20 bg-gradient-elegant py-24 md:py-32 overflow-hidden"
+        ref={statsRef.ref}
+      >
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
+
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 relative">
+          <div className="text-center mb-16">
+            <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 block mb-4">
+              Impact & Reach
+            </span>
+            <h2 className={`font-ivyjournal text-4xl md:text-5xl text-white leading-[0.9] ${statsRef.isInView ? "fade-up" : ""}`}>
+              By the Numbers
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+            {/* Years of Experience */}
+            <div className={`text-center group ${statsRef.isInView ? "fade-up fade-delay-1" : ""}`}>
+              <div className="relative inline-block mb-4">
+                <span className="font-ivyjournal text-6xl md:text-7xl lg:text-8xl text-white font-light">
+                  {yearsCount}
+                  <span className="text-3xl md:text-4xl text-accent-gold align-top">+</span>
+                </span>
+              </div>
+              <p className="font-alfabet text-[10px] md:text-xs tracking-widest uppercase text-white/60">
+                Years of Clinical
+                <br />
+                Experience
+              </p>
+            </div>
+
+            {/* Patients Served */}
+            <div className={`text-center group ${statsRef.isInView ? "fade-up fade-delay-2" : ""}`}>
+              <div className="relative inline-block mb-4">
+                <span className="font-ivyjournal text-6xl md:text-7xl lg:text-8xl text-white font-light">
+                  {patientsCount >= 1000 ? `${Math.floor(patientsCount / 1000)}K` : patientsCount}
+                  <span className="text-3xl md:text-4xl text-accent-gold align-top">+</span>
+                </span>
+              </div>
+              <p className="font-alfabet text-[10px] md:text-xs tracking-widest uppercase text-white/60">
+                Patients
+                <br />
+                Served
+              </p>
+            </div>
+
+            {/* Consultations */}
+            <div className={`text-center group ${statsRef.isInView ? "fade-up fade-delay-3" : ""}`}>
+              <div className="relative inline-block mb-4">
+                <span className="font-ivyjournal text-6xl md:text-7xl lg:text-8xl text-white font-light">
+                  {consultationsCount >= 1000 ? `${Math.floor(consultationsCount / 1000)}K` : consultationsCount}
+                  <span className="text-3xl md:text-4xl text-accent-gold align-top">+</span>
+                </span>
+              </div>
+              <p className="font-alfabet text-[10px] md:text-xs tracking-widest uppercase text-white/60">
+                Consultations
+                <br />
+                Completed
+              </p>
+            </div>
+
+            {/* Patient Satisfaction */}
+            <div className={`text-center group ${statsRef.isInView ? "fade-up fade-delay-4" : ""}`}>
+              <div className="relative inline-block mb-4">
+                <span className="font-ivyjournal text-6xl md:text-7xl lg:text-8xl text-white font-light">
+                  {satisfactionCount}
+                  <span className="text-3xl md:text-4xl text-accent-gold align-top">%</span>
+                </span>
+              </div>
+              <p className="font-alfabet text-[10px] md:text-xs tracking-widest uppercase text-white/60">
+                Patient
+                <br />
+                Satisfaction
+              </p>
+            </div>
+          </div>
+
+          {/* Decorative line */}
+          <div className="mt-16 flex justify-center">
+            <div className="h-px w-32 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+          </div>
+        </div>
+      </section>
+
       {/* Projects Section - Editorial List Style */}
       <section className="relative z-30 bg-[#0a0a0a] text-white py-32 md:py-48" id="projects" ref={projectsRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
@@ -335,7 +442,7 @@ export function HomePage() {
                         Exam-enabled care in the home through nurse-led visits, intelligent documentation, and rapid
                         physician oversight. Built for global scale and clinical reliability.
                       </p>
-                      <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="flex justify-end">
                         <HousecallDemo />
                       </div>
                     </div>
@@ -363,7 +470,7 @@ export function HomePage() {
                         Real-time clinical intelligence that structures conversations into accurate, defensible medical
                         notes—reducing cognitive load while enhancing clarity.
                       </p>
-                      <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="flex justify-end">
                         <AssistMDDemo />
                       </div>
                     </div>
@@ -391,7 +498,7 @@ export function HomePage() {
                         A secure, patient-controlled identity and medical-record layer built for seamless
                         interoperability across clinics, provinces, and countries.
                       </p>
-                      <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="flex justify-end">
                         <ArkPassDemo />
                       </div>
                     </div>
@@ -404,7 +511,9 @@ export function HomePage() {
       </section>
 
       {/* Security & Principles Section - Minimalist */}
-      <section className="relative z-20 bg-white py-32 md:py-48" ref={trustRef.ref}>
+      <section className="relative z-20 bg-white py-32 md:py-48 overflow-hidden" ref={trustRef.ref}>
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 bg-grid opacity-40 pointer-events-none" />
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3">
@@ -436,13 +545,13 @@ export function HomePage() {
                   ].map((item, i) => (
                     <div
                       key={i}
-                      className={`border-l border-black/10 pl-6 py-2 group hover:border-black/40 transition-colors duration-500 ${trustRef.isInView ? `fade-up fade-delay-${i + 2}` : ""}`}
+                      className={`border-l-2 border-black/10 pl-6 py-2 group hover:border-[var(--accent-brand)] transition-all duration-500 ${trustRef.isInView ? `fade-up fade-delay-${i + 2}` : ""}`}
                     >
                       {React.createElement(item.icon, {
                         className:
-                          "w-6 h-6 text-black mb-6 opacity-60 group-hover:opacity-100 transition-opacity duration-500",
+                          "w-7 h-7 text-black mb-6 opacity-50 group-hover:opacity-100 group-hover:text-[var(--accent-brand)] group-hover:scale-110 transition-all duration-300",
                       })}
-                      <h3 className="font-alfabet text-xs tracking-widest uppercase mb-2 text-black">{item.title}</h3>
+                      <h3 className="font-alfabet text-xs tracking-widest uppercase mb-2 text-black group-hover:text-[var(--accent-brand-dark)] transition-colors">{item.title}</h3>
                       <p className="font-alfabet font-light text-black/40 text-[10px] uppercase tracking-wider">
                         {item.desc}
                       </p>
@@ -488,12 +597,13 @@ export function HomePage() {
                 </p>
               </div>
 
-              <div className="bg-white p-16 md:p-24 rounded-[2rem] shadow-sm">
+              <div className="bg-white p-16 md:p-24 rounded-[2rem] shadow-sm border border-black/5 hover:shadow-lg transition-shadow duration-500">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   <div>
                     <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
                       Core Values
                     </h4>
+                    <div className="hidden md:block h-px w-16 bg-gradient-to-r from-[var(--accent-brand)] to-transparent opacity-60" />
                   </div>
                   <div className="md:col-span-2">
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 font-alfabet font-light text-black text-sm tracking-wide">
@@ -510,8 +620,8 @@ export function HomePage() {
                         "Global Collaboration",
                       ].map((value, i) => (
                         <li key={i} className="flex items-center gap-4 group cursor-default">
-                          <span className="w-1 h-1 bg-black rounded-full opacity-20 group-hover:opacity-100 transition-opacity duration-500" />
-                          <span className="group-hover:translate-x-2 transition-transform duration-500 ease-out">
+                          <span className="w-2 h-2 rounded-full bg-gradient-to-br from-[var(--accent-brand)] to-[var(--accent-brand-dark)] opacity-40 group-hover:opacity-100 group-hover:scale-125 transition-all duration-300" />
+                          <span className="group-hover:translate-x-2 group-hover:text-[var(--accent-brand-dark)] transition-all duration-300 ease-out">
                             {value}
                           </span>
                         </li>
@@ -585,41 +695,130 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Footer - Minimal */}
-      <footer className="bg-white py-16 border-t border-black/5">
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest">
-            © {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
-          </p>
-          <div className="flex items-center gap-12">
-            {/* LinkedIn link added to footer */}
-            <a
-              href="https://www.linkedin.com/in/alighahary"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors inline-flex items-center gap-2"
-            >
-              LinkedIn
-              <ExternalLink className="w-3 h-3" />
-            </a>
-            <Link
-              href="/privacy"
-              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="/terms"
-              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
-            >
-              Terms
-            </Link>
-            <Link
-              href="/legal"
-              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
-            >
-              Legal
-            </Link>
+      {/* Footer - Enhanced */}
+      <footer className="bg-[#0a0a0a] text-white pt-20 pb-8">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12">
+          {/* Main Footer Content */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 pb-16 border-b border-white/10">
+            {/* Brand Column */}
+            <div className="md:col-span-4">
+              <Image src="/images/ag-logo.svg" alt="AG Logo" width={100} height={33} className="h-8 w-auto mb-6 invert opacity-90" />
+              <p className="font-alfabet font-light text-white/60 text-sm leading-relaxed mb-6 max-w-sm">
+                Transforming healthcare through ethical innovation, patient empowerment, and physician-led technology solutions.
+              </p>
+              <div className="flex items-center gap-2 text-white/40">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span className="font-alfabet text-xs">Vancouver, BC, Canada</span>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div className="md:col-span-2 md:col-start-6">
+              <h4 className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 mb-6">Ventures</h4>
+              <ul className="space-y-3">
+                {["Armada Housecall", "Armada AssistMD", "Armada ArkPass", "Damavand Pictures"].map((item) => (
+                  <li key={item}>
+                    <button className="font-alfabet font-light text-white/70 text-sm hover:text-white transition-colors text-left">
+                      {item}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Resources */}
+            <div className="md:col-span-2">
+              <h4 className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 mb-6">Resources</h4>
+              <ul className="space-y-3">
+                <li>
+                  <Link href="/privacy" className="font-alfabet font-light text-white/70 text-sm hover:text-white transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="font-alfabet font-light text-white/70 text-sm hover:text-white transition-colors">
+                    Terms of Service
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/legal" className="font-alfabet font-light text-white/70 text-sm hover:text-white transition-colors">
+                    Legal Notice
+                  </Link>
+                </li>
+                <li>
+                  <button className="font-alfabet font-light text-white/70 text-sm hover:text-white transition-colors">
+                    KNGHT Doctrine
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Connect Column */}
+            <div className="md:col-span-3">
+              <h4 className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 mb-6">Stay Connected</h4>
+              <p className="font-alfabet font-light text-white/60 text-sm mb-4">
+                Follow the journey of ethical healthcare innovation.
+              </p>
+              <div className="flex items-center gap-4 mb-6">
+                {/* LinkedIn */}
+                <a
+                  href="https://www.linkedin.com/in/alighahary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/20 transition-all group"
+                  aria-label="LinkedIn"
+                >
+                  <svg className="w-4 h-4 text-white/60 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+                {/* Twitter/X */}
+                <a
+                  href="#"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/20 transition-all group"
+                  aria-label="X (Twitter)"
+                >
+                  <svg className="w-4 h-4 text-white/60 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
+                {/* Email */}
+                <a
+                  href="mailto:info@armadamd.com"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/20 transition-all group"
+                  aria-label="Email"
+                >
+                  <svg className="w-4 h-4 text-white/60 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </a>
+              </div>
+              <a
+                href="mailto:info@armadamd.com"
+                className="font-alfabet text-sm text-white/80 hover:text-white transition-colors"
+              >
+                info@armadamd.com
+              </a>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="font-alfabet font-light text-white/40 text-[10px] uppercase tracking-widest">
+              © {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
+            </p>
+            <div className="flex items-center gap-6">
+              <span className="font-alfabet text-[10px] text-white/30 uppercase tracking-wider">
+                Built with purpose in Vancouver
+              </span>
+              <div className="h-1 w-1 rounded-full bg-white/20" />
+              <span className="font-alfabet text-[10px] text-white/30 uppercase tracking-wider">
+                Est. 2004
+              </span>
+            </div>
           </div>
         </div>
       </footer>
