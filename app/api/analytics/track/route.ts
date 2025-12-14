@@ -31,28 +31,30 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, skipped: true, reason: "invalid_url" })
     }
 
-    const supabase = createClient(supabaseUrl, supabaseKey)
+    // Wrap entire Supabase operation to catch connection/auth errors
+    try {
+      const supabase = createClient(supabaseUrl, supabaseKey)
 
-    const { error } = await supabase.from("analytics_events").insert({
-      event_type: eventType,
-      event_name: eventName,
-      page_url: pageUrl,
-      user_agent: request.headers.get("user-agent"),
-      referrer: request.headers.get("referer"),
-      session_id: sessionId,
-      metadata: metadata || {},
-    })
+      const { error } = await supabase.from("analytics_events").insert({
+        event_type: eventType,
+        event_name: eventName,
+        page_url: pageUrl,
+        user_agent: request.headers.get("user-agent"),
+        referrer: request.headers.get("referer"),
+        session_id: sessionId,
+        metadata: metadata || {},
+      })
 
-    if (error) {
-      // Log but don't throw - analytics should not break the app
-      const errorMsg = typeof error.message === "string" ? error.message : "Database error"
-      if (process.env.NODE_ENV === "development") {
-        console.error("[v0] Analytics insert error:", errorMsg)
+      if (error) {
+        // Silently skip - analytics should not break the app
+        return NextResponse.json({ success: true, skipped: true, reason: "db_error" })
       }
-      return NextResponse.json({ success: false, error: errorMsg }, { status: 200 })
-    }
 
-    return NextResponse.json({ success: true })
+      return NextResponse.json({ success: true })
+    } catch {
+      // Supabase connection failed - skip silently
+      return NextResponse.json({ success: true, skipped: true, reason: "connection_error" })
+    }
   } catch (error) {
     // Safely extract error message
     const errorMsg = error instanceof Error ? error.message : "Internal error"
