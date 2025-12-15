@@ -112,6 +112,23 @@ function AnimatedWords({
   )
 }
 
+function TrademarkedName({
+  label,
+  superscriptSize = "text-[8px]",
+  className = "",
+}: {
+  label: React.ReactNode
+  superscriptSize?: string
+  className?: string
+}) {
+  return (
+    <span className={className}>
+      {label}
+      <span className={`align-super ${superscriptSize} ml-[2px]`}>™</span>
+    </span>
+  )
+}
+
 export function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [selectedDemo, setSelectedDemo] = useState<string | null>(null)
@@ -212,6 +229,24 @@ export function HomePage() {
   }
 
   const heroAnimationsEnabled = !prefersReducedMotion
+  const ventures = useMemo(
+    () => [
+      {
+        key: "armada-housecall",
+        label: <TrademarkedName className="inline-flex items-start" label="Armada Housecall" />,
+      },
+      {
+        key: "armada-assistmd",
+        label: <TrademarkedName className="inline-flex items-start" label="Armada AssistMD" />,
+      },
+      {
+        key: "armada-arkpass",
+        label: <TrademarkedName className="inline-flex items-start" label="Armada ArkPass" />,
+      },
+      { key: "damavand-pictures", label: "Damavand Pictures" },
+    ],
+    []
+  )
 
   return (
     <div className="min-h-screen bg-white selection:bg-black selection:text-white">
@@ -628,16 +663,21 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
-                        {projectsRef.isInView ? (
-                          <AnimatedLetters
-                            text="Armada Housecall"
-                            baseDelay={0.3}
-                            letterDelay={0.04}
-                          />
-                        ) : (
-                          "Armada Housecall"
-                        )}
-                        <sup className="md:text-2xl opacity-50 relative -translate-y-3 text-3xl my-0">™</sup>
+                        <TrademarkedName
+                          className="inline-flex items-start"
+                          superscriptSize="text-[10px]"
+                          label={
+                            projectsRef.isInView ? (
+                              <AnimatedLetters
+                                text="Armada Housecall"
+                                baseDelay={0.3}
+                                letterDelay={0.04}
+                              />
+                            ) : (
+                              "Armada Housecall"
+                            )
+                          }
+                        />
                       </h3>
                       <motion.span
                         className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 block"
@@ -1002,10 +1042,10 @@ export function HomePage() {
             <div className="md:col-span-2 md:col-start-6">
               <h4 className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 mb-6">Ventures</h4>
               <ul className="space-y-3">
-                {["Armada Housecall", "Armada AssistMD", "Armada ArkPass", "Damavand Pictures"].map((item) => (
-                  <li key={item}>
+                {ventures.map((venture) => (
+                  <li key={venture.key}>
                     <button className="font-alfabet font-light text-white/70 text-sm hover:text-white transition-colors text-left">
-                      {item}
+                      {venture.label}
                     </button>
                   </li>
                 ))}
