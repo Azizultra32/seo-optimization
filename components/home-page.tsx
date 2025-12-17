@@ -507,6 +507,36 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* Credibility Ticker - AI Supply inspired */}
+      <section className="relative z-20 bg-[#0a1015] py-6 overflow-hidden border-y border-white/5">
+        <div className="ticker-wrapper">
+          <div className="ticker-content">
+            {[...Array(2)].map((_, setIndex) => (
+              <div key={setIndex} className="flex items-center gap-16">
+                {[
+                  { label: "World Economic Forum", sublabel: "Davos 2024" },
+                  { label: "HIPAA Compliant", sublabel: "Healthcare Standard" },
+                  { label: "20+ Years", sublabel: "Clinical Experience" },
+                  { label: "AI Ethics Pioneer", sublabel: "KNGHT Doctrine" },
+                  { label: "Canadian Healthcare", sublabel: "BC Licensed" },
+                  { label: "100K+ Patients", sublabel: "Served" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 whitespace-nowrap">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#0099ff]" />
+                    <span className="font-alfabet text-xs tracking-widest uppercase text-white/70">
+                      {item.label}
+                    </span>
+                    <span className="font-alfabet text-[10px] text-white/30">
+                      {item.sublabel}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Impact Statistics Section - By the Numbers */}
       <section
         className="relative z-20 bg-gradient-elegant py-24 md:py-32 overflow-hidden"
