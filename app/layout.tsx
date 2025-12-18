@@ -174,10 +174,10 @@ export const metadata: Metadata = {
       "Reimagining healthcare through ethical AI, interoperability, and patient empowerment. Founder of Armada Housecall™, AssistMD™, and ArkPass™.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Dr. Ali Ghahary - Physician, Entrepreneur, Founder",
+        alt: "Armada Housecall™ telehealth platform by Armada MD",
       },
     ],
   },
@@ -186,7 +186,7 @@ export const metadata: Metadata = {
     title: "Dr. Ali Ghahary MD, CCFP | Physician, Entrepreneur, Founder",
     description:
       "Reimagining healthcare through ethical AI, interoperability, and patient empowerment. Founder of Armada Housecall™, AssistMD™, and ArkPass™.",
-    images: ["/og-image.jpg"],
+    images: ["/opengraph-image"],
     creator: "@drghahary",
   },
   alternates: {

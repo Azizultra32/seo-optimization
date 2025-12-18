@@ -91,7 +91,7 @@ export function HousecallDemo() {
               Transforming Virtual Healthcare Delivery
             </h3>
             <p className="font-alfabet text-base text-black/80 leading-relaxed mb-6">
-              Armada Housecall is a comprehensive telehealth platform designed by physicians for physicians. It combines
+              Armada Housecall™ is a comprehensive telehealth platform designed by physicians for physicians. It combines
               secure video consultations, clinical documentation, and patient management into one seamless experience.
             </p>
             <div className="aspect-video bg-gradient-to-br from-[#3a3632] to-[#2a2622] rounded-lg flex items-center justify-center">
@@ -174,7 +174,7 @@ export function HousecallDemo() {
             <div className="mt-6 p-4 bg-[#3a3632]/5 rounded-lg border border-[#3a3632]/20">
               <p className="font-alfabet text-sm text-black/70">
                 <strong className="text-black">Ready to transform your practice?</strong> Schedule a personalized demo
-                with our team to see Armada Housecall in action.
+                with our team to see Armada Housecall™ in action.
               </p>
             </div>
           </motion.div>

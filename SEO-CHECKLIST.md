@@ -24,13 +24,13 @@
 
 ## 🔄 To Do
 
-- [ ] Add ™ symbol to "Armada Housecall" in page content using superscript styling:
+- [x] Add ™ symbol to "Armada Housecall" in page content using superscript styling:
   \`\`\`tsx
   Armada Housecall<span className="align-super text-[8px]">™</span>
   \`\`\`
-- [ ] Create og-image.jpg (1200x630px) for social media previews
-- [ ] Add alt text to images with "Armada Housecall™ telehealth platform by Armada MD"
-- [ ] Ensure image filenames use hyphenated lowercase (e.g., armada-housecall-platform.jpg)
+- [x] Serve dynamic Open Graph image at /opengraph-image (1200x630px)
+- [x] Add alt text to images with "Armada Housecall™ telehealth platform by Armada MD"
+- [x] Ensure image filenames use hyphenated lowercase (e.g., armada-housecall-platform.jpg)
 
 ## 🚀 Post-Launch (After Domain Setup)
 
