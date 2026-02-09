@@ -29,9 +29,9 @@ export function ProductDemoDialog({ productName, tagline, children }: ProductDem
       <DialogTrigger asChild>
         <Button
           onClick={handleOpen}
-          className="font-alfabet font-normal text-white text-xs md:text-sm border-2 border-white/80 px-6 py-2.5 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white hover:text-[#3a3632] transition-all duration-300 shimmer group"
+          className="font-alfabet font-normal text-white text-xs md:text-sm border border-white px-5 py-2 rounded-full hover:bg-white hover:text-[#3a3632] transition-colors"
         >
-          <Play className="w-3.5 h-3.5 mr-2 group-hover:scale-110 transition-transform" />
+          <Play className="w-3 h-3 mr-2" />
           View Interactive Demo
         </Button>
       </DialogTrigger>
