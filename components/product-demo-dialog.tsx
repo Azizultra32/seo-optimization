@@ -7,8 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Play, CheckCircle, Shield, Zap, Users, Clock, FileText, Video, Lock } from "@/components/icons"
-import { motion } from "@/components/ui/motion"
-import { trackEvent } from "@/lib/analytics"
+import { motion } from "framer-motion"
 
 interface ProductDemoProps {
   productName: string
@@ -21,7 +20,6 @@ export function ProductDemoDialog({ productName, tagline, children }: ProductDem
 
   const handleOpen = () => {
     setOpen(true)
-    trackEvent("demo_opened", productName)
   }
 
   return (

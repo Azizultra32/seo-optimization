@@ -1,28 +1,17 @@
 "use client"
-/* eslint-disable react-hooks/refs */
 
-import React from "react"
-
-import { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Lock, Shield, CheckCircle, Award, ExternalLink, ArrowRight } from "@/components/icons"
-// import { CommandBar } from "@/components/command-bar"; // Temporarily disabled
 import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-demo-dialog"
-import { trackPageView } from "@/lib/analytics"
-import { motion } from "@/components/ui/motion"
+import { motion } from "framer-motion"
 import { useSafeInView } from "@/hooks/use-in-view"
-import { observeCoreWebVitals } from "@/lib/performance"
 
 export function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [selectedDemo, setSelectedDemo] = useState<string | null>(null)
   const [isVideoPaused, setIsVideoPaused] = useState(false)
-  const [heroInView, setHeroInView] = useState(false)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
-    if (typeof window === "undefined") return false
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  })
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   const visionRef = useSafeInView({ threshold: 0.2 })
   const aboutRef = useSafeInView({ threshold: 0.2 })
@@ -34,14 +23,9 @@ export function HomePage() {
   useEffect(() => {
     if (typeof window === "undefined") return
 
-    // Hero is immediately in view on page load
-    setHeroInView(true)
-
-    // Honor reduced-motion preferences and align the hero video playback accordingly
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
     const handleMotionPreference = () => {
       setPrefersReducedMotion(motionQuery.matches)
-
       if (videoRef.current) {
         if (motionQuery.matches) {
           videoRef.current.pause()
@@ -58,43 +42,10 @@ export function HomePage() {
       videoRef.current.load()
     }
 
-    // Track page view
-    trackPageView(window.location.pathname)
-
-    const cleanupVitals = observeCoreWebVitals()
-
     return () => {
       motionQuery.removeEventListener("change", handleMotionPreference)
-      cleanupVitals()
     }
   }, [])
-
-  // Animation variants - unused with mock but kept for structure
-  const heroStagger = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i = 0) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 2.5 + i * 0.3,
-        duration: 1.1,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    }),
-  }
-
-  const scrollStagger = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i = 0) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.1 + i * 0.15,
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    }),
-  }
 
   const heroAnimationsEnabled = !prefersReducedMotion
 
@@ -111,45 +62,50 @@ export function HomePage() {
   }
 
   return (
-    <div className="bg-white text-black min-h-screen font-body overflow-x-hidden">
+    <div className="bg-background text-foreground min-h-screen font-body overflow-x-hidden">
       {/* Hero Section with Video */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden" id="hero">
         {/* Fixed Video Background with Overlay */}
         <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
           <video
             ref={videoRef}
-            autoPlay={!prefersReducedMotion && heroInView}
+            autoPlay={!prefersReducedMotion}
             muted
             loop
             playsInline
-            preload={heroInView ? "metadata" : "none"}
+            preload="metadata"
             poster="/images/dna-poster.jpg"
             className="absolute inset-0 w-full h-full object-cover opacity-30"
             aria-label="DNA double helix animation representing healthcare innovation and genomics"
           >
-            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3watermarked_preview-Bk5N138nsMFSjnIXU2MYPxuk7C2dB7.mp4" type="video/mp4" />
+            <source
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3watermarked_preview-Bk5N138nsMFSjnIXU2MYPxuk7C2dB7.mp4"
+              type="video/mp4"
+            />
           </video>
           <div className="absolute inset-0 bg-hero-overlay backdrop-blur-[1px]" />
         </div>
 
+        {/* Header Bar */}
         <div className="absolute top-0 left-0 right-0 w-full px-6 py-8 md:px-12 md:py-10 flex justify-between items-center z-10">
           <div className="hidden md:block">
             <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Est. 2004</span>
           </div>
 
-          <motion.button
+          <motion.div
             className="logo-hover transition-all mx-auto md:mx-0 opacity-90 hover:opacity-100"
             whileHover={heroAnimationsEnabled ? { scale: 1.02 } : undefined}
             whileTap={heroAnimationsEnabled ? { scale: 0.98 } : undefined}
           >
-            <Image src="/images/ag-logo.svg" alt="AG Logo" width={140} height={46} className="h-10 md:h-12 w-auto" />
-          </motion.button>
+            <Image src="/images/ag-logo.svg" alt="AG Logo" width={140} height={46} className="h-10 md:h-12 w-auto" priority />
+          </motion.div>
 
           <div className="hidden md:block">
             <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Vancouver, BC</span>
           </div>
         </div>
 
+        {/* Video Toggle Button */}
         <button
           onClick={toggleVideo}
           className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-black/10 hover:bg-black/20 backdrop-blur-sm transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
@@ -181,7 +137,12 @@ export function HomePage() {
               </span>
             </div>
 
-            <motion.h1 className="trailer-subtitle font-ivyjournal text-black/95 text-4xl md:text-5xl lg:text-6xl leading-[0.9] tracking-tight mb-6 font-normal">
+            <motion.h1
+              className="trailer-subtitle font-ivyjournal text-black/95 text-4xl md:text-5xl lg:text-6xl leading-[0.9] tracking-tight mb-6 font-normal"
+              initial={heroAnimationsEnabled ? { opacity: 0, y: 30 } : false}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 2.5, ease: [0.16, 1, 0.3, 1] }}
+            >
               Dr. Ali Ghahary
               <span className="block text-lg md:text-xl lg:text-2xl font-light mt-3 font-alfabet tracking-normal text-slate-600">
                 MD, CCFP
@@ -192,21 +153,21 @@ export function HomePage() {
               className="trailer-subtitle font-alfabet font-normal text-black leading-relaxed max-w-4xl"
               initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
               animate={{ opacity: 1, y: 0 }}
-              transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.4 } : { duration: 0 }}
+              transition={heroAnimationsEnabled ? { duration: 0.8, delay: 2.8 } : { duration: 0 }}
             >
               <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-normal">Rebuilding</span>{" "}
-              healthcare from first principles—ethical AI, true interoperability, patient sovereignty.
+              healthcare from first principles — ethical AI, true interoperability, patient sovereignty.
             </motion.p>
 
             <motion.div
               className="trailer-subtitle mt-10 flex flex-col sm:flex-row items-center gap-4"
               initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
               animate={{ opacity: 1, y: 0 }}
-              transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.6 } : { duration: 0 }}
+              transition={heroAnimationsEnabled ? { duration: 0.8, delay: 3.1 } : { duration: 0 }}
             >
               <Link
                 href="#contact"
-                className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
+                className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
               >
                 <span>Schedule a Call</span>
                 <span
@@ -228,17 +189,17 @@ export function HomePage() {
             <motion.div
               className="trailer-subtitle mt-24 flex flex-col items-center gap-4 opacity-40"
               initial={heroAnimationsEnabled ? { opacity: 0, y: 20 } : false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={heroAnimationsEnabled ? { duration: 0.8, delay: 0.8 } : { duration: 0 }}
+              animate={{ opacity: 0.4, y: 0 }}
+              transition={heroAnimationsEnabled ? { duration: 0.8, delay: 3.4 } : { duration: 0 }}
             >
               <span className="font-alfabet text-[9px] tracking-[0.2em] uppercase">Scroll to Explore</span>
-              <div className="h-12 w-[1px] bg-gradient-to-b from-black to-transparent"></div>
+              <div className="h-12 w-[1px] bg-gradient-to-b from-black to-transparent scroll-hint" />
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Vision & Biography Section - Editorial Layout */}
+      {/* Vision & Biography Section */}
       <section
         id="vision"
         className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-white py-32 md:py-48"
@@ -267,7 +228,7 @@ export function HomePage() {
                   <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
                     Transforming
                   </span>
-                  healthcare isn&apos;t a software problem-it&apos;s a philosophical one.
+                  {"healthcare isn't a software problem — it's a philosophical one."}
                 </h3>
               </div>
             </div>
@@ -275,7 +236,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* About Section - Refined Grid Layout */}
+      {/* About Section */}
       <section
         className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-zinc-50 py-32 md:py-48"
         ref={aboutRef.ref}
@@ -329,7 +290,7 @@ export function HomePage() {
                     className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
                   >
                     <strong className="font-medium text-black">Creative work:</strong> Leads Damavand Pictures as actor,
-                    filmmaker, and executive producer—stories of identity, culture, and resilience.
+                    filmmaker, and executive producer — stories of identity, culture, and resilience.
                   </p>
                 </div>
               </div>
@@ -338,7 +299,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Projects Section - Editorial List Style */}
+      {/* Projects Section */}
       <section className="relative z-30 bg-[#0a0a0a] text-white py-32 md:py-48" id="projects" ref={projectsRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
@@ -366,7 +327,7 @@ export function HomePage() {
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
                         Armada Housecall
-                        <sup className="md:text-2xl opacity-50 relative -translate-y-3 text-3xl my-0">™</sup>
+                        <sup className="md:text-2xl opacity-50 relative -translate-y-3 text-3xl my-0">{"™"}</sup>
                       </h3>
                       <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
                         Home-Based Care Platform
@@ -397,7 +358,7 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
-                        Armada AssistMD<sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
+                        Armada AssistMD<sup className="text-lg md:text-2xl opacity-50 relative top-1">{"™"}</sup>
                       </h3>
                       <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
                         AI Clinical Documentation
@@ -428,7 +389,7 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
-                        Armada ArkPass<sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
+                        Armada ArkPass<sup className="text-lg md:text-2xl opacity-50 relative top-1">{"™"}</sup>
                       </h3>
                       <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40">
                         Patient-Owned Health Data
@@ -436,7 +397,7 @@ export function HomePage() {
                     </div>
                     <div className="md:col-span-5 flex flex-col justify-between h-full">
                       <p className="font-alfabet font-light text-white/60 text-lg leading-relaxed mb-4 group-hover:text-white/80 transition-colors duration-500">
-                        A secure, patient-controlled identity and medical-record layer. True interoperability—across
+                        A secure, patient-controlled identity and medical-record layer. True interoperability — across
                         clinics, provinces, borders.
                       </p>
                       <p className="font-alfabet text-[11px] tracking-wide uppercase text-white/40 mb-8">
@@ -464,7 +425,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Security & Principles Section - Minimalist */}
+      {/* Security & Principles Section */}
       <section className="relative z-20 bg-white py-32 md:py-48" ref={trustRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
@@ -485,7 +446,7 @@ export function HomePage() {
                 <p
                   className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
-                  If it can&apos;t be trusted, it shouldn&apos;t exist. Every system follows this rule.
+                  {"If it can't be trusted, it shouldn't exist. Every system follows this rule."}
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
@@ -544,8 +505,7 @@ export function HomePage() {
                 <p
                   className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${ethicalRef.isInView ? "fade-up fade-delay-2" : ""}`}
                 >
-                  The KNGHT Doctrine prioritizes patient sovereignty and clinical integrity above algorithmic
-                  efficiency. Ethics isn&apos;t a branding exercise-it&apos;s infrastructure.
+                  {"The KNGHT Doctrine prioritizes patient sovereignty and clinical integrity above algorithmic efficiency. Ethics isn't a branding exercise — it's infrastructure."}
                 </p>
               </div>
 
@@ -586,7 +546,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Contact Section - Minimal */}
+      {/* Contact Section */}
       <section id="contact" className="relative z-20 bg-white pt-32 pb-12 md:pt-48 md:pb-16" ref={contactRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
@@ -627,7 +587,7 @@ export function HomePage() {
                   href="https://www.linkedin.com/in/alighahary"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
+                  className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
                 >
                   <span>Connect on LinkedIn</span>
                   <span
@@ -636,7 +596,7 @@ export function HomePage() {
                   />
                 </a>
                 <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">
-                  Let&apos;s start a conversation
+                  {"Let's start a conversation"}
                 </span>
               </motion.div>
             </div>
@@ -644,20 +604,18 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Footer - Minimal */}
+      {/* Footer */}
       <footer className="bg-white py-16 border-t border-black/5">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-8">
-          {/* Value reminder added to footer */}
           <div className="flex flex-col gap-2">
             <p className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest">
-              © {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
+              &copy; {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
             </p>
             <p className="font-alfabet font-light text-black/60 text-[9px] tracking-wide">
               Ethical AI · True Interoperability · Patient Sovereignty
             </p>
           </div>
           <div className="flex items-center gap-12">
-            {/* LinkedIn link added to footer */}
             <a
               href="https://www.linkedin.com/in/alighahary"
               target="_blank"
