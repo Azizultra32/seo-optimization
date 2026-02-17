@@ -3,10 +3,19 @@ import { createClient } from "@supabase/supabase-js"
 
 export async function GET() {
   try {
-    const supabase = createClient(
-      process.env.SUPABASE_POSTGRES_URL || process.env.SUPABASE_URL || "",
-      process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-    )
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json({
+        summary: { totalEvents: 0, avgScrollDepth: 0, avgTimeOnPage: 0 },
+        eventsByType: [],
+        performance: {},
+        topPages: [],
+      })
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey)
 
     // Get date range for last 30 days
     const thirtyDaysAgo = new Date()

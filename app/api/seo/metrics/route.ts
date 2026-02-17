@@ -11,6 +11,10 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = await createClient()
+    if (!supabase) {
+      return NextResponse.json({ success: true, skipped: true, reason: "no_database" })
+    }
+
     const { data, error } = await supabase
       .from("page_metrics")
       .insert({
@@ -49,6 +53,10 @@ export async function GET(request: NextRequest) {
     }
 
     const supabase = await createClient()
+    if (!supabase) {
+      return NextResponse.json({ success: true, metrics: [], totals: { clicks: 0, impressions: 0 }, ctr: 0 })
+    }
+
     const startDate = new Date()
     startDate.setDate(startDate.getDate() - days)
 

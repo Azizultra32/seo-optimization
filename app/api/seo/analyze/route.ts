@@ -75,6 +75,10 @@ Analyze and provide SEO recommendations.`,
 
     // Store recommendations in Supabase
     const supabase = await createClient()
+    if (!supabase) {
+      return NextResponse.json({ success: true, recommendations, saved: null })
+    }
+
     const { data, error } = await supabase
       .from("ai_recommendations")
       .insert({
@@ -118,6 +122,10 @@ export async function GET(request: NextRequest) {
     }
 
     const supabase = await createClient()
+    if (!supabase) {
+      return NextResponse.json({ success: true, recommendation: null })
+    }
+
     const { data, error } = await supabase
       .from("ai_recommendations")
       .select("*")
