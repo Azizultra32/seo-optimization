@@ -4,18 +4,15 @@
 
 Before deploying, complete these critical tasks:
 
-### 1. Database Security (RLS Policies)
-Run `scripts/add-rls-policies.sql` in Supabase SQL Editor to:
-- Enable Row Level Security on all analytics tables
-- Prevent anonymous users from reading analytics data
-- Allow insert-only access for event tracking
-- Grant full access to service role for admin dashboards
+### 1. Database Setup (Required)
+Run `scripts/00-run-this-first.sql` in Supabase SQL Editor to:
+- Create/upgrade analytics tables to the API-compatible schema
+- Create content workflow tables (`content_drafts`, `content_templates`, `content_generation_log`)
+- Create SEO tables (`ai_recommendations`, `page_metrics`)
+- Apply RLS policies (anon insert-only analytics, service role full access)
 
-### 2. Data Model Improvements
-Run `scripts/improve-data-models.sql` to add:
-- Audit trails for content (origin_prompt, model, reviewer, approved_at)
-- Application tracking for SEO recommendations (applied, applied_at, applied_by)
-- Multi-tenancy support (source, tenant columns)
+### 2. Optional Legacy Script
+`scripts/create-content-tables.sql` is now legacy and not required if you run `scripts/00-run-this-first.sql`.
 
 ### 3. Environment Variables
 **Critical:** Add `CRON_SECRET` to Vercel:
@@ -65,12 +62,10 @@ Add these to your Vercel project under Settings → Environment Variables:
 - `SITE_URL` - Your production URL (e.g., https://drghahary.com)
 
 ### Database (Supabase)
-- `SUPABASE_POSTGRES_URL` - Supabase connection string
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL (e.g., `https://<project-ref>.supabase.co`)
 - `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key
-- `SUPABASE_ANON_KEY` - Supabase anonymous key
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Public Supabase key
-- `NEXT_PUBLIC_SUPABASE_URL` - **Optional** (auto-derived from SUPABASE_POSTGRES_URL)
-  - If auto-derivation fails, set manually: `https://usbhyermczgiaefsczcu.supabase.co`
+- `SUPABASE_POSTGRES_URL` - Optional for URL auto-derivation fallback
 
 ### Security
 - **`CRON_SECRET`** - Random secure token to protect cron job endpoints
@@ -90,15 +85,12 @@ Add these to your Vercel project under Settings → Environment Variables:
 
 ## Database Setup
 
-✅ **Database setup is complete.** All required tables and security policies have been created.
+Run this once in Supabase SQL Editor:
 
-If you need to reset the database in the future, you can regenerate the setup scripts.
+1. `scripts/00-run-this-first.sql` - one-pass setup and migration for all required tables/policies
 
-1. `scripts/create-seo-tables.sql` - SEO automation tables
-2. `scripts/create-content-tables.sql` - Content generation tables
-3. `scripts/create-analytics-tables.sql` - Analytics and tracking tables
-4. `scripts/add-rls-policies.sql` - SECURITY POLICIES (REQUIRED)
-5. `scripts/improve-data-models.sql` - Audit trails and metadata
+Optional:
+2. `scripts/create-content-tables.sql` - legacy helper (already covered by `00-run-this-first.sql`)
 
 ## Cron Jobs
 
@@ -164,8 +156,7 @@ Compliance-focused pages:
 
 ### Immediate (5 minutes)
 - [ ] Add `CRON_SECRET` to Vercel environment variables
-- [ ] Run `scripts/add-rls-policies.sql` in Supabase
-- [ ] Run `scripts/improve-data-models.sql` in Supabase
+- [ ] Run `scripts/00-run-this-first.sql` in Supabase
 - [ ] Verify `/privacy` and `/terms` pages load correctly
 - [ ] Test Command Bar (⌘K) on homepage
 
