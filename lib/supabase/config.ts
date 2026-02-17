@@ -10,20 +10,20 @@ export function getSupabaseUrl(): string {
     // Extract project reference from postgres://postgres.{PROJECT_REF}:...@aws-0-us-east-1.pooler.supabase.com
     const match = postgresUrl.match(/postgres\.([a-z0-9]+):/)
     if (match && match[1]) {
-      const supabaseUrl = `https://${match[1]}.supabase.co`
-      console.log("[v0] Derived Supabase URL:", supabaseUrl)
-      return supabaseUrl
+      return `https://${match[1]}.supabase.co`
     }
   }
 
-  console.error("[v0] Failed to derive Supabase URL. SUPABASE_POSTGRES_URL:", postgresUrl)
-  throw new Error("Missing Supabase URL configuration")
+  // Return empty string instead of throwing - callers should check before using
+  return ""
 }
 
 export function getSupabaseAnonKey(): string {
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  if (!key) {
-    throw new Error("Missing NEXT_PUBLIC_SUPABASE_ANON_KEY")
-  }
-  return key
+  return process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+}
+
+export function isSupabaseConfigured(): boolean {
+  const url = getSupabaseUrl()
+  const key = getSupabaseAnonKey()
+  return Boolean(url && key)
 }
