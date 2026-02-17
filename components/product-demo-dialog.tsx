@@ -29,9 +29,9 @@ export function ProductDemoDialog({ productName, tagline, children }: ProductDem
       <DialogTrigger asChild>
         <Button
           onClick={handleOpen}
-          className="font-alfabet font-normal text-white text-xs md:text-sm border-2 border-white/80 px-6 py-2.5 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white hover:text-[#3a3632] transition-all duration-300 shimmer group"
+          className="font-alfabet font-normal text-white text-xs md:text-sm border border-white px-5 py-2 rounded-full hover:bg-white hover:text-[#3a3632] transition-colors"
         >
-          <Play className="w-3.5 h-3.5 mr-2 group-hover:scale-110 transition-transform" />
+          <Play className="w-3 h-3 mr-2" />
           View Interactive Demo
         </Button>
       </DialogTrigger>
@@ -322,7 +322,7 @@ export function AssistMDDemo() {
             <div className="space-y-3">
               <h4 className="font-alfabet font-semibold text-black">What Physicians Say:</h4>
               <blockquote className="border-l-4 border-blue-600 pl-4 italic text-black/70 font-alfabet">
-                "AssistMD has given me back 2 hours every day. I can see more patients and still leave on time."
+                &ldquo;AssistMD has given me back 2 hours every day. I can see more patients and still leave on time.&rdquo;
               </blockquote>
               <p className="text-sm text-black/60 font-alfabet">— Dr. Sarah Chen, Family Medicine</p>
             </div>
