@@ -208,6 +208,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://use.typekit.net" />
+        <link rel="dns-prefetch" href="https://use.typekit.net" />
+        <link rel="preconnect" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com" />
+        <link rel="dns-prefetch" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com" />
         <link rel="stylesheet" href="https://use.typekit.net/gnu1xpt.css" />
         {/* JSON-LD Structured Data */}
         <script

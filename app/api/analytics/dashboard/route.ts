@@ -36,10 +36,9 @@ export async function GET() {
       .select("max_scroll_percentage, time_on_page")
       .gte("created_at", thirtyDaysAgo.toISOString())
 
-    const avgScrollDepth =
-      scrollData?.reduce((sum, item) => sum + item.max_scroll_percentage, 0) / (scrollData?.length || 1) || 0
-
-    const avgTimeOnPage = scrollData?.reduce((sum, item) => sum + item.time_on_page, 0) / (scrollData?.length || 1) || 0
+    const scrollRows = scrollData ?? []
+    const avgScrollDepth = scrollRows.reduce((sum, item) => sum + item.max_scroll_percentage, 0) / (scrollRows.length || 1)
+    const avgTimeOnPage = scrollRows.reduce((sum, item) => sum + item.time_on_page, 0) / (scrollRows.length || 1)
 
     // Performance metrics averages
     const { data: performanceData } = await supabase
