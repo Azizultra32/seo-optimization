@@ -21,11 +21,11 @@ This document outlines all improvements made to the drghahary.com codebase.
 **What it does:** Adds Basic Auth protection to `/admin/*` routes.
 
 **Setup Required:**
-```bash
+\`\`\`bash
 # Add to Vercel Environment Variables:
 ADMIN_USERNAME=your-username
 ADMIN_PASSWORD=your-secure-password
-```
+\`\`\`
 
 **Why Critical:** Currently anyone can access `/admin/seo`, `/admin/analytics`, `/admin/content`.
 
@@ -61,13 +61,13 @@ ADMIN_PASSWORD=your-secure-password
 - Logs in development console
 
 **Usage:**
-```tsx
+\`\`\`tsx
 // In layout.tsx or page.tsx
 import { WebVitalsReporter } from "@/lib/web-vitals"
 
 // Add to component
 <WebVitalsReporter />
-```
+\`\`\`
 
 ### 3. Optimized Image Component
 
@@ -80,7 +80,7 @@ import { WebVitalsReporter } from "@/lib/web-vitals"
 - Blur-up loading effect
 
 **Usage:**
-```tsx
+\`\`\`tsx
 import { OptimizedImage } from "@/components/optimized-image"
 
 <OptimizedImage
@@ -90,7 +90,7 @@ import { OptimizedImage } from "@/components/optimized-image"
   height={600}
   aspectRatio="video"
 />
-```
+\`\`\`
 
 ---
 
@@ -102,7 +102,7 @@ import { OptimizedImage } from "@/components/optimized-image"
 
 **Solution:** Break into smaller, focused components:
 
-```
+\`\`\`
 components/
   sections/
     hero-section.tsx      ✅ Created
@@ -114,7 +114,7 @@ components/
     ethics-section.tsx    (TODO)
     contact-section.tsx   (TODO)
     footer-section.tsx    (TODO)
-```
+\`\`\`
 
 **Benefits:**
 - Better code splitting
@@ -133,11 +133,11 @@ components/
 - Shows graceful fallback UI
 
 **Usage:**
-```tsx
+\`\`\`tsx
 <SectionErrorBoundary section="hero">
   <HeroSection />
 </SectionErrorBoundary>
-```
+\`\`\`
 
 ### 3. Refactored Home Page
 
@@ -188,18 +188,18 @@ components/
 **File Added:** `next-sitemap.config.js`
 
 **Setup:**
-```bash
+\`\`\`bash
 pnpm add next-sitemap
-```
+\`\`\`
 
 **Add to `package.json`:**
-```json
+\`\`\`json
 {
   "scripts": {
     "postbuild": "next-sitemap"
   }
 }
-```
+\`\`\`
 
 **What it does:**
 - Auto-generates sitemap after build
@@ -254,7 +254,7 @@ Complete template with all required and optional variables.
 
 ## 🚀 Quick Start
 
-```bash
+\`\`\`bash
 # 1. Copy the files to your repo
 cp -r /home/claude/seo-improvements/* ./
 
@@ -271,13 +271,13 @@ pnpm add next-sitemap
 git add .
 git commit -m "feat: add SEO improvements and security fixes"
 git push
-```
+\`\`\`
 
 ---
 
 ## 📁 Files Created
 
-```
+\`\`\`
 seo-improvements/
 ├── .env.example
 ├── .github/
@@ -300,7 +300,7 @@ seo-improvements/
 └── public/
     ├── robots.txt
     └── sitemap.xml
-```
+\`\`\`
 
 ---
 
