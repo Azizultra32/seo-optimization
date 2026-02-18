@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable react-hooks/refs */
 
 import React from "react"
 
@@ -10,7 +11,6 @@ import { Lock, Shield, CheckCircle, Award, ExternalLink, ArrowRight } from "@/co
 import { HousecallDemo, AssistMDDemo, ArkPassDemo } from "@/components/product-demo-dialog"
 import { trackPageView } from "@/lib/analytics"
 import { motion } from "@/components/ui/motion"
-import { useCoreWebVitals } from "@/hooks/use-core-web-vitals"
 import { useSafeInView } from "@/hooks/use-in-view"
 import { observeCoreWebVitals } from "@/lib/performance"
 
@@ -30,8 +30,6 @@ export function HomePage() {
   const trustRef = useSafeInView({ threshold: 0.2 })
   const ethicalRef = useSafeInView({ threshold: 0.3 })
   const contactRef = useSafeInView({ threshold: 0.3 })
-
-  useCoreWebVitals()
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -217,7 +215,7 @@ export function HomePage() {
                 />
               </Link>
               <Link
-                href="https://www.linkedin.com/in/dr-ali-ghahary-md-ccfp-a00939347/"
+                href="https://www.linkedin.com/in/alighahary"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-black/20 px-6 py-3 text-black font-alfabet text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-black hover:text-white"
@@ -243,10 +241,10 @@ export function HomePage() {
       {/* Vision & Biography Section - Editorial Layout */}
       <section
         id="vision"
-        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-white py-32 md:py-48 text-transparent bg-transparent"
+        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-white py-32 md:py-48"
         ref={visionRef.ref}
       >
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12 bg-transparent text-transparent">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3 relative">
               <div className={`sticky top-32 border-t border-black/10 pt-6 ${visionRef.isInView ? "fade-up" : ""}`}>
@@ -269,7 +267,7 @@ export function HomePage() {
                   <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
                     Transforming
                   </span>
-                  healthcare isn't a software problem—it's a philosophical one.
+                  healthcare isn&apos;t a software problem-it&apos;s a philosophical one.
                 </h3>
               </div>
             </div>
@@ -304,7 +302,7 @@ export function HomePage() {
                     className={`font-alfabet font-light text-black/90 text-lg leading-[1.8] first-letter:text-5xl first-letter:font-ivyjournal first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8] ${aboutRef.isInView ? "fade-up fade-delay-2" : ""}`}
                   >
                     Dr. Ali Ghahary is a Canadian physician, entrepreneur, and technologist. Board-certified (CCFP) with
-                    over 20 years of clinical experience, he combines frontline medical expertise with a builder's
+                    over 20 years of clinical experience, he combines frontline medical expertise with a builder&apos;s
                     mindset for ethical technology.
                   </p>
                   <p
@@ -346,7 +344,7 @@ export function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
             <div className="md:col-span-3">
               <div className={`sticky top-32 border-t border-white/10 pt-6 ${projectsRef.isInView ? "fade-up" : ""}`}>
-                <span className="font-alfabet text-[10px] text-white/30 block mb-4">03 / Ventures</span>
+                <span className="font-alfabet text-[10px] text-white/60 block mb-4">03 / Ventures</span>
                 <h2 className="font-ivyjournal text-4xl md:text-5xl text-white leading-[0.9]">
                   Selected
                   <br />
@@ -363,7 +361,7 @@ export function HomePage() {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
-                      <span className="font-alfabet text-[10px] text-white/30">01</span>
+                      <span className="font-alfabet text-[10px] text-white/60">01</span>
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
@@ -382,7 +380,7 @@ export function HomePage() {
                       <p className="font-alfabet text-[11px] tracking-wide uppercase text-white/40 mb-8">
                         {"<"}5 min physician response · HIPAA/PIPEDA compliant
                       </p>
-                      <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="flex justify-end opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 transform translate-y-0 md:translate-y-4 md:group-hover:translate-y-0">
                         <HousecallDemo />
                       </div>
                     </div>
@@ -395,7 +393,7 @@ export function HomePage() {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
-                      <span className="font-alfabet text-[10px] text-white/30">02</span>
+                      <span className="font-alfabet text-[10px] text-white/60">02</span>
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
@@ -413,7 +411,7 @@ export function HomePage() {
                       <p className="font-alfabet text-[11px] tracking-wide uppercase text-white/40 mb-8">
                         90% reduction in documentation time · SOC 2 Type II
                       </p>
-                      <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="flex justify-end opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 transform translate-y-0 md:translate-y-4 md:group-hover:translate-y-0">
                         <AssistMDDemo />
                       </div>
                     </div>
@@ -426,7 +424,7 @@ export function HomePage() {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
                     <div className="md:col-span-1">
-                      <span className="font-alfabet text-[10px] text-white/30">03</span>
+                      <span className="font-alfabet text-[10px] text-white/60">03</span>
                     </div>
                     <div className="md:col-span-6">
                       <h3 className="font-ivyjournal text-5xl md:text-7xl text-white group-hover:text-white/90 transition-colors mb-4">
@@ -444,7 +442,7 @@ export function HomePage() {
                       <p className="font-alfabet text-[11px] tracking-wide uppercase text-white/40 mb-8">
                         End-to-end encryption · Patient-controlled access
                       </p>
-                      <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="flex justify-end opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 transform translate-y-0 md:translate-y-4 md:group-hover:translate-y-0">
                         <ArkPassDemo />
                       </div>
                     </div>
@@ -487,7 +485,7 @@ export function HomePage() {
                 <p
                   className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
-                  If it can't be trusted, it shouldn't exist. Every system follows this rule.
+                  If it can&apos;t be trusted, it shouldn&apos;t exist. Every system follows this rule.
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
@@ -506,7 +504,7 @@ export function HomePage() {
                           "w-6 h-6 text-black mb-6 opacity-60 group-hover:opacity-100 transition-opacity duration-500",
                       })}
                       <h3 className="font-alfabet text-xs tracking-widest uppercase mb-2 text-black">{item.title}</h3>
-                      <p className="font-alfabet font-light text-black/40 text-[10px] uppercase tracking-wider">
+                      <p className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-wider">
                         {item.desc}
                       </p>
                     </div>
@@ -547,14 +545,14 @@ export function HomePage() {
                   className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${ethicalRef.isInView ? "fade-up fade-delay-2" : ""}`}
                 >
                   The KNGHT Doctrine prioritizes patient sovereignty and clinical integrity above algorithmic
-                  efficiency. Ethics isn't a branding exercise—it's infrastructure.
+                  efficiency. Ethics isn&apos;t a branding exercise-it&apos;s infrastructure.
                 </p>
               </div>
 
               <div className="bg-white p-16 md:p-24 rounded-[2rem] shadow-sm">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   <div>
-                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/40">
+                    <h4 className="font-alfabet text-[10px] tracking-widest uppercase mb-8 text-black/60">
                       Core Values
                     </h4>
                   </div>
@@ -607,7 +605,7 @@ export function HomePage() {
 
             <div className="md:col-span-9 flex flex-col justify-center">
               <div className={`group ${contactRef.isInView ? "fade-up fade-delay-1" : ""}`}>
-                <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
+                <h3 className="font-alfabet text-[10px] tracking-widest uppercase mb-6 text-black/60 group-hover:text-black transition-colors duration-500">
                   General Inquiries
                 </h3>
                 <a
@@ -616,7 +614,7 @@ export function HomePage() {
                 >
                   info@armadamd.com
                 </a>
-                <p className="font-alfabet font-light text-black/40 text-sm">Questions, press, or partnerships</p>
+                <p className="font-alfabet font-light text-black/60 text-sm">Questions, press, or partnerships</p>
               </div>
 
               <motion.div
@@ -638,7 +636,7 @@ export function HomePage() {
                   />
                 </a>
                 <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">
-                  Let's start a conversation
+                  Let&apos;s start a conversation
                 </span>
               </motion.div>
             </div>
@@ -654,7 +652,7 @@ export function HomePage() {
             <p className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest">
               © {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
             </p>
-            <p className="font-alfabet font-light text-black/40 text-[9px] tracking-wide">
+            <p className="font-alfabet font-light text-black/60 text-[9px] tracking-wide">
               Ethical AI · True Interoperability · Patient Sovereignty
             </p>
           </div>

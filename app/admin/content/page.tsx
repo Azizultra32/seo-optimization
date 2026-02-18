@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -40,11 +40,7 @@ export default function ContentManagementPage() {
   const [topic, setTopic] = useState("")
   const [customPrompt, setCustomPrompt] = useState("")
 
-  useEffect(() => {
-    fetchDrafts()
-  }, [activeTab])
-
-  const fetchDrafts = async () => {
+  const fetchDrafts = useCallback(async () => {
     setLoading(true)
     try {
       const res = await fetch(`/api/content/drafts?status=${activeTab}`)
@@ -55,7 +51,11 @@ export default function ContentManagementPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [activeTab])
+
+  useEffect(() => {
+    fetchDrafts()
+  }, [fetchDrafts])
 
   const generateContent = async () => {
     if (!topic) return

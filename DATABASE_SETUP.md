@@ -26,10 +26,11 @@ The analytics and content generation features require database tables. **You mus
 
 You should see these messages:
 \`\`\`
-✅ Database setup complete! All tables created successfully.
+✅ Database setup complete!
 📊 Analytics tables: analytics_events, analytics_sessions, page_performance, scroll_tracking
-📝 Content tables: generated_content
-🔒 RLS policies: Anonymous users can insert analytics, service role has full access
+📝 Content tables: content_drafts, content_templates, content_generation_log
+🔎 SEO tables: ai_recommendations, page_metrics
+🔒 RLS policies: anon insert-only analytics, service role full access
 \`\`\`
 
 ### Step 4: Confirm Tables Exist
@@ -40,7 +41,11 @@ You should see these messages:
    - ✅ `analytics_sessions`
    - ✅ `page_performance`
    - ✅ `scroll_tracking`
-   - ✅ `generated_content`
+   - ✅ `content_drafts`
+   - ✅ `content_templates`
+   - ✅ `content_generation_log`
+   - ✅ `ai_recommendations`
+   - ✅ `page_metrics`
 
 ---
 
@@ -73,12 +78,22 @@ You should see these messages:
 
 ### 📝 Content Tables (Step 2)
 
-**`generated_content`** - AI-generated content management
+**`content_drafts`** - AI-generated content workflow
 - Blog posts
 - Case studies
 - Product updates
 - Press releases
 - Draft → Review → Published workflow
+
+**`content_templates`** - Prompt templates used by generation APIs
+
+**`content_generation_log`** - Generation runs, token usage, and errors
+
+### 🔎 SEO Tables
+
+**`ai_recommendations`** - Stored metadata/schema recommendations from `/api/seo/analyze`
+
+**`page_metrics`** - Search Console metrics snapshots used by `/api/seo/metrics`
 
 ### 🔒 Security (P0 Fix)
 
@@ -167,7 +182,7 @@ If you encounter any issues:
 
 1. Check the Supabase logs (Dashboard → Logs → API Logs)
 2. Verify environment variables are set correctly in Vercel
-3. Ensure `SUPABASE_SERVICE_ROLE_KEY` and `SUPABASE_ANON_KEY` are set
+3. Ensure `SUPABASE_SERVICE_ROLE_KEY` is set
 4. Check that `NEXT_PUBLIC_SUPABASE_ANON_KEY` is set for client-side tracking
 
 ---

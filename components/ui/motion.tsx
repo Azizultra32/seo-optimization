@@ -8,6 +8,14 @@ const MotionComponent = ({ children, className, ...props }: any) => {
   )
 }
 
+const MotionVideo = React.forwardRef(({ children, className, ...props }: any, ref: any) => (
+  <video ref={ref} className={className} {...props}>
+    {children}
+  </video>
+))
+
+MotionVideo.displayName = "MotionVideo"
+
 export const motion = {
   div: ({ children, className, ...props }: any) => (
     <div className={className} {...props}>
@@ -29,9 +37,5 @@ export const motion = {
       {children}
     </button>
   ),
-  video: React.forwardRef(({ children, className, ...props }: any, ref: any) => (
-    <video ref={ref} className={className} {...props}>
-      {children}
-    </video>
-  )),
+  video: MotionVideo,
 }

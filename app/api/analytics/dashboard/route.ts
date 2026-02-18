@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { getSupabaseServiceRoleKey, getSupabaseUrl } from "@/lib/supabase/config"
 
 export async function GET() {
   try {
-    const supabase = createClient(
-      process.env.SUPABASE_POSTGRES_URL || process.env.SUPABASE_URL || "",
-      process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-    )
+    const supabase = createClient(getSupabaseUrl(), getSupabaseServiceRoleKey())
 
     // Get date range for last 30 days
     const thirtyDaysAgo = new Date()
@@ -36,10 +34,9 @@ export async function GET() {
       .select("max_scroll_percentage, time_on_page")
       .gte("created_at", thirtyDaysAgo.toISOString())
 
-    const avgScrollDepth =
-      scrollData?.reduce((sum, item) => sum + item.max_scroll_percentage, 0) / (scrollData?.length || 1) || 0
-
-    const avgTimeOnPage = scrollData?.reduce((sum, item) => sum + item.time_on_page, 0) / (scrollData?.length || 1) || 0
+    const scrollRows = scrollData ?? []
+    const avgScrollDepth = scrollRows.reduce((sum, item) => sum + item.max_scroll_percentage, 0) / (scrollRows.length || 1)
+    const avgTimeOnPage = scrollRows.reduce((sum, item) => sum + item.time_on_page, 0) / (scrollRows.length || 1)
 
     // Performance metrics averages
     const { data: performanceData } = await supabase

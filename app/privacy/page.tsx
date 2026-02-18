@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Harvest Studio",
-  description: "Learn how Harvest Studio protects your privacy and handles your data.",
+  title: "Privacy Policy | Dr. Ali Ghahary",
+  description: "Learn how Dr. Ali Ghahary protects your privacy and handles your data.",
+  alternates: {
+    canonical: "https://alighahary.com/privacy",
+  },
 }
 
 export default function PrivacyPage() {
@@ -19,8 +22,9 @@ export default function PrivacyPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Overview</h2>
             <p>
-              Harvest Studio ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy
-              explains how we collect, use, disclose, and safeguard your information when you visit our website.
+              Dr. Ali Ghahary and this website (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) are committed to protecting your privacy.
+              This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit
+              our website.
             </p>
           </section>
 
@@ -120,8 +124,8 @@ export default function PrivacyPage() {
             <p>For privacy-related questions or to exercise your rights, contact us at:</p>
             <p className="mt-4">
               Email:{" "}
-              <a href="mailto:privacy@harveststudio.ca" className="text-primary hover:underline">
-                privacy@harveststudio.ca
+              <a href="mailto:privacy@alighahary.com" className="text-primary hover:underline">
+                privacy@alighahary.com
               </a>
             </p>
           </section>

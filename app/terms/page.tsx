@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Harvest Studio",
-  description: "Terms and conditions for using Harvest Studio services.",
+  title: "Terms of Service | Dr. Ali Ghahary",
+  description: "Terms and conditions for using alighahary.com services.",
+  alternates: {
+    canonical: "https://alighahary.com/terms",
+  },
 }
 
 export default function TermsPage() {
@@ -19,15 +22,15 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Acceptance of Terms</h2>
             <p>
-              By accessing and using Harvest Studio's website and services, you accept and agree to be bound by the
-              terms and provision of this agreement.
+              By accessing and using this website and services, you accept and agree to be bound by the terms and
+              provision of this agreement.
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Use License</h2>
             <p>
-              Permission is granted to temporarily access the materials on Harvest Studio's website for personal,
+              Permission is granted to temporarily access the materials on this website for personal,
               non-commercial transitory viewing only.
             </p>
           </section>
@@ -47,19 +50,19 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Disclaimer</h2>
             <p>
-              The materials on Harvest Studio's website are provided on an 'as is' basis. Harvest Studio makes no
-              warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without
-              limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or
-              non-infringement of intellectual property or other violation of rights.
+              The materials on this website are provided on an &apos;as is&apos; basis. We make no warranties, expressed or
+              implied, and hereby disclaim and negate all other warranties including, without limitation, implied
+              warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of
+              intellectual property or other violation of rights.
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Limitations</h2>
             <p>
-              In no event shall Harvest Studio or its suppliers be liable for any damages (including, without
+              In no event shall Dr. Ali Ghahary or suppliers be liable for any damages (including, without
               limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or
-              inability to use the materials on Harvest Studio's website.
+              inability to use the materials on this website.
             </p>
           </section>
 
@@ -75,8 +78,8 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold mb-4">Contact</h2>
             <p>
               Questions about the Terms of Service should be sent to us at{" "}
-              <a href="mailto:legal@harveststudio.ca" className="text-primary hover:underline">
-                legal@harveststudio.ca
+              <a href="mailto:legal@alighahary.com" className="text-primary hover:underline">
+                legal@alighahary.com
               </a>
             </p>
           </section>
