@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { getSupabaseServiceRoleKey, getSupabaseUrl } from "@/lib/supabase/config"
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,19 +17,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 200 })
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-    if (!supabaseUrl || !supabaseKey) {
+    let supabaseUrl: string
+    let supabaseKey: string
+    try {
+      supabaseUrl = getSupabaseUrl()
+      supabaseKey = getSupabaseServiceRoleKey()
+    } catch {
       // Silently skip analytics if not configured
       return NextResponse.json({ success: true, skipped: true, reason: "no_credentials" })
-    }
-
-    // Validate Supabase URL format
-    try {
-      new URL(supabaseUrl)
-    } catch {
-      return NextResponse.json({ success: true, skipped: true, reason: "invalid_url" })
     }
 
     // Wrap entire Supabase operation to catch connection/auth errors

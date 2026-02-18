@@ -1,5 +1,5 @@
 -- ============================================
--- HARVEST STUDIO DATABASE SETUP
+-- HARVEST STUDIO DATABASE SETUP (ONE-PASS)
 -- Run this entire script in Supabase SQL Editor
 -- ============================================
 
@@ -7,28 +7,81 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- ============================================
--- ANALYTICS TABLES (Step 3)
+-- ANALYTICS TABLES
 -- ============================================
 
--- Using optimized analytics_events table with proper RLS
+-- Canonical analytics event schema used by API routes
 CREATE TABLE IF NOT EXISTS public.analytics_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   session_id UUID,
-  path TEXT NOT NULL,
+  event_type TEXT,
+  event_name TEXT,
+  page_url TEXT,
   referrer TEXT,
-  event TEXT NOT NULL,         -- e.g. 'page_view', 'cta_click'
-  meta JSONB DEFAULT '{}'::jsonb, -- flexible payload (utm, etc.)
-  user_agent TEXT,
-  ip INET
+  metadata JSONB DEFAULT '{}'::jsonb,
+  user_agent TEXT
 );
 
--- Helpful indexes for analytics queries
-CREATE INDEX IF NOT EXISTS idx_analytics_events_created_at ON public.analytics_events (created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_analytics_events_path ON public.analytics_events (path);
-CREATE INDEX IF NOT EXISTS idx_analytics_events_event ON public.analytics_events (event);
+-- Backward-compatible migration for older analytics_events schema
+ALTER TABLE public.analytics_events ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ NOT NULL DEFAULT now();
+ALTER TABLE public.analytics_events ADD COLUMN IF NOT EXISTS session_id UUID;
+ALTER TABLE public.analytics_events ADD COLUMN IF NOT EXISTS event_type TEXT;
+ALTER TABLE public.analytics_events ADD COLUMN IF NOT EXISTS event_name TEXT;
+ALTER TABLE public.analytics_events ADD COLUMN IF NOT EXISTS page_url TEXT;
+ALTER TABLE public.analytics_events ADD COLUMN IF NOT EXISTS referrer TEXT;
+ALTER TABLE public.analytics_events ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}'::jsonb;
+ALTER TABLE public.analytics_events ADD COLUMN IF NOT EXISTS user_agent TEXT;
 
--- Lightweight sessions table
+DO $$
+BEGIN
+  -- Legacy column: event -> event_type/event_name
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'analytics_events' AND column_name = 'event'
+  ) THEN
+    EXECUTE '
+      UPDATE public.analytics_events
+      SET event_type = COALESCE(event_type, event),
+          event_name = COALESCE(event_name, event)
+      WHERE event IS NOT NULL
+    ';
+  END IF;
+
+  -- Legacy column: path -> page_url
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'analytics_events' AND column_name = 'path'
+  ) THEN
+    EXECUTE '
+      UPDATE public.analytics_events
+      SET page_url = COALESCE(page_url, path)
+      WHERE path IS NOT NULL
+    ';
+  END IF;
+
+  -- Legacy column: meta -> metadata
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'analytics_events' AND column_name = 'meta'
+  ) THEN
+    EXECUTE '
+      UPDATE public.analytics_events
+      SET metadata = COALESCE(metadata, meta)
+      WHERE meta IS NOT NULL
+    ';
+  END IF;
+END $$;
+
+CREATE INDEX IF NOT EXISTS idx_analytics_events_created_at ON public.analytics_events (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_analytics_events_event_type ON public.analytics_events (event_type);
+CREATE INDEX IF NOT EXISTS idx_analytics_events_event_name ON public.analytics_events (event_name);
+CREATE INDEX IF NOT EXISTS idx_analytics_events_page_url ON public.analytics_events (page_url);
+
+-- Optional sessions table
 CREATE TABLE IF NOT EXISTS public.analytics_sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -60,7 +113,7 @@ CREATE TABLE IF NOT EXISTS public.scroll_tracking (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   page_url TEXT NOT NULL,
   max_scroll_percentage INT,
-  time_on_page INT, -- seconds
+  time_on_page INT,
   session_id UUID
 );
 
@@ -68,21 +121,143 @@ CREATE INDEX IF NOT EXISTS idx_scroll_tracking_url ON public.scroll_tracking(pag
 CREATE INDEX IF NOT EXISTS idx_scroll_tracking_created ON public.scroll_tracking(created_at DESC);
 
 -- ============================================
--- CONTENT GENERATION TABLES (Step 2)
+-- CONTENT GENERATION TABLES (USED BY /api/content/*)
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS public.content_drafts (
+  id BIGSERIAL PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
+  type TEXT NOT NULL CHECK (type IN ('blog', 'case_study', 'press_release', 'product_update')),
+  title TEXT NOT NULL,
+  slug TEXT UNIQUE,
+  content TEXT NOT NULL,
+  excerpt TEXT,
+  status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'review', 'approved', 'published', 'archived')),
+  keywords JSONB DEFAULT '[]'::jsonb,
+  internal_links JSONB DEFAULT '[]'::jsonb,
+  metadata JSONB DEFAULT '{}'::jsonb,
+  author TEXT DEFAULT 'AI Assistant',
+  reviewed_by TEXT,
+  published_at TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS public.content_templates (
+  id BIGSERIAL PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  type TEXT NOT NULL,
+  name TEXT NOT NULL,
+  prompt_template TEXT NOT NULL,
+  variables JSONB DEFAULT '[]'::jsonb,
+  active BOOLEAN DEFAULT true
+);
+
+CREATE TABLE IF NOT EXISTS public.content_generation_log (
+  id BIGSERIAL PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  content_id BIGINT REFERENCES public.content_drafts(id),
+  prompt TEXT,
+  model TEXT,
+  tokens_used INTEGER,
+  success BOOLEAN,
+  error_message TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_content_drafts_status ON public.content_drafts(status);
+CREATE INDEX IF NOT EXISTS idx_content_drafts_type ON public.content_drafts(type);
+CREATE INDEX IF NOT EXISTS idx_content_drafts_created_at ON public.content_drafts(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_content_drafts_slug ON public.content_drafts(slug);
+CREATE INDEX IF NOT EXISTS idx_content_templates_type ON public.content_templates(type);
+
+-- Seed templates idempotently
+INSERT INTO public.content_templates (type, name, prompt_template, variables)
+SELECT
+  'blog',
+  'Healthcare AI Insights',
+  'Write a professional blog post about {topic} in healthcare AI. Focus on practical applications and ethical considerations. Target audience: healthcare professionals and technology leaders. Include specific examples and current research. Length: 800-1000 words. Tone: Professional yet accessible.',
+  '["topic"]'::jsonb
+WHERE NOT EXISTS (
+  SELECT 1 FROM public.content_templates WHERE type = 'blog' AND name = 'Healthcare AI Insights'
+);
+
+INSERT INTO public.content_templates (type, name, prompt_template, variables)
+SELECT
+  'case_study',
+  'Product Success Story',
+  'Create a case study showcasing how {product_name} solved {problem} for healthcare providers. Include: Challenge, Solution, Results (with metrics), and Key Takeaways. Focus on real-world impact and measurable outcomes. Length: 600-800 words.',
+  '["product_name", "problem"]'::jsonb
+WHERE NOT EXISTS (
+  SELECT 1 FROM public.content_templates WHERE type = 'case_study' AND name = 'Product Success Story'
+);
+
+INSERT INTO public.content_templates (type, name, prompt_template, variables)
+SELECT
+  'press_release',
+  'Product Launch',
+  'Write a press release announcing {announcement}. Include: headline, dateline, lead paragraph with key facts, supporting quotes from Dr. Ali Ghahary, product details, and boilerplate about Armada MD. Tone: Professional, newsworthy. Length: 400-500 words.',
+  '["announcement"]'::jsonb
+WHERE NOT EXISTS (
+  SELECT 1 FROM public.content_templates WHERE type = 'press_release' AND name = 'Product Launch'
+);
+
+INSERT INTO public.content_templates (type, name, prompt_template, variables)
+SELECT
+  'product_update',
+  'Feature Release',
+  'Create a product update announcement for {feature_name} in {product}. Explain what the feature does, why it matters for healthcare providers, and how to use it. Include technical details and benefits. Tone: Informative and exciting. Length: 400-600 words.',
+  '["feature_name", "product"]'::jsonb
+WHERE NOT EXISTS (
+  SELECT 1 FROM public.content_templates WHERE type = 'product_update' AND name = 'Feature Release'
+);
+
+-- ============================================
+-- SEO TABLES (USED BY /api/seo/*)
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS public.ai_recommendations (
+  id BIGSERIAL PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  url TEXT NOT NULL,
+  meta_title TEXT,
+  meta_description TEXT,
+  schema JSONB,
+  confidence NUMERIC(4, 3) DEFAULT 0.800,
+  approved_by TEXT,
+  status TEXT DEFAULT 'pending'
+);
+
+CREATE INDEX IF NOT EXISTS idx_ai_recommendations_url ON public.ai_recommendations(url);
+CREATE INDEX IF NOT EXISTS idx_ai_recommendations_created_at ON public.ai_recommendations(created_at DESC);
+
+CREATE TABLE IF NOT EXISTS public.page_metrics (
+  id BIGSERIAL PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  url TEXT NOT NULL,
+  date DATE NOT NULL,
+  clicks INT DEFAULT 0,
+  impressions INT DEFAULT 0,
+  queries JSONB DEFAULT '[]'::jsonb
+);
+
+CREATE INDEX IF NOT EXISTS idx_page_metrics_url_date ON public.page_metrics(url, date DESC);
+
+-- ============================================
+-- LEGACY CONTENT TABLE (kept for compatibility)
 -- ============================================
 
 CREATE TABLE IF NOT EXISTS public.generated_content (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  content_type VARCHAR(50) NOT NULL, -- 'blog', 'case_study', 'product_update', 'press_release'
+  content_type VARCHAR(50) NOT NULL,
   title VARCHAR(255) NOT NULL,
   content TEXT NOT NULL,
   excerpt TEXT,
   keywords TEXT[],
   internal_links JSONB DEFAULT '[]',
   metadata JSONB DEFAULT '{}',
-  status VARCHAR(50) DEFAULT 'draft', -- 'draft', 'review', 'published', 'archived'
+  status VARCHAR(50) DEFAULT 'draft',
   published_at TIMESTAMPTZ,
   created_by VARCHAR(255),
   updated_by VARCHAR(255)
@@ -90,46 +265,23 @@ CREATE TABLE IF NOT EXISTS public.generated_content (
 
 CREATE INDEX IF NOT EXISTS idx_generated_content_type ON public.generated_content(content_type);
 CREATE INDEX IF NOT EXISTS idx_generated_content_status ON public.generated_content(status);
-CREATE INDEX IF NOT EXISTS idx_generated_content_published ON public.generated_content(published_at DESC);
-CREATE INDEX IF NOT EXISTS idx_generated_content_created ON public.generated_content(created_at DESC);
 
 -- ============================================
--- IMPROVE EXISTING TABLES (if they exist)
+-- ROW LEVEL SECURITY
 -- ============================================
 
--- Add audit columns to ai_recommendations if table exists
-DO $$
-BEGIN
-  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='ai_recommendations') THEN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns
-                   WHERE table_name='ai_recommendations' AND column_name='updated_at') THEN
-      ALTER TABLE public.ai_recommendations ADD COLUMN updated_at TIMESTAMPTZ DEFAULT now();
-    END IF;
+ALTER TABLE public.analytics_events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.analytics_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.page_performance ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.scroll_tracking ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.content_drafts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.content_templates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.content_generation_log ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.ai_recommendations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.page_metrics ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.generated_content ENABLE ROW LEVEL SECURITY;
 
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns
-                   WHERE table_name='ai_recommendations' AND column_name='approved_by') THEN
-      ALTER TABLE public.ai_recommendations ADD COLUMN approved_by VARCHAR(255);
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns
-                   WHERE table_name='ai_recommendations' AND column_name='status') THEN
-      ALTER TABLE public.ai_recommendations ADD COLUMN status VARCHAR(50) DEFAULT 'pending';
-    END IF;
-  END IF;
-END $$;
-
--- ============================================
--- ROW LEVEL SECURITY (P0 Fix)
--- ============================================
-
--- Enable RLS on analytics tables with anon insert-only policy
-ALTER TABLE IF EXISTS public.analytics_events ENABLE ROW LEVEL SECURITY;
-ALTER TABLE IF EXISTS public.analytics_sessions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE IF EXISTS public.page_performance ENABLE ROW LEVEL SECURITY;
-ALTER TABLE IF EXISTS public.scroll_tracking ENABLE ROW LEVEL SECURITY;
-ALTER TABLE IF EXISTS public.generated_content ENABLE ROW LEVEL SECURITY;
-
--- Allow anonymous users to INSERT analytics data only (no read/update/delete)
+-- Anonymous insert-only analytics policies
 DROP POLICY IF EXISTS "anon can insert events" ON public.analytics_events;
 CREATE POLICY "anon can insert events"
   ON public.analytics_events
@@ -158,7 +310,7 @@ CREATE POLICY "anon can insert scroll"
   TO anon
   WITH CHECK (true);
 
--- Service role has full access to everything
+-- Service role full access policies
 DROP POLICY IF EXISTS "service role full access events" ON public.analytics_events;
 CREATE POLICY "service role full access events"
   ON public.analytics_events
@@ -191,47 +343,58 @@ CREATE POLICY "service role full access scroll"
   USING (true)
   WITH CHECK (true);
 
-DROP POLICY IF EXISTS "service role full access content" ON public.generated_content;
-CREATE POLICY "service role full access content"
+DROP POLICY IF EXISTS "service role full access content drafts" ON public.content_drafts;
+CREATE POLICY "service role full access content drafts"
+  ON public.content_drafts
+  FOR ALL
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "service role full access content templates" ON public.content_templates;
+CREATE POLICY "service role full access content templates"
+  ON public.content_templates
+  FOR ALL
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "service role full access content log" ON public.content_generation_log;
+CREATE POLICY "service role full access content log"
+  ON public.content_generation_log
+  FOR ALL
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "service role full access recommendations" ON public.ai_recommendations;
+CREATE POLICY "service role full access recommendations"
+  ON public.ai_recommendations
+  FOR ALL
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "service role full access metrics" ON public.page_metrics;
+CREATE POLICY "service role full access metrics"
+  ON public.page_metrics
+  FOR ALL
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "service role full access generated content" ON public.generated_content;
+CREATE POLICY "service role full access generated content"
   ON public.generated_content
   FOR ALL
   TO service_role
   USING (true)
   WITH CHECK (true);
 
--- Enable RLS on existing SEO tables if they exist
-DO $$
-BEGIN
-  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='ai_recommendations') THEN
-    ALTER TABLE public.ai_recommendations ENABLE ROW LEVEL SECURITY;
-
-    DROP POLICY IF EXISTS "service role full access recommendations" ON public.ai_recommendations;
-    CREATE POLICY "service role full access recommendations"
-      ON public.ai_recommendations
-      FOR ALL
-      TO service_role
-      USING (true)
-      WITH CHECK (true);
-  END IF;
-
-  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='page_metrics') THEN
-    ALTER TABLE public.page_metrics ENABLE ROW LEVEL SECURITY;
-
-    DROP POLICY IF EXISTS "service role full access metrics" ON public.page_metrics;
-    CREATE POLICY "service role full access metrics"
-      ON public.page_metrics
-      FOR ALL
-      TO service_role
-      USING (true)
-      WITH CHECK (true);
-  END IF;
-END $$;
-
 -- ============================================
 -- RELOAD SCHEMA CACHE
 -- ============================================
 
--- Force PostgREST to reload schema immediately
 SELECT pg_notify('pgrst', 'reload schema');
 
 -- ============================================
@@ -240,8 +403,9 @@ SELECT pg_notify('pgrst', 'reload schema');
 
 DO $$
 BEGIN
-  RAISE NOTICE '✅ Database setup complete! All tables created successfully.';
+  RAISE NOTICE '✅ Database setup complete!';
   RAISE NOTICE '📊 Analytics tables: analytics_events, analytics_sessions, page_performance, scroll_tracking';
-  RAISE NOTICE '📝 Content tables: generated_content';
-  RAISE NOTICE '🔒 RLS policies: Anonymous users can insert analytics, service role has full access';
+  RAISE NOTICE '📝 Content tables: content_drafts, content_templates, content_generation_log';
+  RAISE NOTICE '🔎 SEO tables: ai_recommendations, page_metrics';
+  RAISE NOTICE '🔒 RLS policies: anon insert-only analytics, service role full access';
 END $$;
