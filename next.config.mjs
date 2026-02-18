@@ -10,6 +10,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Force fresh module evaluation
+  env: {
+    CACHE_BUST: Date.now().toString(),
+  },
 }
 
 export default nextConfig
