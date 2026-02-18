@@ -11,11 +11,14 @@ function isValidBasicAuth(authHeader: string | null): boolean {
     return false
   }
 
-  const base64Credentials = authHeader.split(" ")[1]
-  const credentials = Buffer.from(base64Credentials, "base64").toString("utf-8")
-  const [username, password] = credentials.split(":")
-
-  return username === ADMIN_USERNAME && password === ADMIN_PASSWORD
+  try {
+    const base64Credentials = authHeader.split(" ")[1]
+    const credentials = atob(base64Credentials)
+    const [username, password] = credentials.split(":")
+    return username === ADMIN_USERNAME && password === ADMIN_PASSWORD
+  } catch {
+    return false
+  }
 }
 
 export function middleware(request: NextRequest) {
