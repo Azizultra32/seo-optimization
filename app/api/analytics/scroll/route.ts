@@ -7,22 +7,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { pageUrl, maxScrollPercentage, timeOnPage, sessionId } = body
 
+    // Gracefully skip if Supabase is not configured
     const supabaseUrl = getSupabaseUrl()
-    if (!supabaseUrl) {
-      return NextResponse.json({ success: true, skipped: true, reason: "no_credentials" }, { status: 200 })
-    }
+    const supabaseKey = getSupabaseServiceRoleKey()
 
-    let supabaseKey: string
-    try {
-      supabaseKey = getSupabaseServiceRoleKey()
-    } catch {
-      return NextResponse.json({ success: true, skipped: true }, { status: 200 })
-    }
-
-    try {
-      new URL(supabaseUrl)
-    } catch {
-      return NextResponse.json({ success: true, skipped: true, reason: "invalid_url" }, { status: 200 })
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json({ success: true, skipped: true })
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey)
@@ -35,15 +25,11 @@ export async function POST(request: NextRequest) {
     })
 
     if (error) {
-      if (error.code === "PGRST205" || error.message?.includes("Could not find")) {
-        return NextResponse.json({ success: true, skipped: true }, { status: 200 })
-      }
-      return NextResponse.json({ success: true, skipped: true, reason: "db_error" }, { status: 200 })
+      return NextResponse.json({ success: true, skipped: true })
     }
 
     return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error("[v0] Scroll tracking error:", error)
-    return NextResponse.json({ success: true, skipped: true }, { status: 200 })
+  } catch {
+    return NextResponse.json({ success: true, skipped: true })
   }
 }

@@ -1,6 +1,3 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 46" fill="none">
-  <text x="0" y="36" font-family="Georgia, serif" font-size="40" font-weight="400" fill="#1a1a1a" letter-spacing="-1">AG</text>
-  <line x1="70" y1="8" x2="70" y2="38" stroke="#1a1a1a" stroke-width="0.5" opacity="0.3"/>
-  <text x="78" y="20" font-family="Helvetica, Arial, sans-serif" font-size="7" fill="#1a1a1a" letter-spacing="2" opacity="0.6">ALI</text>
-  <text x="78" y="32" font-family="Helvetica, Arial, sans-serif" font-size="7" fill="#1a1a1a" letter-spacing="2" opacity="0.6">GHAHARY</text>
+  <text x="10" y="36" font-family="Georgia, serif" font-size="38" font-weight="400" letter-spacing="4" fill="#1a1a1a">AG</text>
 </svg>

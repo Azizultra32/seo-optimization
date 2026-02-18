@@ -12,14 +12,9 @@ const emptyDashboard = {
 export async function GET() {
   try {
     const supabaseUrl = getSupabaseUrl()
-    if (!supabaseUrl) {
-      return NextResponse.json(emptyDashboard)
-    }
+    const supabaseKey = getSupabaseServiceRoleKey()
 
-    let supabaseKey: string
-    try {
-      supabaseKey = getSupabaseServiceRoleKey()
-    } catch {
+    if (!supabaseUrl || !supabaseKey) {
       return NextResponse.json(emptyDashboard)
     }
 

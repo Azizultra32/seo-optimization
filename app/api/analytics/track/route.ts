@@ -17,17 +17,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 200 })
     }
 
+    // Gracefully skip if Supabase is not configured
     const supabaseUrl = getSupabaseUrl()
-    if (!supabaseUrl) {
-      return NextResponse.json({ success: true, skipped: true, reason: "no_credentials" })
-    }
+    const supabaseKey = getSupabaseServiceRoleKey()
 
-    let supabaseKey: string
-    try {
-      supabaseKey = getSupabaseServiceRoleKey()
-    } catch {
-      // Silently skip analytics if not configured
-      return NextResponse.json({ success: true, skipped: true, reason: "no_credentials" })
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json({ success: true, skipped: true })
     }
 
     // Wrap entire Supabase operation to catch connection/auth errors
