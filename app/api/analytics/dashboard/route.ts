@@ -1,18 +1,26 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { getSupabaseServiceRoleKey, getSupabaseUrl } from "@/lib/supabase/config"
+
+const emptyDashboard = {
+  summary: { totalEvents: 0, avgScrollDepth: 0, avgTimeOnPage: 0 },
+  eventsByType: [],
+  performance: {},
+  topPages: [],
+}
 
 export async function GET() {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    const supabaseUrl = getSupabaseUrl()
+    if (!supabaseUrl) {
+      return NextResponse.json(emptyDashboard)
+    }
 
-    if (!supabaseUrl || !supabaseKey) {
-      return NextResponse.json({
-        summary: { totalEvents: 0, avgScrollDepth: 0, avgTimeOnPage: 0 },
-        eventsByType: [],
-        performance: {},
-        topPages: [],
-      })
+    let supabaseKey: string
+    try {
+      supabaseKey = getSupabaseServiceRoleKey()
+    } catch {
+      return NextResponse.json(emptyDashboard)
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey)

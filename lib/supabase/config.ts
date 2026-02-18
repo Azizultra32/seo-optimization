@@ -27,3 +27,11 @@ export function isSupabaseConfigured(): boolean {
   const key = getSupabaseAnonKey()
   return Boolean(url && key)
 }
+
+export function getSupabaseServiceRoleKey(): string {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!key) {
+    throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY")
+  }
+  return key
+}

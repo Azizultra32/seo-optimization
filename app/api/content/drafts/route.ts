@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { getSupabaseServiceRoleKey, getSupabaseUrl } from "@/lib/supabase/config"
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,10 +9,7 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get("type")
     const limit = Number.parseInt(searchParams.get("limit") || "20")
 
-    const supabase = createClient(
-      process.env.SUPABASE_POSTGRES_URL || process.env.SUPABASE_URL || "",
-      process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-    )
+    const supabase = createClient(getSupabaseUrl(), getSupabaseServiceRoleKey())
 
     let query = supabase.from("content_drafts").select("*").order("created_at", { ascending: false }).limit(limit)
 
@@ -37,10 +35,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "Draft ID is required" }, { status: 400 })
     }
 
-    const supabase = createClient(
-      process.env.SUPABASE_POSTGRES_URL || process.env.SUPABASE_URL || "",
-      process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-    )
+    const supabase = createClient(getSupabaseUrl(), getSupabaseServiceRoleKey())
 
     const updates: any = { updated_at: new Date().toISOString() }
     if (status) updates.status = status
