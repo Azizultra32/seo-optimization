@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -211,9 +210,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://use.typekit.net/gnu1xpt.css" />
       </head>
       <body className="antialiased">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-          {children}
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   )
