@@ -19,13 +19,13 @@ Run `scripts/improve-data-models.sql` to add:
 
 ### 3. Environment Variables
 **Critical:** Add `CRON_SECRET` to Vercel:
-\`\`\`bash
+```bash
 # Generate a secure token:
 openssl rand -base64 32
 
 # Or use a UUID:
 550e8400-e29b-41d4-a716-446655440000
-\`\`\`
+```
 
 **All Required Variables:**
 - ✅ `OPENAI_API_KEY` - Already set

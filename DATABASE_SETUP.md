@@ -25,12 +25,12 @@ The analytics and content generation features require database tables. **You mus
 ### Step 3: Verify Success
 
 You should see these messages:
-\`\`\`
+```
 ✅ Database setup complete! All tables created successfully.
 📊 Analytics tables: analytics_events, analytics_sessions, page_performance, scroll_tracking
 📝 Content tables: generated_content
 🔒 RLS policies: Anonymous users can insert analytics, service role has full access
-\`\`\`
+```
 
 ### Step 4: Confirm Tables Exist
 
@@ -111,11 +111,11 @@ Adds tracking columns to content and recommendations:
 ### Verify Data in Supabase
 
 Run this in SQL Editor to see recent events:
-\`\`\`sql
+```sql
 SELECT * FROM public.analytics_events 
 ORDER BY created_at DESC 
 LIMIT 10;
-\`\`\`
+```
 
 You should see rows appearing as you interact with the site.
 
@@ -153,9 +153,9 @@ Make sure you're logged into Supabase with the project owner account.
 ### ❌ Still seeing 404 errors on `/rest/v1/analytics_events`
 
 Run this in SQL Editor to force schema reload:
-\`\`\`sql
+```sql
 SELECT pg_notify('pgrst', 'reload schema');
-\`\`\`
+```
 
 Then wait 30 seconds and try again.
 

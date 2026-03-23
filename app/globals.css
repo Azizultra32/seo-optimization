@@ -29,18 +29,19 @@
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.625rem;
-  --brand-gradient: linear-gradient(90deg, #603010 0%, #8b7355 52%, #000000 100%);
-  --brand-gradient-soft: linear-gradient(90deg, #603010 0%, #8b7355 60%, #1f130d 100%);
+  /* Updated brand gradient to exact hex colors: #AB6015 -> #755D50 -> #382F2F */
+  --brand-gradient: linear-gradient(90deg, #ab6015 0%, #755d50 50%, #382f2f 100%);
+  --brand-gradient-soft: linear-gradient(90deg, #ab6015 0%, #755d50 55%, #382f2f 100%);
 
   /* New accent color system - sophisticated teal */
   --accent-brand: oklch(0.55 0.12 195);
-  --accent-brand-light: oklch(0.70 0.10 195);
-  --accent-brand-dark: oklch(0.40 0.14 195);
+  --accent-brand-light: oklch(0.7 0.1 195);
+  --accent-brand-dark: oklch(0.4 0.14 195);
 
   /* Warm gold accent for highlights */
   --accent-gold: oklch(0.75 0.12 85);
-  --accent-gold-light: oklch(0.85 0.10 85);
-  --accent-gold-dark: oklch(0.60 0.14 85);
+  --accent-gold-light: oklch(0.85 0.1 85);
+  --accent-gold-dark: oklch(0.6 0.14 85);
 
   /* New gradient variations */
   --gradient-accent: linear-gradient(135deg, var(--accent-brand) 0%, var(--accent-brand-dark) 100%);
@@ -391,12 +392,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.2) 50%,
-      transparent 100%
-    );
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
     transform: translateX(-100%);
     animation: shimmer 3s infinite;
   }
@@ -460,7 +456,8 @@
 
 /* Gradient text animation */
 @keyframes gradientShift {
-  0%, 100% {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
   50% {
@@ -518,7 +515,9 @@
 
 /* Glitch effect for tech feel */
 @keyframes glitch {
-  0%, 90%, 100% {
+  0%,
+  90%,
+  100% {
     transform: translate(0);
     text-shadow: none;
   }
@@ -542,17 +541,20 @@
 
 /* Typewriter cursor blink */
 @keyframes cursorBlink {
-  0%, 50% {
+  0%,
+  50% {
     border-color: currentColor;
   }
-  51%, 100% {
+  51%,
+  100% {
     border-color: transparent;
   }
 }
 
 /* Floating text animation */
 @keyframes floatText {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) rotate(-1deg);
   }
   50% {
@@ -594,18 +596,12 @@
 
 /* Text glow pulse */
 @keyframes glowPulse {
-  0%, 100% {
-    text-shadow:
-      0 0 5px currentColor,
-      0 0 10px currentColor,
-      0 0 20px currentColor;
+  0%,
+  100% {
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
   }
   50% {
-    text-shadow:
-      0 0 10px currentColor,
-      0 0 20px currentColor,
-      0 0 40px currentColor,
-      0 0 60px currentColor;
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
   }
 }
 
@@ -669,20 +665,23 @@
 
 /* Text scramble base */
 @keyframes textFlicker {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
     opacity: 0.8;
   }
-  25%, 75% {
+  25%,
+  75% {
     opacity: 0.9;
   }
 }
 
 /* Wave text animation */
 @keyframes waveText {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -720,14 +719,7 @@
 
 /* Shining text effect */
 .text-shine {
-  background: linear-gradient(
-    90deg,
-    currentColor 0%,
-    currentColor 40%,
-    #fff 50%,
-    currentColor 60%,
-    currentColor 100%
-  );
+  background: linear-gradient(90deg, currentColor 0%, currentColor 40%, #fff 50%, currentColor 60%, currentColor 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -798,33 +790,83 @@
 }
 
 /* Stagger delay utility classes for letters/words */
-.stagger-1 { animation-delay: 0.05s; }
-.stagger-2 { animation-delay: 0.1s; }
-.stagger-3 { animation-delay: 0.15s; }
-.stagger-4 { animation-delay: 0.2s; }
-.stagger-5 { animation-delay: 0.25s; }
-.stagger-6 { animation-delay: 0.3s; }
-.stagger-7 { animation-delay: 0.35s; }
-.stagger-8 { animation-delay: 0.4s; }
-.stagger-9 { animation-delay: 0.45s; }
-.stagger-10 { animation-delay: 0.5s; }
-.stagger-11 { animation-delay: 0.55s; }
-.stagger-12 { animation-delay: 0.6s; }
-.stagger-13 { animation-delay: 0.65s; }
-.stagger-14 { animation-delay: 0.7s; }
-.stagger-15 { animation-delay: 0.75s; }
-.stagger-16 { animation-delay: 0.8s; }
-.stagger-17 { animation-delay: 0.85s; }
-.stagger-18 { animation-delay: 0.9s; }
-.stagger-19 { animation-delay: 0.95s; }
-.stagger-20 { animation-delay: 1.0s; }
+.stagger-1 {
+  animation-delay: 0.05s;
+}
+.stagger-2 {
+  animation-delay: 0.1s;
+}
+.stagger-3 {
+  animation-delay: 0.15s;
+}
+.stagger-4 {
+  animation-delay: 0.2s;
+}
+.stagger-5 {
+  animation-delay: 0.25s;
+}
+.stagger-6 {
+  animation-delay: 0.3s;
+}
+.stagger-7 {
+  animation-delay: 0.35s;
+}
+.stagger-8 {
+  animation-delay: 0.4s;
+}
+.stagger-9 {
+  animation-delay: 0.45s;
+}
+.stagger-10 {
+  animation-delay: 0.5s;
+}
+.stagger-11 {
+  animation-delay: 0.55s;
+}
+.stagger-12 {
+  animation-delay: 0.6s;
+}
+.stagger-13 {
+  animation-delay: 0.65s;
+}
+.stagger-14 {
+  animation-delay: 0.7s;
+}
+.stagger-15 {
+  animation-delay: 0.75s;
+}
+.stagger-16 {
+  animation-delay: 0.8s;
+}
+.stagger-17 {
+  animation-delay: 0.85s;
+}
+.stagger-18 {
+  animation-delay: 0.9s;
+}
+.stagger-19 {
+  animation-delay: 0.95s;
+}
+.stagger-20 {
+  animation-delay: 1.0s;
+}
 
 /* Hero-specific cinematic delays */
-.hero-delay-1 { animation-delay: 0.5s; }
-.hero-delay-2 { animation-delay: 1.2s; }
-.hero-delay-3 { animation-delay: 1.9s; }
-.hero-delay-4 { animation-delay: 2.6s; }
-.hero-delay-5 { animation-delay: 3.3s; }
+.hero-delay-1 {
+  animation-delay: 0.5s;
+}
+.hero-delay-2 {
+  animation-delay: 1.2s;
+}
+.hero-delay-3 {
+  animation-delay: 1.9s;
+}
+.hero-delay-4 {
+  animation-delay: 2.6s;
+}
+.hero-delay-5 {
+  animation-delay: 3.3s;
+}
 
 /* Continuous subtle animations for emphasis */
 .animate-subtle-float {
@@ -836,7 +878,8 @@
 }
 
 @keyframes subtlePulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -1015,9 +1058,7 @@
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.1);
   transform: translateY(-4px);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 /* Light mode variant */
@@ -1032,9 +1073,7 @@
   background: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.1);
   transform: translateY(-4px);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
 }
 
 /* Smooth scroll behavior */
@@ -1060,7 +1099,8 @@ html {
 
 /* Animated gradient border */
 @keyframes borderGlow {
-  0%, 100% {
+  0%,
+  100% {
     border-color: var(--cta-cyan);
     box-shadow: 0 0 20px var(--cta-cyan-glow);
   }
@@ -1076,7 +1116,8 @@ html {
 
 /* Floating badge animation */
 @keyframes floatBadge {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) rotate(0deg);
   }
   25% {
@@ -1132,10 +1173,7 @@ html {
 
 /* Number counter glow */
 .number-glow {
-  text-shadow: 
-    0 0 10px currentColor,
-    0 0 20px currentColor,
-    0 0 30px currentColor;
+  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
 }
 
 /* Frosted glass nav (AI Supply style) */
@@ -1191,7 +1229,8 @@ html {
 
 /* Parallax scroll hint */
 @keyframes scrollHint {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
@@ -1213,7 +1252,7 @@ html {
   .scroll-hint {
     animation: none !important;
   }
-  
+
   .btn-cta-cyan:hover,
   .card-ai-supply:hover,
   .card-ai-supply-light:hover {

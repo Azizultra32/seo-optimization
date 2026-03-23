@@ -209,13 +209,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/gnu1xpt.css" />
-        {/* JSON-LD Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
-          }}
-        />
       </head>
       <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>

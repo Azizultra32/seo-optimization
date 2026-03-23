@@ -228,7 +228,6 @@ export function HomePage() {
             playsInline
             preload={prefersReducedMotion ? "metadata" : "auto"}
             controls={false}
-            poster="/images/dna-helix-background.jpeg"
             disablePictureInPicture
             disableRemotePlayback
             initial={heroAnimationsEnabled ? { opacity: 0 } : false}
@@ -333,7 +332,7 @@ export function HomePage() {
                     transition={{ duration: 0.5, delay: 4.2 }}
                   >
                     <motion.span
-                      className="bg-brand-gradient-soft bg-clip-text text-transparent font-medium text-shine"
+                      className="bg-gradient-to-r from-[#AB6015] via-[#755D50] to-[#382F2F] bg-clip-text text-transparent font-medium text-shine"
                       initial={{ opacity: 0, scale: 1.5, filter: "blur(20px)" }}
                       animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                       transition={{ duration: 1.2, delay: 4.4, ease: [0.16, 1, 0.3, 1] }}
@@ -348,7 +347,7 @@ export function HomePage() {
                   </motion.div>
                 ) : (
                   <p>
-                    <span className="bg-brand-gradient-soft bg-clip-text text-transparent font-medium">Reimagining</span>{" "}
+                    <span className="bg-gradient-to-r from-[#AB6015] via-[#755D50] to-[#382F2F] bg-clip-text text-transparent font-medium">Reimagining</span>{" "}
                     the future of healthcare through ethical AI, interoperability, and patient empowerment.
                   </p>
                 )}
@@ -414,7 +413,7 @@ export function HomePage() {
                   {visionRef.isInView ? (
                     <>
                       <motion.span
-                        className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2 inline-block text-shine"
+                        className="bg-gradient-to-r from-[#AB6015] via-[#755D50] to-[#382F2F] bg-clip-text text-transparent italic pr-2 inline-block text-shine"
                         initial={{ opacity: 0, x: -50, filter: "blur(15px)" }}
                         animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -423,7 +422,7 @@ export function HomePage() {
                       </motion.span>
                       {" "}
                       <AnimatedWords
-                        text="healthcare isn't a software problem—it's a philosophical one."
+                        text="healthcare isn't a software problem -- it's a philosophical one."
                         baseDelay={0.4}
                         wordDelay={0.06}
                       />
@@ -436,11 +435,10 @@ export function HomePage() {
                     </>
                   ) : (
                     <>
-                      <span className="bg-gradient-to-r from-[#A0522D] via-[#696969] to-black bg-clip-text text-transparent italic pr-2">
+                      <span className="bg-gradient-to-r from-[#AB6015] via-[#755D50] to-[#382F2F] bg-clip-text text-transparent italic pr-2">
                         Transforming
                       </span>
-                      healthcare isn't a software problem—it's a philosophical one. It starts with how we think about
-                      patients, clinicians, and data.
+                      {"healthcare isn't a software problem -- it's a philosophical one. It starts with how we think about patients, clinicians, and data."}
                     </>
                   )}
                 </h3>
@@ -490,15 +488,12 @@ export function HomePage() {
                   <p
                     className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
                   >
-                    His clinical career revealed a truth: healthcare is held back not by talent, but by fragmented
-                    systems and technologies built without clinicians in the room. In response, he founded ArmadaMD.
+                    {"His clinical career revealed a truth: healthcare is held back not by talent, but by fragmented systems and technologies built without clinicians in the room. In response, he founded ArmadaMD."}
                   </p>
                   <p
                     className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] ${aboutRef.isInView ? "fade-up fade-delay-4" : ""}`}
                   >
-                    Outside medicine, he leads Damavand Pictures as an actor, filmmaker, and executive
-                    producer—exploring stories of identity, culture, and resilience. Every venture shares one objective:
-                    build systems that serve people, not the other way around.
+                    {"Outside medicine, he leads Damavand Pictures as an actor, filmmaker, and executive producer -- exploring stories of identity, culture, and resilience. Every venture shares one objective: build systems that serve people, not the other way around."}
                   </p>
                 </div>
               </div>
@@ -548,7 +543,7 @@ export function HomePage() {
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 relative">
           <div className="text-center mb-16">
             <span className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 block mb-4">
-              Impact & Reach
+              Impact {"&"} Reach
             </span>
             <h2 className={`font-ivyjournal text-4xl md:text-5xl text-white leading-[0.9] ${statsRef.isInView ? "fade-up" : ""}`}>
               By the Numbers
@@ -667,7 +662,7 @@ export function HomePage() {
                         ) : (
                           "Armada Housecall"
                         )}
-                        <sup className="md:text-2xl opacity-50 relative -translate-y-3 text-3xl my-0">™</sup>
+                        <sup className="md:text-2xl opacity-50 relative -translate-y-3 text-3xl my-0">{"(TM)"}</sup>
                       </h3>
                       <motion.span
                         className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 block"
@@ -726,7 +721,7 @@ export function HomePage() {
                         ) : (
                           "Armada AssistMD"
                         )}
-                        <sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
+                        <sup className="text-lg md:text-2xl opacity-50 relative top-1">{"(TM)"}</sup>
                       </h3>
                       <motion.span
                         className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 block"
@@ -744,8 +739,7 @@ export function HomePage() {
                         animate={projectsRef.isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : false}
                         transition={{ duration: 0.8, delay: 2.9, ease: [0.16, 1, 0.3, 1] }}
                       >
-                        Real-time clinical intelligence that structures conversations into accurate, defensible medical
-                        notes—reducing cognitive load while enhancing clarity.
+                        {"Real-time clinical intelligence that structures conversations into accurate, defensible medical notes -- reducing cognitive load while enhancing clarity."}
                       </motion.p>
                       <motion.div
                         className="flex justify-end"
@@ -785,7 +779,7 @@ export function HomePage() {
                         ) : (
                           "Armada ArkPass"
                         )}
-                        <sup className="text-lg md:text-2xl opacity-50 relative top-1">™</sup>
+                        <sup className="text-lg md:text-2xl opacity-50 relative top-1">{"(TM)"}</sup>
                       </h3>
                       <motion.span
                         className="font-alfabet text-[10px] tracking-widest uppercase text-white/40 block"
@@ -835,7 +829,8 @@ export function HomePage() {
                   04 / Principles
                 </span>
                 <h2 className="font-ivyjournal text-4xl md:text-5xl text-black leading-[0.9]">
-                  Trust &<br />
+                  {"Trust &"}
+                  <br />
                   Security
                 </h2>
               </div>
@@ -846,7 +841,7 @@ export function HomePage() {
                 <p
                   className={`font-ivyjournal text-3xl md:text-5xl leading-[1.2] text-black font-light mb-16 ${trustRef.isInView ? "fade-up fade-delay-1" : ""}`}
                 >
-                  If it can't be trusted, it shouldn't exist. Every system follows this rule.
+                  {"If it can't be trusted, it shouldn't exist. Every system follows this rule."}
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
@@ -905,8 +900,7 @@ export function HomePage() {
                 <p
                   className={`font-alfabet font-light text-black/80 text-lg leading-[1.8] mb-12 max-w-3xl ${ethicalRef.isInView ? "fade-up fade-delay-2" : ""}`}
                 >
-                  The KNGHT Doctrine prioritizes patient sovereignty and clinical integrity above algorithmic
-                  efficiency. Ethics isn't a branding exercise—it's infrastructure.
+                  {"The KNGHT Doctrine prioritizes patient sovereignty and clinical integrity above algorithmic efficiency. Ethics isn't a branding exercise -- it's infrastructure."}
                 </p>
               </div>
 
@@ -991,7 +985,7 @@ export function HomePage() {
                   href="https://www.linkedin.com/in/alighahary"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-3 rounded-full bg-brand-gradient-soft px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
+                  className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#AB6015] via-[#755D50] to-[#382F2F] px-8 py-3 text-white font-alfabet text-xs tracking-[0.2em] uppercase shadow-lg shadow-black/10 transition-all duration-500 hover:shadow-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
                 >
                   <span>Connect on LinkedIn</span>
                   <span
@@ -1000,7 +994,7 @@ export function HomePage() {
                   />
                 </a>
                 <span className="font-alfabet text-xs tracking-[0.18em] uppercase text-black/60">
-                  Let's start a conversation
+                  {"Let's start a conversation"}
                 </span>
               </motion.div>
             </div>
@@ -1121,7 +1115,7 @@ export function HomePage() {
           {/* Bottom Bar */}
           <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="font-alfabet font-light text-white/40 text-[10px] uppercase tracking-widest">
-              © {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
+              {"(c)"} {new Date().getFullYear()} Dr. Ali Ghahary. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <span className="font-alfabet text-[10px] text-white/30 uppercase tracking-wider">

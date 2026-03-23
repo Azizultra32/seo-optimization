@@ -1,13 +1,9 @@
 /** @type {import('next-sitemap').IConfig} */
-module.exports = {
+const sitemapConfig = {
   siteUrl: process.env.SITE_URL || "https://drghahary.com",
   generateRobotsTxt: true,
   generateIndexSitemap: false,
-  
-  // Exclude admin and API routes
   exclude: ["/admin/*", "/api/*"],
-  
-  // Custom robots.txt policies
   robotsTxtOptions: {
     policies: [
       {
@@ -18,26 +14,16 @@ module.exports = {
     ],
     additionalSitemaps: [],
   },
-  
-  // Transform function to customize sitemap entries
   transform: async (config, path) => {
-    // Custom priority based on path
-    let priority = 0.7
-    let changefreq = "weekly"
-    
-    if (path === "/") {
-      priority = 1.0
-      changefreq = "weekly"
-    } else if (path === "/privacy" || path === "/terms") {
-      priority = 0.3
-      changefreq = "monthly"
-    }
-    
+    const priorities = { "/": 1, "/privacy": 0.3, "/terms": 0.3 }
+    const freqs = { "/": "weekly", "/privacy": "monthly", "/terms": "monthly" }
     return {
       loc: path,
-      changefreq,
-      priority,
+      changefreq: freqs[path] || "weekly",
+      priority: priorities[path] || 0.7,
       lastmod: new Date().toISOString(),
     }
   },
 }
+
+module.exports = sitemapConfig

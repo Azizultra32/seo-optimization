@@ -25,9 +25,9 @@
 ## 🔄 To Do
 
 - [ ] Add ™ symbol to "Armada Housecall" in page content using superscript styling:
-  \`\`\`tsx
+  ```tsx
   Armada Housecall<span className="align-super text-[8px]">™</span>
-  \`\`\`
+  ```
 - [ ] Create og-image.jpg (1200x630px) for social media previews
 - [ ] Add alt text to images with "Armada Housecall™ telehealth platform by Armada MD"
 - [ ] Ensure image filenames use hyphenated lowercase (e.g., armada-housecall-platform.jpg)
@@ -49,9 +49,9 @@
 - [ ] Verify email functionality (info@armadamd.com)
 - [ ] Test LinkedIn link opens correctly
 - [ ] Wait 2-4 weeks for Google indexing, then search:
-  \`\`\`
+  ```
   "Armada Housecall" site:drghahary.com
-  \`\`\`
+  ```
 
 ## 📊 Performance Checklist
 
