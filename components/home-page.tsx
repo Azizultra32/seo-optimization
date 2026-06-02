@@ -139,13 +139,13 @@ export function HomePage() {
             <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Est. 2004</span>
           </div>
 
-          <motion.button
-            className="logo-hover transition-all mx-auto md:mx-0 opacity-90 hover:opacity-100"
-            whileHover={heroAnimationsEnabled ? { scale: 1.02 } : undefined}
-            whileTap={heroAnimationsEnabled ? { scale: 0.98 } : undefined}
+          <Link
+            href="#hero"
+            aria-label="Dr. Ali Ghahary — back to top"
+            className="logo-hover transition-all mx-auto md:mx-0 opacity-90 hover:opacity-100 hover:scale-[1.02] active:scale-[0.98]"
           >
             <Image src="/images/ag-logo.svg" alt="AG Logo" width={140} height={46} className="h-10 md:h-12 w-auto" />
-          </motion.button>
+          </Link>
 
           <div className="hidden md:block">
             <span className="font-alfabet text-[10px] tracking-[0.3em] uppercase text-black/60">Vancouver, BC</span>
@@ -243,10 +243,10 @@ export function HomePage() {
       {/* Vision & Biography Section - Editorial Layout */}
       <section
         id="vision"
-        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-white py-32 md:py-48 text-transparent bg-transparent"
+        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-white py-24 md:py-36"
         ref={visionRef.ref}
       >
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12 bg-transparent text-transparent">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3 relative">
               <div className={`sticky top-32 border-t border-black/10 pt-6 ${visionRef.isInView ? "fade-up" : ""}`}>
@@ -279,7 +279,7 @@ export function HomePage() {
 
       {/* About Section - Refined Grid Layout */}
       <section
-        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-zinc-50 py-32 md:py-48"
+        className="relative z-20 bg-gradient-to-b from-zinc-50 via-white to-zinc-50 py-24 md:py-36"
         ref={aboutRef.ref}
       >
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
@@ -341,7 +341,7 @@ export function HomePage() {
       </section>
 
       {/* Projects Section - Editorial List Style */}
-      <section className="relative z-30 bg-[#0a0a0a] text-white py-32 md:py-48" id="projects" ref={projectsRef.ref}>
+      <section className="relative z-30 bg-[#0a0a0a] text-white py-24 md:py-36" id="projects" ref={projectsRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
             <div className="md:col-span-3">
@@ -467,7 +467,7 @@ export function HomePage() {
       </section>
 
       {/* Security & Principles Section - Minimalist */}
-      <section className="relative z-20 bg-white py-32 md:py-48" ref={trustRef.ref}>
+      <section className="relative z-20 bg-white py-24 md:py-36" ref={trustRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3">
@@ -519,7 +519,7 @@ export function HomePage() {
       </section>
 
       {/* Ethics Section - The KNGHT Doctrine */}
-      <section className="relative z-20 bg-neutral-50 py-32 md:py-48" ref={ethicalRef.ref}>
+      <section className="relative z-20 bg-neutral-50 py-24 md:py-36" ref={ethicalRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-3">
@@ -589,7 +589,7 @@ export function HomePage() {
       </section>
 
       {/* Contact Section - Minimal */}
-      <section id="contact" className="relative z-20 bg-white pt-32 pb-12 md:pt-48 md:pb-16" ref={contactRef.ref}>
+      <section id="contact" className="relative z-20 bg-white pt-24 pb-12 md:pt-36 md:pb-16" ref={contactRef.ref}>
         <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-24">
             <div className="md:col-span-3">
@@ -680,12 +680,6 @@ export function HomePage() {
               className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
             >
               Terms
-            </Link>
-            <Link
-              href="/legal"
-              className="font-alfabet font-light text-black/60 text-[10px] uppercase tracking-widest hover:text-black transition-colors"
-            >
-              Legal
             </Link>
           </div>
         </div>
