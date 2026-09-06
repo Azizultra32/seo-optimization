@@ -1057,11 +1057,6 @@ export function HomePage() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/legal" className="font-alfabet font-light text-white/70 text-sm hover:text-white transition-colors">
-                    Legal Notice
-                  </Link>
-                </li>
-                <li>
                   <button className="font-alfabet font-light text-white/70 text-sm hover:text-white transition-colors">
                     KNGHT Doctrine
                   </button>

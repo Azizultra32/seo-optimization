@@ -1,8 +1,21 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Harvest Studio",
-  description: "Learn how Harvest Studio protects your privacy and handles your data.",
+  title: "Privacy Policy | Dr. Ali Ghahary",
+  description: "Privacy information for alighahary.com.",
+  alternates: { canonical: "https://alighahary.com/privacy" },
+  openGraph: {
+    title: "Privacy Policy | Dr. Ali Ghahary",
+    description: "Privacy information for alighahary.com.",
+    url: "https://alighahary.com/privacy",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | Dr. Ali Ghahary",
+    description: "Privacy information for alighahary.com.",
+    images: ["/opengraph-image"],
+  },
 }
 
 export default function PrivacyPage() {
@@ -19,7 +32,7 @@ export default function PrivacyPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Overview</h2>
             <p>
-              Harvest Studio ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy
+              Dr. Ali Ghahary ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy
               explains how we collect, use, disclose, and safeguard your information when you visit our website.
             </p>
           </section>

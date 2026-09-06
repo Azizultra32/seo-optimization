@@ -8,14 +8,14 @@ const structuredData = {
   "@graph": [
     {
       "@type": "Person",
-      "@id": "https://drghahary.com/#person",
+      "@id": "https://alighahary.com/#person",
       name: "Dr. Ali Ghahary",
       honorificPrefix: "Dr.",
       honorificSuffix: "MD, CCFP",
       jobTitle: "Physician, Entrepreneur, Founder",
       description:
         "Physician, entrepreneur, and thought leader reimagining healthcare through ethical AI, interoperability, and patient empowerment.",
-      url: "https://drghahary.com",
+      url: "https://alighahary.com",
       sameAs: ["https://www.linkedin.com/in/alighahary", "https://knghtdoctrine.com"],
       alumniOf: [
         {
@@ -43,11 +43,11 @@ const structuredData = {
       "@id": "https://armadamd.com/#organization",
       name: "Armada MD",
       url: "https://armadamd.com",
-      logo: "https://drghahary.com/images/ag-logo.svg",
+      logo: "https://alighahary.com/images/ag-logo.svg",
       description: "Healthcare technology company focused on ethical AI, interoperability, and patient empowerment.",
       founder: {
         "@type": "Person",
-        "@id": "https://drghahary.com/#person",
+        "@id": "https://alighahary.com/#person",
       },
       contactPoint: {
         "@type": "ContactPoint",
@@ -111,21 +111,21 @@ const structuredData = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://drghahary.com/#website",
-      url: "https://drghahary.com",
+      "@id": "https://alighahary.com/#website",
+      url: "https://alighahary.com",
       name: "Dr. Ali Ghahary",
       description:
         "Physician, entrepreneur, and founder reimagining healthcare through ethical AI, interoperability, and patient empowerment.",
       publisher: {
         "@type": "Person",
-        "@id": "https://drghahary.com/#person",
+        "@id": "https://alighahary.com/#person",
       },
     },
   ],
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://drghahary.com"),
+  metadataBase: new URL("https://alighahary.com"),
   title: "Dr. Ali Ghahary MD, CCFP | Physician, Entrepreneur, Founder | Armada MD",
   description:
     "Dr. Ali Ghahary is a physician, entrepreneur, and founder reimagining healthcare through ethical AI, interoperability, and patient empowerment. Founder of Armada Housecall™, AssistMD™, and ArkPass™.",
@@ -167,14 +167,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://drghahary.com",
+    url: "https://alighahary.com",
     siteName: "Dr. Ali Ghahary",
     title: "Dr. Ali Ghahary MD, CCFP | Physician, Entrepreneur, Founder",
     description:
       "Reimagining healthcare through ethical AI, interoperability, and patient empowerment. Founder of Armada Housecall™, AssistMD™, and ArkPass™.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Dr. Ali Ghahary - Physician, Entrepreneur, Founder",
@@ -186,11 +186,11 @@ export const metadata: Metadata = {
     title: "Dr. Ali Ghahary MD, CCFP | Physician, Entrepreneur, Founder",
     description:
       "Reimagining healthcare through ethical AI, interoperability, and patient empowerment. Founder of Armada Housecall™, AssistMD™, and ArkPass™.",
-    images: ["/og-image.jpg"],
+    images: ["/opengraph-image"],
     creator: "@drghahary",
   },
   alternates: {
-    canonical: "https://drghahary.com",
+    canonical: "https://alighahary.com",
   },
   icons: {
     icon: "/favicon.png",
