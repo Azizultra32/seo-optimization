@@ -2,9 +2,19 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Dr. Ali Ghahary",
-  description: "Learn how Dr. Ali Ghahary protects your privacy and handles your data.",
-  alternates: {
-    canonical: "https://alighahary.com/privacy",
+  description: "Privacy information for alighahary.com.",
+  alternates: { canonical: "https://alighahary.com/privacy" },
+  openGraph: {
+    title: "Privacy Policy | Dr. Ali Ghahary",
+    description: "Privacy information for alighahary.com.",
+    url: "https://alighahary.com/privacy",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | Dr. Ali Ghahary",
+    description: "Privacy information for alighahary.com.",
+    images: ["/opengraph-image"],
   },
 }
 
