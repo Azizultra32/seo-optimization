@@ -9,3 +9,5 @@ This branch starts at the verified live production commit fb9bf81bf39c848edeb7c7
 - `public/robots.txt`, `public/sitemap.xml` - crawl guidance and the three existing public page URLs.
 
 Build evidence, deployment boundaries and current status are maintained in ../CURRENT.md. APIs, database scripts, automation schedules and dependencies are inherited unchanged from production; they are outside this metadata repair.
+
+- Policy contact links use the existing public info@armadamd.com mailbox; removed unrelated Harvest Studio destinations during hosted acceptance.

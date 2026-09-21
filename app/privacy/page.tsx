@@ -133,8 +133,8 @@ export default function PrivacyPage() {
             <p>For privacy-related questions or to exercise your rights, contact us at:</p>
             <p className="mt-4">
               Email:{" "}
-              <a href="mailto:privacy@harveststudio.ca" className="text-primary hover:underline">
-                privacy@harveststudio.ca
+              <a href="mailto:info@armadamd.com" className="text-primary hover:underline">
+                info@armadamd.com
               </a>
             </p>
           </section>

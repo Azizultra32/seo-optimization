@@ -88,8 +88,8 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold mb-4">Contact</h2>
             <p>
               Questions about the Terms of Service should be sent to us at{" "}
-              <a href="mailto:legal@harveststudio.ca" className="text-primary hover:underline">
-                legal@harveststudio.ca
+              <a href="mailto:info@armadamd.com" className="text-primary hover:underline">
+                info@armadamd.com
               </a>
             </p>
           </section>
